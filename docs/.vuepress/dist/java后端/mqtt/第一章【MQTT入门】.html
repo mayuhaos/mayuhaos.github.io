@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MQTT入门 | 宇豪Note💗</title>
+    <meta name="generator" content="VuePress 1.9.9">
+    <link rel="icon" href="img/jz.png">
+    <meta name="description" content="一套为开发者学习准备的">
+    <meta name="referrer" content="no-referrer">
+    
+    <link rel="preload" href="/assets/css/0.styles.3212ae72.css" as="style"><link rel="preload" href="/assets/js/app.ebaa9f51.js" as="script"><link rel="preload" href="/assets/js/2.8cbef0f8.js" as="script"><link rel="preload" href="/assets/js/46.4dc1ed9c.js" as="script"><link rel="prefetch" href="/assets/js/10.0171bda0.js"><link rel="prefetch" href="/assets/js/100.2e1617ca.js"><link rel="prefetch" href="/assets/js/101.ec672014.js"><link rel="prefetch" href="/assets/js/102.805051b7.js"><link rel="prefetch" href="/assets/js/103.c869c246.js"><link rel="prefetch" href="/assets/js/104.e818ad84.js"><link rel="prefetch" href="/assets/js/105.b228c720.js"><link rel="prefetch" href="/assets/js/106.fd5ef894.js"><link rel="prefetch" href="/assets/js/107.6359a706.js"><link rel="prefetch" href="/assets/js/108.ecf3b6ff.js"><link rel="prefetch" href="/assets/js/109.6f6c8c8e.js"><link rel="prefetch" href="/assets/js/11.e802fd10.js"><link rel="prefetch" href="/assets/js/110.6a87b712.js"><link rel="prefetch" href="/assets/js/111.0703c9fd.js"><link rel="prefetch" href="/assets/js/112.637c675b.js"><link rel="prefetch" href="/assets/js/113.a36ba72a.js"><link rel="prefetch" href="/assets/js/114.b7877c5d.js"><link rel="prefetch" href="/assets/js/115.5de8fdd3.js"><link rel="prefetch" href="/assets/js/116.034112a1.js"><link rel="prefetch" href="/assets/js/117.0537dff5.js"><link rel="prefetch" href="/assets/js/118.bfbb3c43.js"><link rel="prefetch" href="/assets/js/119.ef7a00b7.js"><link rel="prefetch" href="/assets/js/12.af004fe5.js"><link rel="prefetch" href="/assets/js/120.b5d58dca.js"><link rel="prefetch" href="/assets/js/121.97140b76.js"><link rel="prefetch" href="/assets/js/122.288eb1b4.js"><link rel="prefetch" href="/assets/js/123.7a4f6685.js"><link rel="prefetch" href="/assets/js/124.3fe8c4dc.js"><link rel="prefetch" href="/assets/js/125.7369dccb.js"><link rel="prefetch" href="/assets/js/126.7172e42a.js"><link rel="prefetch" href="/assets/js/127.710ba4f8.js"><link rel="prefetch" href="/assets/js/128.853ab563.js"><link rel="prefetch" href="/assets/js/129.ebac5ab2.js"><link rel="prefetch" href="/assets/js/13.253dfa0b.js"><link rel="prefetch" href="/assets/js/130.ff504328.js"><link rel="prefetch" href="/assets/js/131.ac55b44a.js"><link rel="prefetch" href="/assets/js/132.94e166b6.js"><link rel="prefetch" href="/assets/js/133.9168bd7c.js"><link rel="prefetch" href="/assets/js/134.091522b8.js"><link rel="prefetch" href="/assets/js/135.42ae8fac.js"><link rel="prefetch" href="/assets/js/136.bb058c5e.js"><link rel="prefetch" href="/assets/js/137.b048f9c9.js"><link rel="prefetch" href="/assets/js/138.3d5dbd00.js"><link rel="prefetch" href="/assets/js/139.d3226dfb.js"><link rel="prefetch" href="/assets/js/14.8d179c8a.js"><link rel="prefetch" href="/assets/js/140.813946f0.js"><link rel="prefetch" href="/assets/js/141.8c198ab6.js"><link rel="prefetch" href="/assets/js/142.66d85dae.js"><link rel="prefetch" href="/assets/js/143.647eae51.js"><link rel="prefetch" href="/assets/js/144.44e303b1.js"><link rel="prefetch" href="/assets/js/145.c211bb78.js"><link rel="prefetch" href="/assets/js/146.89deddad.js"><link rel="prefetch" href="/assets/js/147.989d832e.js"><link rel="prefetch" href="/assets/js/148.6da0b007.js"><link rel="prefetch" href="/assets/js/149.301c5875.js"><link rel="prefetch" href="/assets/js/15.4e4bec7b.js"><link rel="prefetch" href="/assets/js/16.3f82af5d.js"><link rel="prefetch" href="/assets/js/17.d1e0dac0.js"><link rel="prefetch" href="/assets/js/18.033b3203.js"><link rel="prefetch" href="/assets/js/19.13cc794b.js"><link rel="prefetch" href="/assets/js/20.afdd0a6b.js"><link rel="prefetch" href="/assets/js/21.f953c8a7.js"><link rel="prefetch" href="/assets/js/22.2de2b59b.js"><link rel="prefetch" href="/assets/js/23.431fb260.js"><link rel="prefetch" href="/assets/js/24.df88f98a.js"><link rel="prefetch" href="/assets/js/25.43ec9258.js"><link rel="prefetch" href="/assets/js/26.fbd40286.js"><link rel="prefetch" href="/assets/js/27.163c166b.js"><link rel="prefetch" href="/assets/js/28.b36e3494.js"><link rel="prefetch" href="/assets/js/29.9d133787.js"><link rel="prefetch" href="/assets/js/3.073c3b73.js"><link rel="prefetch" href="/assets/js/30.e055870f.js"><link rel="prefetch" href="/assets/js/31.4edf9383.js"><link rel="prefetch" href="/assets/js/32.91e4a296.js"><link rel="prefetch" href="/assets/js/33.740e75df.js"><link rel="prefetch" href="/assets/js/34.c4331232.js"><link rel="prefetch" href="/assets/js/35.0c238479.js"><link rel="prefetch" href="/assets/js/36.cd63acb3.js"><link rel="prefetch" href="/assets/js/37.d7828506.js"><link rel="prefetch" href="/assets/js/38.a03facd9.js"><link rel="prefetch" href="/assets/js/39.581fb25e.js"><link rel="prefetch" href="/assets/js/4.3b3384ed.js"><link rel="prefetch" href="/assets/js/40.eb892124.js"><link rel="prefetch" href="/assets/js/41.71119888.js"><link rel="prefetch" href="/assets/js/42.15c92691.js"><link rel="prefetch" href="/assets/js/43.ca49a49c.js"><link rel="prefetch" href="/assets/js/44.35a78fb7.js"><link rel="prefetch" href="/assets/js/45.03ea8e61.js"><link rel="prefetch" href="/assets/js/47.9131b63d.js"><link rel="prefetch" href="/assets/js/48.c5204528.js"><link rel="prefetch" href="/assets/js/49.8b9a9672.js"><link rel="prefetch" href="/assets/js/5.346359c9.js"><link rel="prefetch" href="/assets/js/50.fe2b9f70.js"><link rel="prefetch" href="/assets/js/51.9a518f0b.js"><link rel="prefetch" href="/assets/js/52.d250040a.js"><link rel="prefetch" href="/assets/js/53.71743e51.js"><link rel="prefetch" href="/assets/js/54.dc6b7a37.js"><link rel="prefetch" href="/assets/js/55.5ec3d981.js"><link rel="prefetch" href="/assets/js/56.80a43bff.js"><link rel="prefetch" href="/assets/js/57.ad608d1b.js"><link rel="prefetch" href="/assets/js/58.3683c366.js"><link rel="prefetch" href="/assets/js/59.7173581f.js"><link rel="prefetch" href="/assets/js/6.f52af465.js"><link rel="prefetch" href="/assets/js/60.a56edd61.js"><link rel="prefetch" href="/assets/js/61.ceda48e4.js"><link rel="prefetch" href="/assets/js/62.fd5bfdc7.js"><link rel="prefetch" href="/assets/js/63.a8095951.js"><link rel="prefetch" href="/assets/js/64.69afefc8.js"><link rel="prefetch" href="/assets/js/65.2ac1cdc6.js"><link rel="prefetch" href="/assets/js/66.d25228c6.js"><link rel="prefetch" href="/assets/js/67.f0ad1ebb.js"><link rel="prefetch" href="/assets/js/68.e71eb49c.js"><link rel="prefetch" href="/assets/js/69.c2a0892b.js"><link rel="prefetch" href="/assets/js/7.9320c234.js"><link rel="prefetch" href="/assets/js/70.3621fc40.js"><link rel="prefetch" href="/assets/js/71.60573e3a.js"><link rel="prefetch" href="/assets/js/72.184dd8d9.js"><link rel="prefetch" href="/assets/js/73.4f659cb8.js"><link rel="prefetch" href="/assets/js/74.398bdc91.js"><link rel="prefetch" href="/assets/js/75.d1315e78.js"><link rel="prefetch" href="/assets/js/76.9575e14c.js"><link rel="prefetch" href="/assets/js/77.5440d994.js"><link rel="prefetch" href="/assets/js/78.802cc9c0.js"><link rel="prefetch" href="/assets/js/79.59cbae77.js"><link rel="prefetch" href="/assets/js/8.45086c05.js"><link rel="prefetch" href="/assets/js/80.c96092a0.js"><link rel="prefetch" href="/assets/js/81.eaaed87a.js"><link rel="prefetch" href="/assets/js/82.d406a86d.js"><link rel="prefetch" href="/assets/js/83.f153a8b6.js"><link rel="prefetch" href="/assets/js/84.e254b184.js"><link rel="prefetch" href="/assets/js/85.8699f64c.js"><link rel="prefetch" href="/assets/js/86.e7482634.js"><link rel="prefetch" href="/assets/js/87.72d861cd.js"><link rel="prefetch" href="/assets/js/88.d4150192.js"><link rel="prefetch" href="/assets/js/89.807a2e34.js"><link rel="prefetch" href="/assets/js/9.23f229b2.js"><link rel="prefetch" href="/assets/js/90.7f9b06d9.js"><link rel="prefetch" href="/assets/js/91.4d77ba2a.js"><link rel="prefetch" href="/assets/js/92.c8afe437.js"><link rel="prefetch" href="/assets/js/93.95baba9a.js"><link rel="prefetch" href="/assets/js/94.a67ee6c2.js"><link rel="prefetch" href="/assets/js/95.fda08670.js"><link rel="prefetch" href="/assets/js/96.c9f29cd8.js"><link rel="prefetch" href="/assets/js/97.7337a663.js"><link rel="prefetch" href="/assets/js/98.61d5a0ed.js"><link rel="prefetch" href="/assets/js/99.61574fdd.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.3212ae72.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/img/title.png" alt="宇豪Note💗" class="logo"> <span class="site-name can-hide">宇豪Note💗</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="关于我" class="dropdown-title"><span class="title">关于我</span> <span class="arrow down"></span></button> <button type="button" aria-label="关于我" class="mobile-dropdown-title"><span class="title">关于我</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/AboutMe/关于网站.html" class="nav-link">
+  关于网站
+</a></li><li class="dropdown-item"><!----> <a href="/AboutMe/关于经历/关于经历.html" class="nav-link">
+  关于经历
+</a></li><li class="dropdown-item"><!----> <a href="/AboutMe/关于爱好.html" class="nav-link">
+  关于爱好
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="java开发" class="dropdown-title"><span class="title">java开发</span> <span class="arrow down"></span></button> <button type="button" aria-label="java开发" class="mobile-dropdown-title"><span class="title">java开发</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          入门
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/入门/java基础/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/java基础/动力节点/JavaSE进阶-01-面向对象.html" class="nav-link">
+  javaSE基础
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/java网络编程/狂神/JavaSE：网络编程.html" class="nav-link">
+  java网络编程
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/javaGUI编程/狂神/javaGUI编程.html" class="nav-link">
+  java-GUI开发
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/javaWeb/黑马/01HTTP&amp;Tomcat&amp;Servlet.html" class="nav-link">
+  JavaWeb
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/Spring/狂神/Spring.html" class="nav-link">
+  Spring
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/SpringMVC/狂神/SpringMVC.html" class="nav-link">
+  SpringMVC
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/SpringBoot/狂神/SpringBoot入门及原理.html" class="nav-link">
+  SpringBoot
+</a></li></ul></li><li class="dropdown-item"><h4>
+          接口文档Swagger(可作了解)
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/入门/SpringBoot/狂神/Swagger.html" class="nav-link">
+  Swagger
+</a></li></ul></li><li class="dropdown-item"><h4>
+          数据库&amp;框架
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/数据库/mysql/sql-个人.html" class="nav-link">
+  mysql
+</a></li><li class="dropdown-subitem"><a href="/java后端/java数据库框架/jdbc-黑马.html" class="nav-link">
+  JDBC驱动
+</a></li><li class="dropdown-subitem"><a href="/java后端/java数据库框架/mybatis-狂神.html" class="nav-link">
+  mybatis框架
+</a></li><li class="dropdown-subitem"><a href="/java后端/java数据库框架/mybatis-plus01-黑马.html" class="nav-link">
+  mybatis-plus框架
+</a></li></ul></li><li class="dropdown-item"><h4>
+          权限框架
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/权限框架/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-subitem"><a href="/java后端/权限框架/SpringSecurity/狂神/SpringSecurity.html" class="nav-link">
+  SpringSecurity
+</a></li><li class="dropdown-subitem"><a href="/java后端/权限框架/Shiro/狂神/Shiro.html" class="nav-link">
+  Shiro
+</a></li></ul></li><li class="dropdown-item"><h4>
+          进阶SpringCloud
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/SpringCloud/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/注册中心nacos&amp;Eureka/动力节点/nacos注册中心.html" class="nav-link">
+  注册中心nacos&amp;Eureka
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/网关Gateway/动力节点/Gateway.html" class="nav-link">
+  网关Gateway
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/负载均衡Ribbon/动力节点/Ribbon.html" class="nav-link">
+  负载均衡Ribbon
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/熔断降级Hystrix&amp;sentinel/动力节点/Hystrix.html" class="nav-link">
+  熔断降级Hystrix&amp;sentinel
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/远程调用OpenFeign/动力节点/OpenFeign.html" class="nav-link">
+  远程调用OpenFeign
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/链路追踪sleuth/动力节点/Sleuth.html" class="nav-link">
+  链路追踪sleuth
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/分布式搜索ElasticSerach/狂神/ElasticSearch.html" class="nav-link">
+  分布式搜索ElasticSerach
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/消息队列RabbitMQ/飞哥/RabbitMQ.html" class="nav-link">
+  消息队列RabbitMQ
+</a></li></ul></li><li class="dropdown-item"><h4>
+          消息通信协议MQTT
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/mqtt/第一章【MQTT入门】.html" class="nav-link">
+  MQTT入门
+</a></li><li class="dropdown-subitem"><a href="/java后端/mqtt/第二章【MQTT进阶】.html" class="nav-link">
+  MQTT进阶
+</a></li><li class="dropdown-subitem"><a href="/java后端/mqtt/第三章【MQTT Dashboard】.html" class="nav-link">
+  MQTT Dashboard
+</a></li><li class="dropdown-subitem"><a href="/java后端/mqtt/第四章【MQTT SDK以及实战】.html" class="nav-link">
+  MQTT SDK以及实战
+</a></li></ul></li><li class="dropdown-item"><h4>
+          高级
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/高级/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-subitem"><a href="/java后端/高级/jvm/黑马/引言.html" class="nav-link">
+  jvm内存
+</a></li><li class="dropdown-subitem"><a href="/java后端/高级/juc/黑马/01并发编程.html" class="nav-link">
+  juc并发编程
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="前端开发" class="dropdown-title"><span class="title">前端开发</span> <span class="arrow down"></span></button> <button type="button" aria-label="前端开发" class="mobile-dropdown-title"><span class="title">前端开发</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/前端/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><h4>
+          基础-(前端三件套)
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/前端/基础/HTML/黑马/HTML标签.html" class="nav-link">
+  HTML
+</a></li><li class="dropdown-subitem"><a href="/前端/基础/CSS/黑马/01-CSS.html" class="nav-link">
+  CSS
+</a></li><li class="dropdown-subitem"><a href="/前端/基础/JavaScript/黑马/" class="nav-link">
+  JavaScript
+</a></li><li class="dropdown-subitem"><a href="/前端/基础/jQuery/黑马/01-jQuery常用API.html" class="nav-link">
+  jQuery
+</a></li><li class="dropdown-subitem"><a href="/前端/基础/CSS/移动端/02_HTML5.html" class="nav-link">
+  移动端开发
+</a></li></ul></li><li class="dropdown-item"><h4>
+          入门
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/前端/入门/入门串讲/狂神/大前端串讲.html" class="nav-link">
+  入门串讲
+</a></li><li class="dropdown-subitem"><a href="/前端/入门/Vue/狂神/Vue精讲.html" class="nav-link">
+  Vue框架
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="python开发" class="dropdown-title"><span class="title">python开发</span> <span class="arrow down"></span></button> <button type="button" aria-label="python开发" class="mobile-dropdown-title"><span class="title">python开发</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/python/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><h4>
+          入门
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/python/python_base.html" class="nav-link">
+  python基础
+</a></li></ul></li><li class="dropdown-item"><h4>
+          odoo框架
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/odoo/odoo_base/guide.html" class="nav-link">
+  快速入门
+</a></li><li class="dropdown-subitem"><a href="/odoo/odoo_core/orm.html" class="nav-link">
+  核心开发
+</a></li><li class="dropdown-subitem"><a href="/odoo/odoo_core/report.html" class="nav-link">
+  报表
+</a></li><li class="dropdown-subitem"><a href="/odoo/pendant.html" class="nav-link">
+  挂件
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="大数据" class="dropdown-title"><span class="title">大数据</span> <span class="arrow down"></span></button> <button type="button" aria-label="大数据" class="mobile-dropdown-title"><span class="title">大数据</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/bigdata/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><!----> <a href="/bigdata/hbase/hbase.html" class="nav-link">
+  Hbase
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="数据库" class="dropdown-title"><span class="title">数据库</span> <span class="arrow down"></span></button> <button type="button" aria-label="数据库" class="mobile-dropdown-title"><span class="title">数据库</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/数据库/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><h4>
+          mySQL
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/数据库/mysql/sql-个人.html" class="nav-link">
+  入门到进阶
+</a></li></ul></li><li class="dropdown-item"><h4>
+          redis
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/数据库/redis/Redis-狂神.html" class="nav-link">
+  入门到进阶
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Hbase
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/数据库/Hbase/尚硅谷/Hbase.html" class="nav-link">
+  入门到进阶
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="运维部署" class="dropdown-title"><span class="title">运维部署</span> <span class="arrow down"></span></button> <button type="button" aria-label="运维部署" class="mobile-dropdown-title"><span class="title">运维部署</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/运维部署/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><h4>
+          Linux
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/运维部署/Linux/狂神/Linux使用.html" class="nav-link">
+  Linux使用
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Docker部署
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/运维部署/Docker/狂神/Docker_file.html" class="nav-link">
+  DockerFile
+</a></li><li class="dropdown-subitem"><a href="/运维部署/Docker/狂神/Docker_compose.html" class="nav-link">
+  DockerCompose
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Git版本控制
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/运维部署/git/git.html" class="nav-link">
+  Git
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="下蛋公鸡🐣" class="dropdown-title"><span class="title">下蛋公鸡🐣</span> <span class="arrow down"></span></button> <button type="button" aria-label="下蛋公鸡🐣" class="mobile-dropdown-title"><span class="title">下蛋公鸡🐣</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://blog.csdn.net/qq_47913744?spm=1000.2115.3001.5343" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CSDN
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://gitee.com/yhstu" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://music.163.com/#/artist/album?id=34597186" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  我的网易云
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="关于我" class="dropdown-title"><span class="title">关于我</span> <span class="arrow down"></span></button> <button type="button" aria-label="关于我" class="mobile-dropdown-title"><span class="title">关于我</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/AboutMe/关于网站.html" class="nav-link">
+  关于网站
+</a></li><li class="dropdown-item"><!----> <a href="/AboutMe/关于经历/关于经历.html" class="nav-link">
+  关于经历
+</a></li><li class="dropdown-item"><!----> <a href="/AboutMe/关于爱好.html" class="nav-link">
+  关于爱好
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="java开发" class="dropdown-title"><span class="title">java开发</span> <span class="arrow down"></span></button> <button type="button" aria-label="java开发" class="mobile-dropdown-title"><span class="title">java开发</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          入门
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/入门/java基础/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/java基础/动力节点/JavaSE进阶-01-面向对象.html" class="nav-link">
+  javaSE基础
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/java网络编程/狂神/JavaSE：网络编程.html" class="nav-link">
+  java网络编程
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/javaGUI编程/狂神/javaGUI编程.html" class="nav-link">
+  java-GUI开发
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/javaWeb/黑马/01HTTP&amp;Tomcat&amp;Servlet.html" class="nav-link">
+  JavaWeb
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/Spring/狂神/Spring.html" class="nav-link">
+  Spring
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/SpringMVC/狂神/SpringMVC.html" class="nav-link">
+  SpringMVC
+</a></li><li class="dropdown-subitem"><a href="/java后端/入门/SpringBoot/狂神/SpringBoot入门及原理.html" class="nav-link">
+  SpringBoot
+</a></li></ul></li><li class="dropdown-item"><h4>
+          接口文档Swagger(可作了解)
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/入门/SpringBoot/狂神/Swagger.html" class="nav-link">
+  Swagger
+</a></li></ul></li><li class="dropdown-item"><h4>
+          数据库&amp;框架
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/数据库/mysql/sql-个人.html" class="nav-link">
+  mysql
+</a></li><li class="dropdown-subitem"><a href="/java后端/java数据库框架/jdbc-黑马.html" class="nav-link">
+  JDBC驱动
+</a></li><li class="dropdown-subitem"><a href="/java后端/java数据库框架/mybatis-狂神.html" class="nav-link">
+  mybatis框架
+</a></li><li class="dropdown-subitem"><a href="/java后端/java数据库框架/mybatis-plus01-黑马.html" class="nav-link">
+  mybatis-plus框架
+</a></li></ul></li><li class="dropdown-item"><h4>
+          权限框架
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/权限框架/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-subitem"><a href="/java后端/权限框架/SpringSecurity/狂神/SpringSecurity.html" class="nav-link">
+  SpringSecurity
+</a></li><li class="dropdown-subitem"><a href="/java后端/权限框架/Shiro/狂神/Shiro.html" class="nav-link">
+  Shiro
+</a></li></ul></li><li class="dropdown-item"><h4>
+          进阶SpringCloud
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/SpringCloud/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/注册中心nacos&amp;Eureka/动力节点/nacos注册中心.html" class="nav-link">
+  注册中心nacos&amp;Eureka
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/网关Gateway/动力节点/Gateway.html" class="nav-link">
+  网关Gateway
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/负载均衡Ribbon/动力节点/Ribbon.html" class="nav-link">
+  负载均衡Ribbon
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/熔断降级Hystrix&amp;sentinel/动力节点/Hystrix.html" class="nav-link">
+  熔断降级Hystrix&amp;sentinel
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/远程调用OpenFeign/动力节点/OpenFeign.html" class="nav-link">
+  远程调用OpenFeign
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/链路追踪sleuth/动力节点/Sleuth.html" class="nav-link">
+  链路追踪sleuth
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/分布式搜索ElasticSerach/狂神/ElasticSearch.html" class="nav-link">
+  分布式搜索ElasticSerach
+</a></li><li class="dropdown-subitem"><a href="/java后端/SpringCloud/消息队列RabbitMQ/飞哥/RabbitMQ.html" class="nav-link">
+  消息队列RabbitMQ
+</a></li></ul></li><li class="dropdown-item"><h4>
+          消息通信协议MQTT
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/mqtt/第一章【MQTT入门】.html" class="nav-link">
+  MQTT入门
+</a></li><li class="dropdown-subitem"><a href="/java后端/mqtt/第二章【MQTT进阶】.html" class="nav-link">
+  MQTT进阶
+</a></li><li class="dropdown-subitem"><a href="/java后端/mqtt/第三章【MQTT Dashboard】.html" class="nav-link">
+  MQTT Dashboard
+</a></li><li class="dropdown-subitem"><a href="/java后端/mqtt/第四章【MQTT SDK以及实战】.html" class="nav-link">
+  MQTT SDK以及实战
+</a></li></ul></li><li class="dropdown-item"><h4>
+          高级
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/java后端/高级/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-subitem"><a href="/java后端/高级/jvm/黑马/引言.html" class="nav-link">
+  jvm内存
+</a></li><li class="dropdown-subitem"><a href="/java后端/高级/juc/黑马/01并发编程.html" class="nav-link">
+  juc并发编程
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="前端开发" class="dropdown-title"><span class="title">前端开发</span> <span class="arrow down"></span></button> <button type="button" aria-label="前端开发" class="mobile-dropdown-title"><span class="title">前端开发</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/前端/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><h4>
+          基础-(前端三件套)
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/前端/基础/HTML/黑马/HTML标签.html" class="nav-link">
+  HTML
+</a></li><li class="dropdown-subitem"><a href="/前端/基础/CSS/黑马/01-CSS.html" class="nav-link">
+  CSS
+</a></li><li class="dropdown-subitem"><a href="/前端/基础/JavaScript/黑马/" class="nav-link">
+  JavaScript
+</a></li><li class="dropdown-subitem"><a href="/前端/基础/jQuery/黑马/01-jQuery常用API.html" class="nav-link">
+  jQuery
+</a></li><li class="dropdown-subitem"><a href="/前端/基础/CSS/移动端/02_HTML5.html" class="nav-link">
+  移动端开发
+</a></li></ul></li><li class="dropdown-item"><h4>
+          入门
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/前端/入门/入门串讲/狂神/大前端串讲.html" class="nav-link">
+  入门串讲
+</a></li><li class="dropdown-subitem"><a href="/前端/入门/Vue/狂神/Vue精讲.html" class="nav-link">
+  Vue框架
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="python开发" class="dropdown-title"><span class="title">python开发</span> <span class="arrow down"></span></button> <button type="button" aria-label="python开发" class="mobile-dropdown-title"><span class="title">python开发</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/python/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><h4>
+          入门
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/python/python_base.html" class="nav-link">
+  python基础
+</a></li></ul></li><li class="dropdown-item"><h4>
+          odoo框架
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/odoo/odoo_base/guide.html" class="nav-link">
+  快速入门
+</a></li><li class="dropdown-subitem"><a href="/odoo/odoo_core/orm.html" class="nav-link">
+  核心开发
+</a></li><li class="dropdown-subitem"><a href="/odoo/odoo_core/report.html" class="nav-link">
+  报表
+</a></li><li class="dropdown-subitem"><a href="/odoo/pendant.html" class="nav-link">
+  挂件
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="大数据" class="dropdown-title"><span class="title">大数据</span> <span class="arrow down"></span></button> <button type="button" aria-label="大数据" class="mobile-dropdown-title"><span class="title">大数据</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/bigdata/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><!----> <a href="/bigdata/hbase/hbase.html" class="nav-link">
+  Hbase
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="数据库" class="dropdown-title"><span class="title">数据库</span> <span class="arrow down"></span></button> <button type="button" aria-label="数据库" class="mobile-dropdown-title"><span class="title">数据库</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/数据库/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><h4>
+          mySQL
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/数据库/mysql/sql-个人.html" class="nav-link">
+  入门到进阶
+</a></li></ul></li><li class="dropdown-item"><h4>
+          redis
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/数据库/redis/Redis-狂神.html" class="nav-link">
+  入门到进阶
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Hbase
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/数据库/Hbase/尚硅谷/Hbase.html" class="nav-link">
+  入门到进阶
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="运维部署" class="dropdown-title"><span class="title">运维部署</span> <span class="arrow down"></span></button> <button type="button" aria-label="运维部署" class="mobile-dropdown-title"><span class="title">运维部署</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/运维部署/" class="nav-link">
+  写在前面
+</a></li><li class="dropdown-item"><h4>
+          Linux
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/运维部署/Linux/狂神/Linux使用.html" class="nav-link">
+  Linux使用
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Docker部署
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/运维部署/Docker/狂神/Docker_file.html" class="nav-link">
+  DockerFile
+</a></li><li class="dropdown-subitem"><a href="/运维部署/Docker/狂神/Docker_compose.html" class="nav-link">
+  DockerCompose
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Git版本控制
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/运维部署/git/git.html" class="nav-link">
+  Git
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="下蛋公鸡🐣" class="dropdown-title"><span class="title">下蛋公鸡🐣</span> <span class="arrow down"></span></button> <button type="button" aria-label="下蛋公鸡🐣" class="mobile-dropdown-title"><span class="title">下蛋公鸡🐣</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://blog.csdn.net/qq_47913744?spm=1000.2115.3001.5343" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CSDN
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://gitee.com/yhstu" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://music.163.com/#/artist/album?id=34597186" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  我的网易云
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="mqtt入门"><a href="#mqtt入门" class="header-anchor">#</a> MQTT入门</h1> <h1 id="_1-mqtt概述"><a href="#_1-mqtt概述" class="header-anchor">#</a> 1 MQTT概述</h1> <h2 id="_1-1-mqtt简介"><a href="#_1-1-mqtt简介" class="header-anchor">#</a> 1.1 MQTT简介</h2> <p>MQTT（Message Queuing Telemetry Transport）由IBM于1999年开发的一种基于**&quot;发布订阅模式&quot;的轻量级的消息传输协议**！</p> <p>发布订阅模式是一种传统的客户端-服务器架构的<code>替代方案</code>，因为一般传统的客户端-服务器是客户端能够直接和服务器进行通信完成消息的传输。发布订阅模式会将发送消</p> <p>息的发布者publisher与接收消息的订阅者subscribers进行<code>分离</code>，publisher与subscribers 并不会直接通信，他们甚至都不清楚对方是否存在，他们之间的交流由</p> <p>第三方组件<code>broker</code>代理。</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607122.png" alt="image-20240522234104355"></p> <p>pub/sub 最重要的方面是 publisher 与 subscriber 的解藕，这种耦合度有下面二个维度：</p> <p>1、空间解耦：publisher 与 subscriber 并不知道对方的存在。</p> <p>2、时间解藕：publisher 与 subscriber 并不一定需要同时运行。</p> <p>MQTT它在<strong>物联网</strong>应用中广受欢迎，能够实现传感器、执行器和其它设备之间的高效通信。非常适用于资源受限的设备和低带宽、高延迟或不稳定的网络环境。</p> <h2 id="_1-2-mqtt特性"><a href="#_1-2-mqtt特性" class="header-anchor">#</a> 1.2 MQTT特性</h2> <p>它的主要特点包括：</p> <p>1、**轻量级：**物联网设备通常在处理能力、内存和能耗方面受到限制。<code>MQTT开销低、报文小</code>的特点使其非常适合这些设备，因为它消耗更少的资源，即使在有限的能力下也</p> <p>能实现高效的通信。</p> <p>2、**可靠：**物联网网络常常面临高延迟或连接不稳定的情况。<code>MQTT支持多种QoS等级、会话感知和持久连接</code>，即使在困难的条件下也能保证消息的可靠传递，使其非常适合</p> <p>物联网应用。</p> <p>3、**安全通信：**安全对于物联网网络至关重要，因为其经常涉及敏感数据的传输。为确保数据在传输过程中的机密性，<code>MQTT提供传输层安全（TLS）和安全套接层（SSL）</code></p> <p><code>加密功能</code>。此外，MQTT 还通过用户名/密码凭证或客户端证书提供身份验证和授权机制，以保护网络及其资源的访问。</p> <p>4、**双向通信：**MQTT的发布-订阅模式为设备之间提供了无缝的双向通信方式。<code>客户端既可以向主题发布消息，也可以订阅接收特定主题上的消息</code>，从而实现了物联网生态</p> <p>系统中的高效数据交换，而无需直接将设备耦合在一起。这种模式也简化了新设备的集成，同时保证了系统易于扩展。</p> <p>5、**语言支持：**物联网系统包含使用各种编程语言开发的设备和应用。<code>MQTT具有广泛的语言支持</code>，使其能够轻松与多个平台和技术进行集成，从而实现了物联网生态系统中</p> <p>的无缝通信和互操作性。常见编程语言的支持：PHP、Node.js、Python、Golang、Node.js、java等。</p> <h2 id="_1-3-mqtt核心概念"><a href="#_1-3-mqtt核心概念" class="header-anchor">#</a> 1.3 MQTT核心概念</h2> <blockquote><p>MQTT客户端</p></blockquote> <p>任何运行<code>MQTT客户端库[MQTT开发工具包]</code>的应用或设备都是MQTT客户端。例如使用MQTT的即时通讯应用是客户端，使用MQTT上报数据的各种传感器是客户端，各种MQTT</p> <p>测试工具也是客户端。</p> <blockquote><p>MQTT Broker</p></blockquote> <p>MQTT Broker是负责处理客户端请求的关键组件，包括建立连接、断开连接、订阅和取消订阅等操作，同时还负责消息的转发。一个高效强大的MQTT Broker能够轻松应</p> <p>对海量连接和百万级消息吞吐量，从而帮助物联网服务提供商专注于业务发展，快速构建可靠的MQTT应用。</p> <blockquote><p>主题</p></blockquote> <p>MQTT主题本质上是一个UTF-8编码的字符串，是MQTT协议进行消息路由的基础。可以理解为就是通过主题<code>对消息进行分类</code>。MQTT主题类似URL路径，使用斜杠<code>/</code>进行分</p> <p>层：</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>chat/room/1
+sensor/10/temperature
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><p>为了避免歧义且易于理解，通常不建议主题以<code>/</code>开头或结尾，例如 <code>/chat</code> 或 <code>chat/</code>。MQTT主题不需要提前创建。MQTT 客户端在订阅或发布时即自动的创建了主题，开</p> <p>发者无需再关心主题的创建，并且也不需要手动删除主题。</p> <h1 id="_2-mqtt快速入门"><a href="#_2-mqtt快速入门" class="header-anchor">#</a> 2 MQTT快速入门</h1> <h2 id="_2-1-emqx概述"><a href="#_2-1-emqx概述" class="header-anchor">#</a> 2.1 EMQX概述</h2> <p><strong>EMQX</strong>，是一款实现了MQTT协议的，开源的MQTT<code>消息代理软件</code>。MQTT定义了消息通讯的规则和流程，而EMQX则是遵循这些规则的软件，使得设备能够依据MQTT协议进行有</p> <p>效通信。在新版本的EMQX中同时支持MQTT<code>3.1.1协议和5.0协议</code>。</p> <p>官网地址：https://www.emqx.com/zh</p> <p>其他代理软件：https://www.emqx.com/en/blog/the-ultimate-guide-to-mqtt-broker-comparison</p> <h2 id="_2-2-emqx部署"><a href="#_2-2-emqx部署" class="header-anchor">#</a> 2.2 EMQX部署</h2> <p>选择EMQX企业版进行部署：https://docs.emqx.com/zh/enterprise/latest/deploy/install-docker.html</p> <p>购买火山引擎服务器，安装Docker：</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token comment"># 移除旧版本docker</span>
+<span class="token function">sudo</span> yum remove <span class="token function">docker</span> <span class="token punctuation">\</span>
+                  docker-client <span class="token punctuation">\</span>
+                  docker-client-latest <span class="token punctuation">\</span>
+                  docker-common <span class="token punctuation">\</span>
+                  docker-latest <span class="token punctuation">\</span>
+                  docker-latest-logrotate <span class="token punctuation">\</span>
+                  docker-logrotate <span class="token punctuation">\</span>
+                  docker-engine
+
+<span class="token comment"># 配置docker yum源。</span>
+<span class="token function">sudo</span> yum <span class="token function">install</span> <span class="token parameter variable">-y</span> yum-utils
+<span class="token function">sudo</span> yum-config-manager <span class="token punctuation">\</span>
+--add-repo <span class="token punctuation">\</span>
+http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+
+<span class="token comment"># 安装 最新 docker</span>
+<span class="token function">sudo</span> yum <span class="token function">install</span> <span class="token parameter variable">-y</span> docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+<span class="token comment"># 启动&amp; 开机启动docker； enable + start 二合一</span>
+systemctl <span class="token builtin class-name">enable</span> <span class="token function">docker</span> <span class="token parameter variable">--now</span>
+
+<span class="token comment"># 配置加速</span>
+<span class="token function">sudo</span> <span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /etc/docker
+<span class="token function">sudo</span> <span class="token function">tee</span> /etc/docker/daemon.json <span class="token operator">&lt;&lt;-</span><span class="token string">'EOF'
+{
+  &quot;registry-mirrors&quot;: [&quot;https://82m9ar63.mirror.aliyuncs.com&quot;]
+}
+EOF</span>
+<span class="token function">sudo</span> systemctl daemon-reload
+<span class="token function">sudo</span> systemctl restart <span class="token function">docker</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--name</span> emqx-enterprise <span class="token punctuation">\</span>
+  <span class="token parameter variable">-p</span> <span class="token number">1883</span>:1883 <span class="token parameter variable">-p</span> <span class="token number">8083</span>:8083 <span class="token punctuation">\</span>
+  <span class="token parameter variable">-p</span> <span class="token number">8084</span>:8084 <span class="token parameter variable">-p</span> <span class="token number">8883</span>:8883 <span class="token punctuation">\</span>
+  <span class="token parameter variable">-p</span> <span class="token number">18083</span>:18083 <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> emqx_data:/opt/emqx/data <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> emqx_log:/opt/emqx/log <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> emqx_etc:/opt/emqx/etc <span class="token punctuation">\</span>
+  emqx/emqx-enterprise:5.6.1
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><p>常见端口介绍：</p> <table><thead><tr><th>端口号</th> <th>说明</th></tr></thead> <tbody><tr><td>1883</td> <td>TCP端口</td></tr> <tr><td>8083</td> <td>WebSocket端口</td></tr> <tr><td>8084</td> <td>WebSocket Secure 端口</td></tr> <tr><td>8883</td> <td>SSL/TLS 端口</td></tr> <tr><td>18083</td> <td>Broker的Dashboard访问端口号</td></tr></tbody></table> <h2 id="_2-3-dashboard介绍"><a href="#_2-3-dashboard介绍" class="header-anchor">#</a> 2.3 Dashboard介绍</h2> <p>EMQX 提供了一个内置的管理控制台，即 EMQX Dashboard。方便用户通过 Web 页面就能轻松管理和监控 EMQX 集群，并配置和使用所需的各项功能。</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607123.png" alt="image-20240525100106915"></p> <p><strong>主要功能：</strong></p> <p><code>1、监控和管理EMQX中的相关信息与数据</code> ：支持查看运行中的EMQX集群的整体连接数，订阅主题数，消息收发数量和流入流出速率，还包括节点列表和节点信息和一些系</p> <p>统指标信息，同时也可以对一些客户端连接与订阅数据进行查看与管理。</p> <p><code>2、访问控制（认证与授权）管理</code> ：支持通过可视化的方式来新增和配置管理 EMQX 中的认证与授权机制。</p> <p><code>3、数据集成</code> ：使用强大的基于SQL的规则引擎和数据桥或流量编辑器的可视化功能进行低代码数据处理和集成，以帮助实时提取、过滤、丰富、转换和存储 MQTT 数据。</p> <p><code>4、在线配置热更新</code>：支持在线修改和更新包括 MQTT、日志，监听器等配置项，更新成功后即刻生效。</p> <p><strong>首次访问：</strong></p> <p>访问地址：http://localhost:18083/</p> <p>用户名和密码：<code>admin/pubic</code></p> <p>可以通过CLI的<code>admins</code>命令进行密码重置:</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>./bin/emqx ctl admins <span class="token function">passwd</span> <span class="token operator">&lt;</span>Username<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>Password<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h2 id="_2-4-emqx客户端"><a href="#_2-4-emqx客户端" class="header-anchor">#</a> 2.4 EMQX客户端</h2> <h3 id="_2-4-1-mqttx简介"><a href="#_2-4-1-mqttx简介" class="header-anchor">#</a> 2.4.1 MQTTX简介</h3> <p><strong>MQTTX</strong> 是EMQX开源的一款跨平台 MQTT 5.0 客户端工具，它支持 macOS, Linux 并且支持自定义脚本模拟测试、MQTT 消息格式转换、日志记录等多个功能。</p> <p>MQTTX 包含三种类型的工具：</p> <p>1、MQTTX Desktop：MQTTX Desktop是一款跨平台的 MQTT 桌面客户端工具。</p> <p>2、MQTTX CLI：MQTTX CLI是EMQ开源的一款 MQTT 5.0 命令行客户端工具</p> <p>3、MQTT Web：MQTTX Web是一款基于浏览器访问客户端工具。</p> <p>官网地址：https://mqttx.app/zh</p> <h3 id="_2-4-2-mqttx-desktop的使用"><a href="#_2-4-2-mqttx-desktop的使用" class="header-anchor">#</a> 2.4.2 MQTTX Desktop的使用</h3> <p>具体步骤：</p> <p>1、下载并安装MQTTX Desktop： https://mqttx.app/zh/downloads?os=windows</p> <p>2、新建链接</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607124.png" alt="image-20240525102233610"></p> <p>3、输入主题名称发送消息</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607125.png" alt="image-20240525102655977"></p> <p>4、创建新链接订阅主题</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607126.png" alt="image-20240525103152895"></p> <p>注意：</p> <p>1、发送消息的时候没有选择Retain，那么在订阅该主题之前所发送的消息不能被客户端接收到</p> <p>2、可以通过Dashboard来管理链接和订阅信息</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607127.png" alt="image-20240525103928304"></p> <h3 id="_2-2-3-mqttx-cli的使用"><a href="#_2-2-3-mqttx-cli的使用" class="header-anchor">#</a> 2.2.3 MQTTX CLI的使用</h3> <p>具体步骤：</p> <p>1、下载MQTTX CLI：https://mqttx.app/zh/downloads?os=windows</p> <p>2、建立链接订阅主题</p> <div class="language-sell line-numbers-mode"><pre class="language-text"><code>mqttx-cli-win-x64.exe sub -t 'test/1' -h 192.168.136.147 -p 1883  -v
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p><code>-t</code>：订阅主题</p> <p><code>-h</code>：服务器地址，填写对应监听器的IP地址，默认为<code>localhost</code></p> <p><code>-p</code>：服务器端口，默认为<code>1883</code></p> <p><code>-v</code>：在接收到的Payload前显示当前Topic</p> <p>3、向主题发送消息</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>mqttx-cli-win-x64.exe pub <span class="token parameter variable">-t</span> <span class="token string">'test/1'</span> <span class="token parameter variable">-q</span> <span class="token number">0</span> <span class="token parameter variable">-h</span> <span class="token number">192.168</span>.136.147 <span class="token parameter variable">-p</span> <span class="token number">1883</span> <span class="token parameter variable">-m</span> <span class="token string">&quot;from MQTTX CLI&quot;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="_2-2-4-mqttx-web的使用"><a href="#_2-2-4-mqttx-web的使用" class="header-anchor">#</a> 2.2.4 MQTTX Web的使用</h3> <p>使用 MQTTX Web 进行测试操作基本上与使用MQTTX Desktop相同。</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token function">docker</span> pull emqx/mqttx-web
+<span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--name</span> mqttx-web <span class="token parameter variable">-p</span> <span class="token number">80</span>:80 emqx/mqttx-web
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h1 id="_3-mqtt控制报文"><a href="#_3-mqtt控制报文" class="header-anchor">#</a> 3 MQTT控制报文</h1> <h2 id="_3-1-控制报文简介"><a href="#_3-1-控制报文简介" class="header-anchor">#</a> 3.1 控制报文简介</h2> <p>报文是网络中交换与传输的数据最小单元，通俗来讲就是站点一次性要发送的<code>数据块</code>。它包含了将要发送的完整数据信息，其长短不一致，长度不限且可变。MQTT 客户端</p> <p>和服务端通过交换控制报文来完成它们的工作，比如订阅主题和发布消息。</p> <h2 id="_3-2-常见的控制报文"><a href="#_3-2-常见的控制报文" class="header-anchor">#</a> 3.2 常见的控制报文</h2> <p>MQTT 目前定义了 15 种控制报文类型，如果按照功能进行分类，我们可以将这些报文分为连接、发布、订阅三个类别：</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607129.png" alt="image-20240525153700196"></p> <h2 id="_3-3-mqtt报文格式"><a href="#_3-3-mqtt报文格式" class="header-anchor">#</a> 3.3 MQTT报文格式</h2> <p>在 MQTT 中，无论是什么类型的控制报文，它们都由<strong>固定报头、可变报头和有效载荷</strong>三个部分组成。</p> <p><code>固定报头固定存在于所有控制报文中</code>，<code>而可变报头和有效载荷是否存在以及它们的内容则取决于具体的报文类型。</code>例如用于维持连接的 PINGREQ 报文就只有一个固定报</p> <p>头，用于传递应用消息的 PUBLISH 报文则完整地包含了这三个部分。</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607130.png" alt="image-20240529102926011"></p> <h3 id="_3-3-1-固定报头"><a href="#_3-3-1-固定报头" class="header-anchor">#</a> 3.3.1 固定报头</h3> <p>固定报头由报文类型、标识位和报文剩余长度三个字段组成。</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607131.png" alt="image-20240529103200978"></p> <blockquote><p>报文类型</p></blockquote> <p>占4个bit位，是一个无符号的整数</p> <p>常见的报文类型：https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901022</p> <blockquote><p>标识位</p></blockquote> <p>占4个bit位，不过到 MQTT 5.0 为止，只有 <code>PUBLISH</code> 报文的这四个比特位被赋予了明确的含义：</p> <p>1、Bit 3：DUP，表示当前 PUBLISH 报文是否是一个重传的报文。</p> <p>2、Bit 2,1：QoS，表示当前 PUBLISH 报文使用的服务质量等级。</p> <p>3、Bit 0：Retain，表示当前 PUBLISH 报文是否是一个保留消息。</p> <p>其他所有的报文中，这 4 位都仍是保留的。</p> <blockquote><p>剩余长度</p></blockquote> <p>剩余长度指示了当前控制报文剩余部分的字节数，也就是<code>可变报头和有效载荷</code>这两个部分的长度。MQTT 控制报文的总长度= 固定报头的长度 + 剩余长度。</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607132.png" alt="image-20240529104426686"></p> <h3 id="_3-3-2-可变报头"><a href="#_3-3-2-可变报头" class="header-anchor">#</a> 3.3.2 可变报头</h3> <p><code>可变报头的内容取决于具体的报文类型。</code></p> <p>举例：</p> <p>1、CONNECT 报文的可变报头按顺序包含了协议名、协议级别、连接标识、Keep Alive 和属性这五个字段</p> <p>2、PUBLISH 报文的可变报头则按顺序包含了主题名、报文标识符和属性这三个字段。</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607133.png" alt="image-20240529110540217"></p> <p>属性是 MQTT 5.0 引入的一个概念。属性字段基本上都是可变报头的最后一部分，<code>由属性长度和紧随其后的一组属性组成</code>，这里的属性长度指的是后面所有属性的总长度</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607134.png" alt="image-20240529111101494"></p> <p>所有的属性都是可选的，因为它们通常都有一个默认值，如果没有任何属性，那么属性长度的值就为0。属性通常都是为了某个专门的用途而设计的，不同的报文所支持的属</p> <p>性都是不一样的，具体的对应情况可以查看官网地址：https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901027</p> <h3 id="_3-3-3-有效载荷"><a href="#_3-3-3-有效载荷" class="header-anchor">#</a> 3.3.3 有效载荷</h3> <p>有效载荷是用于实现对应报文的核心功能。</p> <p>举例：</p> <p>1、在 PUBLISH 报文中，Payload 用于承载具体的应用消息内容，这也是 PUBLISH 报文最核心的功能。</p> <p>2、在 SUBSCRIBE 报文中，Payload 包含了想要订阅的主题以及对应的订阅选项，这也是 SUBSCRIBE 报文最主要的工作。</p> <h2 id="_3-4-报文验证"><a href="#_3-4-报文验证" class="header-anchor">#</a> 3.4 报文验证</h2> <p>接下来我们通过<strong>Wireshark</strong>工具，抓取一下各种通讯操作所涉及到的报文。</p> <p><strong>链接相关报文验证:</strong></p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607135.png" alt="image-20240529163032511"></p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607136.png" alt="image-20240529163521163"></p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607137.png" alt="image-20240529163707428"></p> <p><strong>发布相关报文:</strong></p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607138.png" alt="image-20240529164130090"></p> <p>上述发布的消息QoS的值设置为0，因此看不到发布消息的时候的其他的报文数据，如果此时把消息的QoS等级设置为1、2就可以看到发送消息的时候其他的报文：</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607139.png" alt="image-20240529164404067"></p> <p>QoS的值设置为2以后，抓取的报文数据如下所示：</p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607140.png" alt="image-20240529165107620"></p> <p><strong>订阅相关报文：</strong></p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607141.png" alt="image-20240529165811104"></p> <p><img src="https://gitee.com/yuhaostudy/blogimages/raw/master/images/20250625164607142.png" alt="image-20240529165907644"></p></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.ebaa9f51.js" defer></script><script src="/assets/js/2.8cbef0f8.js" defer></script><script src="/assets/js/46.4dc1ed9c.js" defer></script>
+  </body>
+</html>
