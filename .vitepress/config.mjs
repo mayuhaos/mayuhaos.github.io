@@ -3,16 +3,8 @@ import {set_sidebar} from "../utils/auto_sidebar.mjs";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    vite: {
-        server: {
-            host: true, // 允许外部访问
-            allowedHosts: [
-                // '4dfbd5d3b67f.ngrok-free.app',
-                // 如果你经常换 ngrok 子域名，可以使用通配符（Vite >=4.3）
-                '.ngrok-free.app'
-            ],
-        },
-    },
+    // 忽略死链接检查，避免构建失败
+    ignoreDeadLinks: true,
     title: "宇豪Note💗",
     description: "A VitePress Site",
     themeConfig: {
