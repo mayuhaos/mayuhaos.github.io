@@ -3,13 +3,19 @@ import {set_sidebar} from "../utils/auto_sidebar.mjs";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+    vite: {
+        ssr: {
+            noExternal: ['@escook/vitepress-theme', 'vitepress']
+        }
+    },
     // 忽略死链接检查，避免构建失败
     ignoreDeadLinks: true,
     title: "宇豪Note💗",
     description: "A VitePress Site",
     themeConfig: {
         head: [
-            ["link", {rel: "icon", href: "/img/img.png"}]
+            ["link", {rel: "icon", href: "/img/img.png"}],
+            ["meta", {name: "referrer-policy", content: "no-referrer"}]
         ],
         // sidebar: true, // 关闭侧边栏
         // aside: "left", // 设置右侧侧边栏在左侧显示
@@ -252,14 +258,14 @@ export default defineConfig({
                 ]
             },
             {
-                text: '杂项',link:'杂项/第一天.md'
+                text: '杂项', link: '杂项/第一天.md'
                 // items: [
                 //     {text: '上海周游计划', link: '游玩攻略篇/上海周游计划.md'},
                 //     {text: '小小华山-拿下!', link: '游玩攻略篇/小小华山-拿下!.md'},
                 // ]
             },
             {
-                text: '周记',link:'/周报/2025年10月第三周周报.md'
+                text: '周记', link: '/周报/2025年10月第三周周报.md'
                 // items: [
                 //     {text: '上海周游计划', link: '游玩攻略篇/上海周游计划.md'},
                 //     {text: '小小华山-拿下!', link: '游玩攻略篇/小小华山-拿下!.md'},

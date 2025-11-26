@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+cache
+.cache
+.temp
+*.local
+.idea
+.obsidian
+.trash
+simple_replace.js
