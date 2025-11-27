@@ -7,6 +7,7 @@ export default defineConfig({
         ssr: {
             noExternal: ['@escook/vitepress-theme', 'vitepress']
         }
+
     },
     // 忽略死链接检查，避免构建失败
     ignoreDeadLinks: true,
@@ -32,271 +33,81 @@ export default defineConfig({
             {
                 text: '关于我',
                 items: [
-                    {
-                        text: '关于网站', link: '/AboutMe/关于网站.md',
-                    },
-                    {
-                        text: '关于经历', link: '/AboutMe/关于经历/关于经历.md',
-                    },
-                    {
-                        text: '关于爱好', link: '/AboutMe/关于爱好.md',
-                    },
-                    {
-                        text: '关于她', link: '/AboutMe/关于她.md',
-                    },
+                    {text: '关于网站', link: '/AboutMe/关于网站.md'},
+                    {text: '关于经历', link: '/AboutMe/关于经历/关于经历.md'},
+                    {text: '关于爱好', link: '/AboutMe/关于爱好.md'},
+                    {text: '关于她', link: '/AboutMe/关于她.md'}
                 ]
             },
             {
-                text: 'java开发',
-                items: [{
-                    text: '入门',
-                    items: [
-                        {text: '写在前面', link: '/java后端/入门/java基础/README.md'},
-                        {text: 'javaSE基础', link: '/java后端/入门/java基础/动力节点/JavaSE进阶-01-面向对象.md'},
-                        {text: 'java网络编程', link: '/java后端/入门/java网络编程/狂神/JavaSE：网络编程.md'},
-                        {text: 'java-GUI开发', link: '/java后端/入门/javaGUI编程/狂神/javaGUI编程.md'},
-                        {text: 'JavaWeb', link: '/java后端/入门/javaWeb/黑马/01HTTP&Tomcat&Servlet.md'},
-                        {text: 'Spring', link: '/java后端/入门/Spring/狂神/Spring.md'},
-                        {text: 'SpringMVC', link: '/java后端/入门/SpringMVC/狂神/SpringMVC.md'},
-                        {text: 'SpringBoot', link: '/java后端/入门/SpringBoot/狂神/SpringBoot入门及原理.md'},
-                    ]
-                },
-                    {
-                        text: '接口文档Swagger(可作了解)',
-                        items: [
-                            {text: 'Swagger', link: '/java后端/入门/SpringBoot/狂神/Swagger.md'},
-                        ]
-                    },
-                    {
-                        text: '数据库&框架',
-                        items: [
-                            {text: 'mysql', link: '/数据库/mysql/sql-个人.md'},
-                            {text: 'JDBC驱动', link: '/java后端/java数据库框架/jdbc-黑马.md'},
-                            {text: 'mybatis框架', link: '/java后端/java数据库框架/mybatis-狂神.md'},
-                            {text: 'mybatis-plus框架', link: '/java后端/java数据库框架/mybatis-plus01-黑马.md'},
-                        ]
-                    },
-
-                    {
-                        text: '权限框架',
-                        items: [
-                            {text: '写在前面', link: '/java后端/权限框架/README.md'},
-                            {text: 'SpringSecurity', link: '/java后端/权限框架/SpringSecurity/狂神/SpringSecurity.md'},
-                            {text: 'Shiro', link: '/java后端/权限框架/Shiro/狂神/Shiro.md'},
-                        ]
-                    },
-                    {
-                        text: '进阶SpringCloud',
-                        items: [
-                            {
-                                text: '写在前面',
-                                link: '/java后端/SpringCloud/README.md'
-                            },
-                            {
-                                text: '注册中心nacos&Eureka',
-                                link: '/java后端/SpringCloud/注册中心nacos&Eureka/动力节点/nacos注册中心.md'
-                            },
-                            {text: '网关Gateway', link: '/java后端/SpringCloud/网关Gateway/动力节点/Gateway.md'},
-                            {text: '负载均衡Ribbon', link: '/java后端/SpringCloud/负载均衡Ribbon/动力节点/Ribbon.md'},
-                            {
-                                text: '熔断降级Hystrix&sentinel',
-                                link: '/java后端/SpringCloud/熔断降级Hystrix&sentinel/动力节点/Hystrix.md'
-                            },
-                            {
-                                text: '远程调用OpenFeign',
-                                link: '/java后端/SpringCloud/远程调用OpenFeign/动力节点/OpenFeign.md'
-                            },
-                            {text: '链路追踪sleuth', link: '/java后端/SpringCloud/链路追踪sleuth/动力节点/Sleuth.md'},
-                            {
-                                text: '分布式搜索ElasticSerach',
-                                link: '/java后端/SpringCloud/分布式搜索ElasticSerach/狂神/ElasticSearch.md'
-                            },
-                            {text: '消息队列RabbitMQ', link: '/java后端/SpringCloud/消息队列RabbitMQ/飞哥/RabbitMQ.md'},
-                        ]
-                    },
-                    {
-                        text: '消息通信协议MQTT',
-                        items: [
-                            {text: 'MQTT入门', link: '/java后端/mqtt/第一章【MQTT入门】.md'},
-                            {text: 'MQTT进阶', link: '/java后端/mqtt/第二章【MQTT进阶】.md'},
-                            {text: 'MQTT Dashboard', link: '/java后端/mqtt/第三章【MQTT Dashboard】.md'},
-                            {text: 'MQTT SDK以及实战', link: '/java后端/mqtt/第四章【MQTT SDK以及实战】.md'},
-                        ]
-                    },
-                    {
-                        text: '高级',
-                        items: [
-                            {text: '写在前面', link: '/java后端/高级/README.md'},
-                            {text: 'jvm内存', link: '/java后端/高级/jvm/黑马/引言.md'},
-                            {text: 'juc并发编程', link: '/java后端/高级/juc/黑马/01并发编程.md'},
-                        ]
-                    },
+                text: '技术开发',
+                items: [
+                    {text: 'Java后端', link: '/java后端/入门/java基础/README.md'},
+                    {text: '前端开发', link: '/前端/基础/HTML/黑马/HTML标签.md'},
+                    {text: '数据库', link: '/数据库/mysql/MySQL-基础篇-黑马.md'},
+                    {text: '大数据', link: '/bigdata/hbase/hbase.md'},
                 ]
             },
-            {
-                text: '前端开发',
-                items: [
-                    {
-                        text: '写在前面',
-                        link: '/前端/README.md',
-                    },
-                    {
-                        text: '基础-(前端三件套)',
-                        items: [
-                            {text: 'HTML', link: '/前端/基础/HTML/黑马/HTML标签.md'},
-                            {text: 'CSS', link: '/前端/基础/CSS/黑马/01-CSS.md'},
-                            {text: 'JavaScript', link: '/前端/基础/JavaScript/黑马/'},
-                            {text: 'jQuery', link: '/前端/基础/jQuery/黑马/01-jQuery常用API.md'},
-                            {text: '移动端开发', link: '/前端/基础/CSS/移动端/02_HTML5.md'},
-                        ]
-                    },
-                    {
-                        text: '入门',
-                        items: [
-                            {text: '入门串讲', link: '/前端/入门/入门串讲/狂神/大前端串讲.md'},
-                            {text: 'Vue框架', link: '/前端/入门/Vue/狂神/Vue精讲.md'},
-                        ]
-                    },
-                ]
-            },
-            /*{
-                text: 'python开发',
-                items: [
-                    {
-                        text: '写在前面',
-                        link: '/python/README.md',
-
-                    },
-                    {
-                        text: '入门',
-                        items: [
-                            {text: 'python基础', link: '/python/python_base'},
-                        ]
-                    },
-                    {
-                        text: 'odoo框架', items: [
-                            {text: '快速入门', link: '/odoo/odoo_base/guide'},
-                            {text: '核心开发', link: '/odoo/odoo_core/orm.md'},
-                            {text: '报表', link: '/odoo/odoo_core/report.md'},
-                            {text: '挂件', link: '/odoo/pendant.md'},
-                        ]
-                    },
-                ]
-            },*/
-            {
-                text: '大数据',
-                items: [
-                    {text: '写在前面', link: '/bigdata/README.md'},
-                    {text: 'Hbase', link: '/bigdata/hbase/hbase'},
-                    // {text: 'Hadoop', link: '/bigdata/hadoop/hadoop'}
-                ]
-            },
-            {
-                text: '数据库',
-                items: [
-                    {
-                        text: '写在前面', link: '/数据库/README.md',
-
-                    },
-                    {
-                        text: 'mySQL', items: [
-                            {text: '入门到进阶', link: '/数据库/mysql/sql-个人.md'},
-                        ]
-                    },
-                    {
-                        text: 'redis', items: [
-                            {text: '入门到进阶', link: '/数据库/redis/Redis-狂神.md'},
-                        ]
-                    },
-                    {
-                        text: 'Hbase', items: [
-                            {text: '入门到进阶', link: '/数据库/Hbase/尚硅谷/Hbase.md'},
-                        ]
-                    },
-                ]
-            },
-
             {
                 text: '运维部署',
                 items: [
                     {
-                        text: '写在前面', link: '/运维部署/README.md',
-
-                    },
-                    {
-                        text: 'Linux', items: [
+                        text: 'Linux系统',
+                        items: [
                             {text: 'Linux使用', link: '/运维部署/Linux/狂神/Linux使用.md'},
+                            {text: 'Ubuntu任务管理', link: '/Linux/Ubuntu linux系统的周期性任务管理和日志管理体系.md'},
                         ]
                     },
                     {
-                        text: 'Docker部署', items: [
-                            {text: 'DockerFile', link: '/运维部署/Docker知识/狂神/Docker_file.md'},
-                            {text: 'DockerCompose', link: '/运维部署/Docker知识/狂神/Docker_compose.md'},
+                        text: 'Docker容器',
+                        items: [
+                            {text: 'Docker知识', link: '/运维部署/Docker知识/狂神/Docker_file.md'},
+                            {text: 'Docker部署', link: '/运维部署/Docker部署/README.md'},
                         ]
                     },
                     {
-                        text: 'Git版本控制', items: [
-                            {text: 'Git', link: '/运维部署/git/git.md'},
+                        text: 'Git版本控制',
+                        items: [
+                            {text: 'Git使用', link: '/运维部署/git/git.md'},
+                        ]
+                    },
+                    {
+                        text: '分库分表',
+                        items: [
+                            {text: 'ShardingSphere', link: '/运维部署/分库分表/ShardingSphere5.md'},
                         ]
                     },
                 ]
             },
-
             {
-                text: '资源安装',
+                text: '实用工具',
                 items: [
-                    {text: 'StudioOne7安装教程', link: '资源安装/StudioOne7音频分离安装教程.md'},
-                    {text: 'cubase教程.md', link: '资源安装/win安装cubase教程.md'},
-                    {text: 'win安装studio one7最新教程', link: '资源安装/win安装studio one 7 最新教程.md'},
+                    {text: '软件安装', link: '/资源安装/StudioOne7音频分离安装教程.md'},
                 ]
             },
             {
-                text: '游玩攻略篇',
+                text: '生活记录',
                 items: [
-                    {text: '上海周游计划', link: '游玩攻略篇/上海周游计划.md'},
-                    {text: '小小华山-拿下!', link: '游玩攻略篇/小小华山-拿下!.md'},
+                    {text: '周报记录', link: '/周报/2025年10月第三周周报.md'},
+                    {text: '旅游攻略', link: '/游玩攻略篇/上海周游计划.md'},
+                    {text: '个人杂记', link: '/杂项/第一天.md'},
                 ]
             },
-            {
-                text: '杂项', link: '杂项/第一天.md'
-                // items: [
-                //     {text: '上海周游计划', link: '游玩攻略篇/上海周游计划.md'},
-                //     {text: '小小华山-拿下!', link: '游玩攻略篇/小小华山-拿下!.md'},
-                // ]
-            },
-            {
-                text: '周记', link: '/周报/2025年10月第三周周报.md'
-                // items: [
-                //     {text: '上海周游计划', link: '游玩攻略篇/上海周游计划.md'},
-                //     {text: '小小华山-拿下!', link: '游玩攻略篇/小小华山-拿下!.md'},
-                // ]
-            },
-
         ],
 
         // 侧边栏配置,侧边栏组，不同（导航）页面对应不同的侧边栏
         // 以对象形式配置，前边的key为nav处的路径,后边提供一个数组作为此侧边栏中的子标题
         sidebar: {
             "/AboutMe/": set_sidebar("/AboutMe/"),
-            "/java后端/入门/": set_sidebar("/java后端/入门/"),
-            "/java后端/SpringCloud/": set_sidebar("/java后端/SpringCloud/"),
-            "/java后端/高级": set_sidebar("/java后端/高级"),
-            "/java后端/权限框架": set_sidebar("/java后端/权限框架"),
-            "/java后端/java数据库框架": set_sidebar("/java后端/java数据库框架"),
-            "/前端/基础/": set_sidebar("/前端/基础/"),
-            "/前端/入门": set_sidebar("/前端/入门"),
+            "/java后端/": set_sidebar("/java后端/"),
+            "/前端/": set_sidebar("/前端/"),
+            "/数据库/": set_sidebar("/数据库/"),
+            "/bigdata/": set_sidebar("/bigdata/"),
             "/运维部署/": set_sidebar("/运维部署/"),
-            "/数据库/mysql/sql-个人": set_sidebar("/数据库/mysql/"),
-            "/数据库/mysql/": set_sidebar("/数据库/mysql/"),
-            "/数据库/redis/": set_sidebar("/数据库/redis/"),
-            "/数据库/Hbase/": set_sidebar("/数据库/Hbase/"),
-            // "/git/": set_sidebar("/git/"),
-            "/bigdata/hbase/": set_sidebar("/bigdata/hbase/"),
-            "/bigdata/hadoop/": set_sidebar("/bigdata/hadoop/"),
-            "资源安装": set_sidebar("资源安装"),
-            "游玩攻略篇": set_sidebar("游玩攻略篇"),
-            "杂项": set_sidebar("杂项"),
-            "周报": set_sidebar("周报"),
+            "/资源安装/": set_sidebar("/资源安装/"),
+            "/周报/": set_sidebar("/周报/"),
+            "/游玩攻略篇/": set_sidebar("/游玩攻略篇/"),
+            "/杂项/": set_sidebar("/杂项/"),
         },
 
         socialLinks: [
