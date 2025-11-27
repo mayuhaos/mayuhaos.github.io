@@ -62,7 +62,7 @@ export default defineConfig({
                         text: 'Docker容器',
                         items: [
                             {text: 'Docker知识', link: '/运维部署/Docker知识/狂神/Docker_file.md'},
-                            {text: 'Docker部署', link: '/运维部署/Docker部署/README.md'},
+                            {text: 'Docker部署', link: '/运维部署/Docker部署/docker安装minio.md'},
                         ]
                     },
                     {
@@ -75,6 +75,12 @@ export default defineConfig({
                         text: '分库分表',
                         items: [
                             {text: 'ShardingSphere', link: '/运维部署/分库分表/ShardingSphere5.md'},
+                        ]
+                    },
+                    {
+                        text: '我的毕设',
+                        items: [
+                            {text: '我的毕设', link: '/运维部署/我的毕设/版本控制.md'},
                         ]
                     },
                 ]

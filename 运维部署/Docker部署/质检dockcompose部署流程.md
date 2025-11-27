@@ -61,7 +61,7 @@ docker save -o all-zhijian-images.tar \
 docker save -o all-zhijian-images.tar  openjdk:17.0.2-jdk  chromadb/chroma:1.3.3  mysql:8.0.33  redis:8.2.3 xuxueli/xxl-job-admin:3.2.0  minio/minio:RELEASE.2023-03-20T20-16-18Z  nginx:1.24.0 
 ```
 
-![image.png](https://raw.githubusercontent.com/mayuhaos/blog-images/main/hj-images/20251127101013406.png)
+![image.png](https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@main/hj-images/20251127101013406.png)
 
 ### 4. 传输镜像文件到内网服务器
 
@@ -179,7 +179,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 三个配置文件内容保持不变，放在`/data/app/zhijian/backend/config/`目录）
 
-![image.png](https://raw.githubusercontent.com/mayuhaos/blog-images/main/hj-images/20251127112319686.png)
+![image.png](https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@main/hj-images/20251127112319686.png)
 
 ## 🐳 创建 Docker Compose
 
@@ -721,8 +721,8 @@ OS can't spawn worker thread: Operation not permitted (os error 1) chromadb-1 | 
 
 ### 版本不兼容
 
-![image.png](https://raw.githubusercontent.com/mayuhaos/blog-images/main/hj-images/20251127135725149.png)
-![image.png](https://raw.githubusercontent.com/mayuhaos/blog-images/main/hj-images/20251127135916030.png)
+![image.png](https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@main/hj-images/20251127135725149.png)
+![image.png](https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@main/hj-images/20251127135916030.png)
 
 降级处理
 
