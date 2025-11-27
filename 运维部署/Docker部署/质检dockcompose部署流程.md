@@ -100,11 +100,8 @@ docker images
 ├── backend/
 │   ├── Dockerfile
 │   ├── app.jar
-│   ├── config/
-│   │   └── application.yml
-│   └── entrypoint.sh
+│ 
 ├── frontend/
-│   ├── Dockerfile
 │   └── dist/                    # 前端构建文件
 │       ├── index.html
 │       ├── css/
@@ -134,7 +131,7 @@ FROM openjdk:17.0.2-jdk
 LABEL maintainer="zhijian-team"
 LABEL version="1.0.0"
 
-ENV SPRING_PROFILES_ACTIVE=prod
+ENV SPRING_PROFILES_ACTIVE=dev
 ENV JAVA_OPTS="-Xmx512m -Xms256m"
 ENV TZ=Asia/Shanghai
 
@@ -143,12 +140,10 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 WORKDIR /app
 
 COPY app.jar app.jar
-COPY config/ ./config/
 
 RUN chown -R appuser:appuser /app && \
     chmod -R 755 config/
 
-USER appuser
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:10023/actuator/health || exit 1
@@ -158,24 +153,7 @@ EXPOSE 10023
 CMD ["sh", "-c", "java $JAVA_OPTS -jar app.jar --spring.config.location=file:./config/"]
 ```
 
-### 2.创建前端 Dockerfile
-
-```dockerfile
-FROM nginx:1.24.0
-
-LABEL maintainer="zhijian-team"
-LABEL version="1.0.0"
-
-COPY dist/ /usr/share/nginx/html/
-
-RUN chmod -R 755 /usr/share/nginx/html
-
-EXPOSE 10022
-
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-### 3.创建配置文件
+### 创建配置文件
 
 三个配置文件内容保持不变，放在`/data/app/zhijian/backend/config/`目录）
 
@@ -319,11 +297,6 @@ cd backend
 docker build -t zhijian-backend:latest .
 cd ..
 
-echo "构建前端镜像..."
-cd frontend  
-docker build -t zhijian-frontend:latest .
-cd ..
-
 echo "3. 启动所有服务..."
 docker-compose up -d
 
@@ -444,25 +417,7 @@ echo "前端更新完成！"
 echo "========================================="
 ```
 
-### 后续更新：
-
-```bash
-# 方法1：交互式更新（推荐）
-cd /data/app/zhijian
-./scripts/update-backend.sh
-# 然后根据提示输入新JAR包的文件名
-
-# 方法2：简化更新（自动查找）
-# 上传新JAR包（任意名称）到 backend/ 目录
-cp quality-inspection-back-end-2.0.jar /data/app/zhijian/backend/
-cd /data/app/zhijian
-./scripts/update-backend-simple.sh
-
-# 查看版本信息
-./scripts/backend-version.sh
-```
-
-## 🚀 第七步：放置应用文件并部署
+## 🚀 放置应用文件并部署
 
 ```bash
 # 1. 放置后端JAR包
@@ -481,7 +436,7 @@ cd /data/app/zhijian
 ./scripts/init.sh
 ```
 
-## ✅ 第八步：验证部署
+## ✅ 验证部署
 
 ```bash
 # 检查所有服务状态
@@ -489,9 +444,6 @@ docker-compose ps
 
 # 检查构建的应用镜像
 docker images | grep zhijian
-
-# 测试服务访问
-curl http://localhost/health
 
 # 查看详细日志
 docker-compose logs -f
@@ -516,28 +468,6 @@ docker-compose ps
 docker-compose logs -f backend
 ```
 
-## 🚀 部署命令
-
-```bash
-# 1. 进入项目目录
-cd /myapp
-
-# 2. 加载所有镜像（如果还没加载）
-docker load -i images/my-java-app.tar
-docker load -i images/mysql-8.0.tar
-docker load -i images/redis-latest.tar
-docker load -i images/nginx-latest.tar
-docker load -i images/frontend-app.tar
-
-# 3. 启动所有服务
-docker-compose up -d
-
-# 4. 查看服务状态
-docker-compose ps
-
-# 5. 查看日志
-docker-compose logs -f
-```
 
 ### 一键重启脚本
 
@@ -566,32 +496,6 @@ echo "系统重启完成！"
 echo "========================================="
 ```
 
-### 服务状态检查脚本
-
-(`/data/app/zhijian/scripts/status.sh`)
-
-```bash
-#!/bin/bash
-echo "========================================="
-echo "知检系统状态检查"
-echo "========================================="
-
-echo "1. 容器状态："
-docker-compose ps
-
-echo ""
-echo "2. 服务健康检查："
-echo "后端服务:"
-curl -f http://localhost/api/actuator/health >/dev/null 2>&1 && echo "✅ 后端服务正常" || echo "❌ 后端服务异常"
-
-echo ""
-echo "3. 资源使用情况："
-docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}" | head -10
-
-echo ""
-echo "4. 最近日志："
-docker-compose logs --tail=5
-```
 
 ## 完整部署流程
 
@@ -657,33 +561,6 @@ docker-compose logs -f backend
 docker-compose exec backend sh
 ```
 
-## 💡 优势总结
-
-1. **干净**：只迁移镜像，不包含容器状态
-
-2. **灵活**：可以在内网服务器上重新创建任意容器
-
-3. **版本控制**：清晰的镜像标签管理
-
-4. **可重复**：相同的镜像在不同环境表现一致
-
-5. **易于维护**：可以单独更新某个服务的镜像
-
-这样部署既干净又可靠！
-
-```## 📊 最终端口映射表
-
-|服务|容器内部端口|宿主机端口|访问方式|
-|---|---|---|---|
-|MySQL|3306|3307|宿主机IP:3307|
-|Redis|6379|6389|宿主机IP:6389|
-|ChromaDB|8000|8000|宿主机IP:8000|
-|MinIO API|9000|9000|宿主机IP:9000|
-|MinIO Console|9001|9001|宿主机IP:9001|
-|XXL-Job|8080|9888|宿主机IP:9888|
-|后端服务|10023|10023|宿主机IP:10023|
-|Nginx|80|8088|宿主机IP:8088|
-```
 
 # 或者使用命令模式
 
@@ -930,13 +807,22 @@ commit;
 
 ## 服务器信息
 
-| 实例      | 用户名   | 密码                     |                                                   |
-|---------|-------|------------------------|---------------------------------------------------|
-| xxl-job | admin | xxljob@Hangju@2025     |                                                   |
-| mysql   | model | Hangju@2025            | ENC(wTZloX7zmh3WC4pwqfcBhbx/wU4Liugm07/fZHxoZRc=) |
-|         | root  | Hangju@2025@root       |                                                   |
-| redis   |       | Redis@Hangju@2025      |                                                   |
-| minio   |       | minioadmin@Hangju@2025 |                                                   |
-|         |       |                        |                                                   |
+
 
 docker build -t zhijian-backend:latest .
+
+### 📋 完整服务信息汇总表（含 Web 地址）
+
+| 服务名称         | 用户名              | 密码                                 | 容器端口 → 主机端口                            | Web 访问地址（通过你的域名）                                                           | 用途说明                      |
+|--------------|------------------|------------------------------------|----------------------------------------|----------------------------------------------------------------------------|---------------------------|
+| **MySQL**    | `root` / `model` | `Hangju@2025@root` / `Hangju@2025` | `3306` → `3307`                        | ❌ 不直接对外提供 Web 访问                                                           | 数据库服务，供后端和 XXL-Job 使用     |
+| **Redis**    | （无用户名）           | `Redis@Hangju@2025`                | `6379` → `6389`                        | ❌ 无 Web 界面                                                                 | 缓存服务                      |
+| **ChromaDB** | （无认证）            | （无密码）                              | `8000` → `8000`                        | http://mxdemo1.qunl.com:8000                                               | 向量数据库，提供 Embedding 存储与检索  |
+| **MinIO**    | `minioadmin`     | `minioadmin@Hangju@2025`           | `9000` → `19000`  <br>`9001` → `19001` | API: http://mxdemo1.qunl.com:19000  <br>控制台: http://mxdemo1.qunl.com:19001 | 对象存储服务，用于文件/模型存储          |
+| **XXL-Job**  | Web 默认：`admin`   | Web 默认：`123456`                    | `8080` → `9888`                        | http://mxdemo1.qunl.com:9888                                               | 分布式任务调度平台（首次登录需用默认账号）     |
+| **Backend**  | （由应用逻辑控制）        | （如 JWT、OAuth 等）                    | `10023` → `10023`                      | http://mxdemo1.qunl.com:10023                                              | 后端 API 服务（Spring Boot 应用） |
+| **Nginx**    | （无认证）            | （无密码）                              | `80` → `10022`                         | http://mxdemo1.qunl.com:10022                                              | 前端静态资源托管 + 可能的反向代理入口      |
+
+---
+
+### 🌐 补充说明
