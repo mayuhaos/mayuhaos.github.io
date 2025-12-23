@@ -61,7 +61,7 @@ docker save -o all-zhijian-images.tar \
 docker save -o all-zhijian-images.tar  openjdk:17.0.2-jdk  chromadb/chroma:1.3.3  mysql:8.0.33  redis:8.2.3 xuxueli/xxl-job-admin:3.2.0  minio/minio:RELEASE.2023-03-20T20-16-18Z  nginx:1.24.0 
 ```
 
-![image.png](https://raw.githubusercontent.com/mayuhaos/blog-images/main/hj-images/20251127101013406.png)
+![image.png](https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@main/hj-images/20251127101013406.png)
 
 ### 4. 传输镜像文件到内网服务器
 
@@ -100,11 +100,8 @@ docker images
 ├── backend/
 │   ├── Dockerfile
 │   ├── app.jar
-│   ├── config/
-│   │   └── application.yml
-│   └── entrypoint.sh
+│ 
 ├── frontend/
-│   ├── Dockerfile
 │   └── dist/                    # 前端构建文件
 │       ├── index.html
 │       ├── css/
@@ -134,7 +131,8 @@ FROM openjdk:17.0.2-jdk
 LABEL maintainer="zhijian-team"
 LABEL version="1.0.0"
 
-ENV SPRING_PROFILES_ACTIVE=prod
+# 环境变量 - 默认使用 dev 环境
+ENV SPRING_PROFILES_ACTIVE=dev
 ENV JAVA_OPTS="-Xmx512m -Xms256m"
 ENV TZ=Asia/Shanghai
 
@@ -142,128 +140,164 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 
-COPY app.jar app.jar
-COPY config/ ./config/
+COPY quality-inspection-back-end-1.0.jar app.jar
 
-RUN chown -R appuser:appuser /app && \
-    chmod -R 755 config/
-
-USER appuser
-
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:10023/actuator/health || exit 1
+# 创建日志目录和软链接
+RUN mkdir -p /tmp/logs && \
+    mkdir -p /data/app && \
+    ln -sf /tmp/logs /data/app/logs && \
+    chown -R appuser:appuser /app /tmp/logs /data/app
 
 EXPOSE 10023
 
+# 直接运行 JAR，使用环境变量控制激活的配置文件
+CMD ["sh", "-c", "java $JAVA_OPTS -jar app.jar --spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
+
+#如果使用了配置文件则替换以下：
 CMD ["sh", "-c", "java $JAVA_OPTS -jar app.jar --spring.config.location=file:./config/"]
 ```
 
-### 2.创建前端 Dockerfile
-
-```dockerfile
-FROM nginx:1.24.0
-
-LABEL maintainer="zhijian-team"
-LABEL version="1.0.0"
-
-COPY dist/ /usr/share/nginx/html/
-
-RUN chmod -R 755 /usr/share/nginx/html
-
-EXPOSE 10022
-
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-### 3.创建配置文件
+### 创建配置文件（可选-目前没用到）
 
 三个配置文件内容保持不变，放在`/data/app/zhijian/backend/config/`目录）
 
-![image.png](https://raw.githubusercontent.com/mayuhaos/blog-images/main/hj-images/20251127112319686.png)
+![image.png](https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@main/hj-images/20251127112319686.png)
 
 ## 🐳 创建 Docker Compose
 
 ```yml
-version: '3.8'
-
 services:
   mysql:
-    image: mysql:8.0
-    container_name: app-mysql
-    restart: unless-stopped
+    image: mysql:8.0.33
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword123
-      MYSQL_DATABASE: app_db
-      MYSQL_USER: app_user
-      MYSQL_PASSWORD: userpassword123
+      MYSQL_ROOT_PASSWORD: Hangju@2025@root
+      MYSQL_DATABASE: model_check
+      MYSQL_USER: model
+      MYSQL_PASSWORD: Hangju@2025
+    ports:
+      - "3307:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql  # MySQL日志
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --log-error=/var/log/mysql/mysql-error.log
+      - --slow-query-log-file=/var/log/mysql/mysql-slow.log
+      - --general-log-file=/var/log/mysql/mysql-general.log
     networks:
-      - app-network
-    ports:
-      - "3306:3306"
+      - zhijian-network
 
   redis:
-    image: redis:latest
-    container_name: app-redis
-    restart: unless-stopped
+    image: redis:8.2.3
+    restart: always
+    ports:
+      - "6389:6379"
     volumes:
       - ./data/redis:/data
+      - ./logs/redis:/var/log/redis  # Redis日志
+    command: redis-server  --appendonly yes  --requirepass "Redis@Hangju@2025"
+     # === 新增以下两行 ===
+    privileged: true
+    security_opt:
+      - seccomp=unconfined
+      - apparmor=unconfined
+    # ==================
     networks:
-      - app-network
-    ports:
-      - "6379:6379"
+      - zhijian-network
 
+  chromadb:
+    image: chromadb/chroma:1.3.3
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+      - IS_PERSISTENT=TRUE
+      - RUST_BACKTRACE=1  # 启用 Rust 回溯
+    volumes:
+      - ./data/chroma:/data
+    # 关键：添加特权和安全策略放宽
+    privileged: true
+    security_opt:
+      - seccomp=unconfined
+      - apparmor=unconfined
+    networks:
+      - zhijian-network
+
+  minio:
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    restart: always
+    ports:
+      - "19000:9000"
+      - "19001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin@Hangju@2025
+    volumes:
+      - ./data/minio:/data
+      - ./logs/minio:/var/log/minio  # MinIO日志
+    command: server /data --console-address ":9001" --quiet
+    networks:
+      - zhijian-network
+
+  xxl-job:
+    image: xuxueli/xxl-job-admin:3.2.0
+    restart: always
+    ports:
+      - "9888:8080"
+    environment:
+      PARAMS: --spring.datasource.url=jdbc:mysql://mysql:3306/model_check?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai --spring.datasource.username=model --spring.datasource.password=Hangju@2025 --logging.file.path=/app/logs
+    volumes:
+      - ./logs/xxl-job:/app/logs  # XXL-Job日志
+    depends_on:
+      - mysql
+    privileged: true  # 增加特权模式
+    networks:
+      - zhijian-network
+      
   backend:
-    image: my-java-app:v1.0
-    container_name: app-backend
-    restart: unless-stopped
+    image: zhijian-backend:latest
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "10023:10023"
+    volumes:
+      - ./logs/backend:/tmp/logs  # 后端日志
     depends_on:
       - mysql
       - redis
+      - chromadb
+      - xxl-job
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/app_db?useSSL=false
-      SPRING_DATASOURCE_USERNAME: app_user
-      SPRING_DATASOURCE_PASSWORD: userpassword123
-      SPRING_REDIS_HOST: redis
+      SPRING_PROFILES_ACTIVE: dev,db
+      JAVA_OPTS: "-Xmx1024m -Xms512m"
     networks:
-      - app-network
-    # 注意：后端端口不需要暴露给宿主机，只在 Docker 网络内访问
-
-  frontend:
-    image: frontend-app:latest
-    container_name: app-frontend
-    restart: unless-stopped
-    depends_on:
-      - backend
-    networks:
-      - app-network
-    # 前端也不需要直接暴露端口，通过 Nginx 访问
+      - zhijian-network
 
   nginx:
-    image: nginx:latest
-    container_name: app-nginx
-    restart: unless-stopped
-    depends_on:
-      - backend
-      - frontend
+    image: nginx:1.24.0
+    restart: always
     ports:
-      - "80:80"
-      - "443:443"  # 如果需要 HTTPS
+      - "10022:80"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      # 如果前端是静态文件，可以挂载目录而不是用镜像
-      # - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./logs/nginx:/var/log/nginx  # 网关Nginx日志
+      - ./frontend/dist:/usr/share/nginx/html:ro  # 直接挂载前端dist目录
+    depends_on:
+      - xxl-job
+      - minio
     networks:
-      - app-network
+      - zhijian-network
 
 networks:
-  app-network:
+  zhijian-network:
     driver: bridge
-
-volumes:
-  mysql_data:
-  redis_data:
 ```
 
 ## 🔧 Nginx 配置
@@ -271,32 +305,66 @@ volumes:
 创建`nginx/conf.d/default.conf`：
 
 ```bash
+upstream zhijianApi {
+    server backend:10023;
+}
+
+upstream zhijianBackend {
+    server backend:10023;
+}
+upstream xxlJobAdmin {
+    server backend:9888;
+}
+
+
+
 server {
     listen 80;
-    server_name localhost;
+    index index.html;
+    
+    # 前端静态文件目录
+    root /usr/share/nginx/html;
 
-    # 前端静态文件服务
     location / {
-        proxy_pass http://frontend:80;  # 指向前端容器
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        try_files $uri $uri/ =404;
+        index index.html;
+        proxy_redirect off;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                client_max_body_size 512m;
+            proxy_connect_timeout 200;
+                proxy_send_timeout 200;
+                proxy_read_timeout 200;
+    }
+    # 处理XXL-Job的静态资源
+    location ~ ^/xxl-job-admin/static/ {
+        proxy_pass http://xxlJobAdmin;
+        expires 30d;
     }
 
-    # 后端 API 代理
-    location /api/ {
-        proxy_pass http://backend:8080/;  # 指向后端容器
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    location ~ \.(gif|jpg|jpeg|png|bmp|swf|js|css|html)$ {
+        expires      30d;
     }
 
-    # 静态资源缓存
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
+    location /doc {
+	root /;
     }
+
+    location /api {
+        proxy_pass http://zhijianApi;
+        proxy_buffering off;
+        proxy_cache off;
+        chunked_transfer_encoding on;
+	#proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	client_max_body_size 512m;
+    }
+    location /xxl-job-admin/ {
+        proxy_pass http://xxlJobAdmin/xxl-job-admin/;
+    }
+  
 }
+
 ```
 
 ### 创建部署脚本
@@ -317,11 +385,6 @@ echo "2. 构建应用镜像..."
 echo "构建后端镜像..."
 cd backend
 docker build -t zhijian-backend:latest .
-cd ..
-
-echo "构建前端镜像..."
-cd frontend  
-docker build -t zhijian-frontend:latest .
 cd ..
 
 echo "3. 启动所有服务..."
@@ -444,25 +507,7 @@ echo "前端更新完成！"
 echo "========================================="
 ```
 
-### 后续更新：
-
-```bash
-# 方法1：交互式更新（推荐）
-cd /data/app/zhijian
-./scripts/update-backend.sh
-# 然后根据提示输入新JAR包的文件名
-
-# 方法2：简化更新（自动查找）
-# 上传新JAR包（任意名称）到 backend/ 目录
-cp quality-inspection-back-end-2.0.jar /data/app/zhijian/backend/
-cd /data/app/zhijian
-./scripts/update-backend-simple.sh
-
-# 查看版本信息
-./scripts/backend-version.sh
-```
-
-## 🚀 第七步：放置应用文件并部署
+## 🚀 放置应用文件并部署
 
 ```bash
 # 1. 放置后端JAR包
@@ -481,7 +526,7 @@ cd /data/app/zhijian
 ./scripts/init.sh
 ```
 
-## ✅ 第八步：验证部署
+## ✅ 验证部署
 
 ```bash
 # 检查所有服务状态
@@ -489,9 +534,6 @@ docker-compose ps
 
 # 检查构建的应用镜像
 docker images | grep zhijian
-
-# 测试服务访问
-curl http://localhost/health
 
 # 查看详细日志
 docker-compose logs -f
@@ -516,28 +558,6 @@ docker-compose ps
 docker-compose logs -f backend
 ```
 
-## 🚀 部署命令
-
-```bash
-# 1. 进入项目目录
-cd /myapp
-
-# 2. 加载所有镜像（如果还没加载）
-docker load -i images/my-java-app.tar
-docker load -i images/mysql-8.0.tar
-docker load -i images/redis-latest.tar
-docker load -i images/nginx-latest.tar
-docker load -i images/frontend-app.tar
-
-# 3. 启动所有服务
-docker-compose up -d
-
-# 4. 查看服务状态
-docker-compose ps
-
-# 5. 查看日志
-docker-compose logs -f
-```
 
 ### 一键重启脚本
 
@@ -566,32 +586,6 @@ echo "系统重启完成！"
 echo "========================================="
 ```
 
-### 服务状态检查脚本
-
-(`/data/app/zhijian/scripts/status.sh`)
-
-```bash
-#!/bin/bash
-echo "========================================="
-echo "知检系统状态检查"
-echo "========================================="
-
-echo "1. 容器状态："
-docker-compose ps
-
-echo ""
-echo "2. 服务健康检查："
-echo "后端服务:"
-curl -f http://localhost/api/actuator/health >/dev/null 2>&1 && echo "✅ 后端服务正常" || echo "❌ 后端服务异常"
-
-echo ""
-echo "3. 资源使用情况："
-docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}" | head -10
-
-echo ""
-echo "4. 最近日志："
-docker-compose logs --tail=5
-```
 
 ## 完整部署流程
 
@@ -657,33 +651,6 @@ docker-compose logs -f backend
 docker-compose exec backend sh
 ```
 
-## 💡 优势总结
-
-1. **干净**：只迁移镜像，不包含容器状态
-
-2. **灵活**：可以在内网服务器上重新创建任意容器
-
-3. **版本控制**：清晰的镜像标签管理
-
-4. **可重复**：相同的镜像在不同环境表现一致
-
-5. **易于维护**：可以单独更新某个服务的镜像
-
-这样部署既干净又可靠！
-
-```## 📊 最终端口映射表
-
-|服务|容器内部端口|宿主机端口|访问方式|
-|---|---|---|---|
-|MySQL|3306|3307|宿主机IP:3307|
-|Redis|6379|6389|宿主机IP:6389|
-|ChromaDB|8000|8000|宿主机IP:8000|
-|MinIO API|9000|9000|宿主机IP:9000|
-|MinIO Console|9001|9001|宿主机IP:9001|
-|XXL-Job|8080|9888|宿主机IP:9888|
-|后端服务|10023|10023|宿主机IP:10023|
-|Nginx|80|8088|宿主机IP:8088|
-```
 
 # 或者使用命令模式
 
@@ -721,8 +688,8 @@ OS can't spawn worker thread: Operation not permitted (os error 1) chromadb-1 | 
 
 ### 版本不兼容
 
-![image.png](https://raw.githubusercontent.com/mayuhaos/blog-images/main/hj-images/20251127135725149.png)
-![image.png](https://raw.githubusercontent.com/mayuhaos/blog-images/main/hj-images/20251127135916030.png)
+![image.png](https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@main/hj-images/20251127135725149.png)
+![image.png](https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@main/hj-images/20251127135916030.png)
 
 降级处理
 
@@ -930,13 +897,20 @@ commit;
 
 ## 服务器信息
 
-| 实例      | 用户名   | 密码                     |                                                   |
-|---------|-------|------------------------|---------------------------------------------------|
-| xxl-job | admin | xxljob@Hangju@2025     |                                                   |
-| mysql   | model | Hangju@2025            | ENC(wTZloX7zmh3WC4pwqfcBhbx/wU4Liugm07/fZHxoZRc=) |
-|         | root  | Hangju@2025@root       |                                                   |
-| redis   |       | Redis@Hangju@2025      |                                                   |
-| minio   |       | minioadmin@Hangju@2025 |                                                   |
-|         |       |                        |                                                   |
-
 docker build -t zhijian-backend:latest .
+
+### 📋 完整服务信息汇总表（含 Web 地址）
+
+| 服务名称         | 用户名              | 密码                                 | 容器端口 → 主机端口                            | Web 访问地址（通过你的域名）                                                           | 用途说明                      |
+|--------------|------------------|------------------------------------|----------------------------------------|----------------------------------------------------------------------------|---------------------------|
+| **MySQL**    | `root` / `model` | `Hangju@2025@root` / `Hangju@2025` | `3306` → `3307`                        | ❌ 不直接对外提供 Web 访问                                                           | 数据库服务，供后端和 XXL-Job 使用     |
+| **Redis**    | （无用户名）           | `Redis@Hangju@2025`                | `6379` → `6389`                        | ❌ 无 Web 界面                                                                 | 缓存服务                      |
+| **ChromaDB** | （无认证）            | （无密码）                              | `8000` → `8000`                        | http://mxdemo1.qunl.com:8000                                               | 向量数据库，提供 Embedding 存储与检索  |
+| **MinIO**    | `minioadmin`     | `minioadmin@Hangju@2025`           | `9000` → `19000`  <br>`9001` → `19001` | API: http://mxdemo1.qunl.com:19000  <br>控制台: http://mxdemo1.qunl.com:19001 | 对象存储服务，用于文件/模型存储          |
+| **XXL-Job**  | Web 默认：`admin`   | Web 默认：`123456`                    | `8080` → `9888`                        | http://mxdemo1.qunl.com:9888                                               | 分布式任务调度平台（首次登录需用默认账号）     |
+| **Backend**  | （由应用逻辑控制）        | （如 JWT、OAuth 等）                    | `10023` → `10023`                      | http://mxdemo1.qunl.com:10023                                              | 后端 API 服务（Spring Boot 应用） |
+| **Nginx**    | （无认证）            | （无密码）                              | `80` → `10022`                         | http://mxdemo1.qunl.com:10022                                              | 前端静态资源托管 + 可能的反向代理入口      |
+
+---
+
+### 🌐 补充说明
