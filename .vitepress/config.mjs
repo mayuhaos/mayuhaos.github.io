@@ -6,11 +6,26 @@ export default defineConfig({
     vite: {
         ssr: {
             noExternal: ['@escook/vitepress-theme', 'vitepress']
+        },
+        vue: {
+            template: {
+                compilerOptions: {
+                    // 允许解析有问题的HTML
+                    allowMalformedHTML: true
+                }
+            }
         }
-
     },
     // 忽略死链接检查，避免构建失败
     ignoreDeadLinks: true,
+    // 配置Markdown解析，禁用HTML标签解析
+    markdown: {
+        html: false,
+        // 配置Markdown-it插件，确保HTML标签被正确处理
+        config: (md) => {
+            md.set({html: false})
+        }
+    },
     title: "宇豪Note💗",
     description: "A VitePress Site",
     themeConfig: {
