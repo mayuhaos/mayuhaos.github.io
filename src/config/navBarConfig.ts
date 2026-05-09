@@ -65,6 +65,12 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		// 子菜单
 		children: [
 			{
+				name: "我的知识网站",
+				url: "https://mayuhaos.github.io/",
+				external: true,
+				icon: "fa7-brands:apple",
+			},
+			{
 				name: "GitHub",
 				url: "https://github.com/CuteLeaf/Firefly",
 				external: true,
