@@ -1,0 +1,10 @@
+---
+title: 测试草稿文章
+published: 2026-05-10
+description: 这是一篇测试草稿，用于验证 GitHub Pages 部署时不会显示 draft 文章。
+tags: [测试]
+category: 技术教程
+draft: true
+---
+
+这是一篇草稿文章，仅用于测试。如果你在线上看到了这篇文章，说明 draft 过滤逻辑有问题。
