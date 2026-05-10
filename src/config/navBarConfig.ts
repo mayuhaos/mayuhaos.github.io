@@ -65,28 +65,34 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		// 子菜单
 		children: [
 			{
-				name: "我的知识网站",
-				url: "https://mayuhaos.github.io/",
-				external: true,
-				icon: "fa7-brands:apple",
-			},
-			{
 				name: "GitHub",
-				url: "https://github.com/CuteLeaf/Firefly",
+				url: "https://github.com/mayuhaos",
 				external: true,
 				icon: "fa7-brands:github",
 			},
 			{
 				name: "Gitee",
-				url: "https://gitee.com/CuteLeaf/Firefly",
+				url: "https://gitee.com/yhstu",
 				external: true,
 				icon: "fa7-brands:gitee",
 			},
 			{
-				name: "QQ交流群",
-				url: "https://qm.qq.com/q/ZGsFa8qX2G",
+				name: "CSDN",
+				url: "https://blog.csdn.net/qq_47913744?spm=1000.2115.3001.5343",
+				external: true,
+				icon: "fa7-brands:blogger",
+			},
+			{
+				name: "QQ",
+				url: "https://wpa.qq.com/msgrd?v=3&uin=1757442521&site=qq&menu=yes",
 				external: true,
 				icon: "fa7-brands:qq",
+			},
+			{
+				name: "AI-token中转站",
+				url: "http://mxdemo1.qunl.com:3001/",
+				external: true,
+				icon: "material-symbols:token",
 			},
 		],
 	});

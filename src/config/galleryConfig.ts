@@ -14,12 +14,20 @@ export const galleryConfig: GalleryConfig = {
 		// tags: 相册标签，用于分类和过滤
 		// 每添加一个数组项就相当于添加了一个相册，记得在 public/gallery/ 目录下创建对应的子目录并放入图片
 		{
-			id: "firefly-2026",
-			name: "可爱流萤",
-			description: "飞萤之火自无梦的长夜亮起，绽放在终竟的明天。",
-			location: "崩坏：星穹铁道",
+			id: "qinghai",
+			name: "高原的风",
+			description: "天空很近，湖水很蓝，风吹过来都是自由的味道。",
+			location: "青海",
 			date: "2026-01-01",
-			tags: ["崩坏星穹铁道", "流萤"],
+			tags: ["青海"],
+		},
+		{
+			id: "shanghai",
+			name: "城市漫步",
+			description: "霓虹与梧桐之间，记录属于这座城市的日常。",
+			location: "上海",
+			date: "2026-01-01",
+			tags: ["上海"],
 		},
 	],
 

@@ -91,7 +91,7 @@ const showSponsorsList = sponsorConfig.showSponsorsList !== false;
                           </div>
                         )}
 
-                        {method.link && (
+                        {method.link && method.qrCode && (
                           <a
                             href={method.link}
                             target="_blank"
@@ -101,6 +101,15 @@ const showSponsorsList = sponsorConfig.showSponsorsList !== false;
                             <span>{i18n(I18nKey.sponsorGoTo)}</span>
                             <Icon name="fa7-solid:arrow-up-right-from-square" class="text-sm" />
                           </a>
+                        )}
+
+                        {method.link && !method.qrCode && (
+                          <span
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-neutral-300 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400 rounded-lg font-medium cursor-not-allowed opacity-60"
+                          >
+                            <span>{i18n(I18nKey.sponsorGoTo)}</span>
+                            <Icon name="fa7-solid:arrow-up-right-from-square" class="text-sm" />
+                          </span>
                         )}
                       </div>
                     ))}

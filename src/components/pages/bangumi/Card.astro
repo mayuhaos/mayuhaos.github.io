@@ -10,7 +10,16 @@ interface Props {
 
 const { item, loadImage = false } = Astro.props;
 
-const subject_base_url = "https://bgm.tv/subject/";
+const subject_base_url = "https://search.douban.com/movie/subject_search?search_text=";
+
+const getSubjectUrl = (item: UserSubjectCollection) => {
+	const name = encodeURIComponent(item.subject.name_cn || item.subject.name);
+	const type = item.subject.type;
+	if (type === 1) return `https://search.douban.com/book/subject_search?search_text=${name}`;
+	if (type === 3) return `https://search.douban.com/music/subject_search?search_text=${name}`;
+	if (type === 4) return `https://search.douban.com/game/subject_search?search_text=${name}`;
+	return `${subject_base_url}${name}`;
+};
 
 const getStatusColor = (type: number) => {
 	switch (type) {
@@ -72,7 +81,7 @@ const hiddenCoverTagCount = Math.max(
 ---
 
 <a
-  href={`${subject_base_url}${item.subject.id}`}
+  href={getSubjectUrl(item)}
   target="_blank"
   rel="noopener noreferrer nofollow"
   class="group relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] block"
