@@ -41,7 +41,13 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 桌面背景图片（支持单张或多张随机）
 		desktop: "https://bingw.jasonzeng.dev/?resolution=1920x1080&index=random&mkt=zh-CN",
 		// 移动背景图片（支持单张或多张随机）
-		mobile: "https://bingw.jasonzeng.dev/?resolution=1080x1920&index=random&mkt=zh-CN",
+		mobile: [
+			"assets/images/MobileWallpaper/mobile1.jpg",
+			"assets/images/MobileWallpaper/mobile6.jpg",
+			"assets/images/MobileWallpaper/mobile8.jpg",
+			"assets/images/MobileWallpaper/mobile9.jpg",
+			"assets/images/MobileWallpaper/mobile13.jpg",
+		],
 	},
 	// 横幅壁纸和全屏壁纸共享配置
 	common: {
