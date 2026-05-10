@@ -57,6 +57,12 @@ export const en: Translation = {
 	[Key.guestbook]: "Guestbook",
 	[Key.guestbookDescription]:
 		"Welcome to leave your mark here, share your thoughts and suggestions",
+	[Key.diary]: "Diary",
+	[Key.diaryDescription]:
+		"A personal daily journal organized on a timeline, separate from blog posts",
+	[Key.diaryWeather]: "Weather",
+	[Key.diaryLocation]: "Location",
+	[Key.diaryEntries]: "entries",
 	[Key.untitled]: "Untitled",
 	[Key.uncategorized]: "Uncategorized",
 	[Key.noTags]: "No Tags",

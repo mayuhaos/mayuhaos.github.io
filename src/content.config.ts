@@ -31,6 +31,24 @@ const postsCollection = defineCollection({
 	}),
 });
 
+const diaryCollection = defineCollection({
+	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/diary" }),
+	schema: z.object({
+		title: z.string(),
+		date: z.date(),
+		weather: z.string(),
+		location: z.string(),
+		description: z.string(),
+		cover: z.string().optional().default(""),
+		draft: z.boolean().optional().default(false),
+		comment: z.boolean().optional().default(true),
+		prevTitle: z.string().default(""),
+		prevSlug: z.string().default(""),
+		nextTitle: z.string().default(""),
+		nextSlug: z.string().default(""),
+	}),
+});
+
 const specCollection = defineCollection({
 	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/spec" }),
 	schema: z.object({}),
@@ -38,5 +56,6 @@ const specCollection = defineCollection({
 
 export const collections = {
 	posts: postsCollection,
+	diary: diaryCollection,
 	spec: specCollection,
 };

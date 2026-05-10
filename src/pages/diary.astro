@@ -1,0 +1,16 @@
+---
+import DiaryTimeline from "@/components/pages/diary/Timeline.svelte";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getSortedDiaryList } from "@/utils/content-utils";
+
+const sortedDiaryList = await getSortedDiaryList();
+---
+
+<MainGridLayout
+	title={i18n(I18nKey.diary)}
+	description={i18n(I18nKey.diaryDescription)}
+>
+	<DiaryTimeline sortedDiary={sortedDiaryList} client:only="svelte" />
+</MainGridLayout>

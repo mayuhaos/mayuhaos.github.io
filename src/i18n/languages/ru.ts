@@ -57,6 +57,12 @@ export const ru: Translation = {
 	[Key.guestbook]: "Гостевая книга",
 	[Key.guestbookDescription]:
 		"Добро пожаловать, оставьте свой след здесь, поделитесь своими мыслями и предложениями",
+	[Key.diary]: "Дневник",
+	[Key.diaryDescription]:
+		"Ежедневные записи в формате таймлайна, отдельно от блога",
+	[Key.diaryWeather]: "Погода",
+	[Key.diaryLocation]: "Место",
+	[Key.diaryEntries]: "записей",
 	[Key.untitled]: "Без названия",
 	[Key.uncategorized]: "Без категории",
 	[Key.noTags]: "Нет тегов",

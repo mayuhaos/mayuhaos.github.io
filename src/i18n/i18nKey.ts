@@ -79,6 +79,11 @@ enum I18nKey {
 	friendsDescription = "friendsDescription",
 	guestbook = "guestbook",
 	guestbookDescription = "guestbookDescription",
+	diary = "diary",
+	diaryDescription = "diaryDescription",
+	diaryWeather = "diaryWeather",
+	diaryLocation = "diaryLocation",
+	diaryEntries = "diaryEntries",
 	bangumi = "bangumi",
 
 	// 番组计划筛选和状态文本

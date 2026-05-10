@@ -33,6 +33,11 @@ export const LinkPresets: { [key in LinkPreset]: NavBarLink } = {
 		url: "/guestbook/",
 		icon: "material-symbols:chat",
 	},
+	[LinkPreset.Diary]: {
+		name: i18n(I18nKey.diary),
+		url: "/diary/",
+		icon: "material-symbols:history-edu-outline-rounded",
+	},
 	[LinkPreset.Bangumi]: {
 		name: i18n(I18nKey.bangumi),
 		url: "/bangumi/",

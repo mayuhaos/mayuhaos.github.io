@@ -57,6 +57,12 @@ export const ja: Translation = {
 	[Key.guestbook]: "ゲストブック",
 	[Key.guestbookDescription]:
 		"ここに足跡を残して、あなたの考えや提案を共有してください",
+	[Key.diary]: "日記",
+	[Key.diaryDescription]:
+		"ブログ記事とは独立して、毎日の記録をタイムラインで残します",
+	[Key.diaryWeather]: "天気",
+	[Key.diaryLocation]: "場所",
+	[Key.diaryEntries]: "件の日記",
 	[Key.untitled]: "無題",
 	[Key.uncategorized]: "未分類",
 	[Key.noTags]: "タグなし",
