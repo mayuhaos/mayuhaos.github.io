@@ -1,0 +1,1 @@
+import{ak as t,al as o,af as c,u as l}from"./branches.Ejnk4aIN.js";function a(e){throw new Error("https://svelte.dev/e/lifecycle_outside_component")}function i(e){t===null&&a(),o&&t.l!==null?u(t).m.push(e):c(()=>{const n=l(e);if(typeof n=="function")return n})}function u(e){var n=e.l;return n.u??={a:[],b:[],m:[]}}export{i as o};
