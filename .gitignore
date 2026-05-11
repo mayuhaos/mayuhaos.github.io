@@ -13,6 +13,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 dev-server.log
+dev-server-*.log
 
 # environment variables
 .env
@@ -40,3 +41,5 @@ cache/
 package/
 .obsidian/
 src/content/notepix-uploads/
+attachment/
+.trash
