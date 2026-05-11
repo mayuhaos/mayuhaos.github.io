@@ -19,7 +19,11 @@ const description = i18n(I18nKey.galleryDescription);
 const albums = galleryConfig.albums.map((album) => {
 	const photos = scanAlbumPhotos(album.id);
 	const cover = getAlbumCover(album, photos);
-	return { ...album, cover, photoCount: photos.length };
+	const videoCount = album.videos?.length || 0;
+	const photoCount = photos.length;
+	const itemCount = photoCount > 0 ? photoCount : videoCount;
+	const itemLabel = photoCount > 0 ? i18n(I18nKey.galleryPhotos) : "个视频";
+	return { ...album, cover, photoCount, videoCount, itemCount, itemLabel };
 });
 
 // 收集所有标签用于筛选
@@ -82,7 +86,8 @@ const allTags = [...new Set(albums.flatMap((a) => a.tags || []))].sort();
               date={album.date}
               location={album.location}
               tags={album.tags}
-              photoCount={album.photoCount}
+              itemCount={album.itemCount}
+              itemLabel={album.itemLabel}
             />
           ))}
         </div>

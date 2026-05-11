@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { GalleryAlbum } from "@/types/config";
+import type { GalleryAlbum, GalleryVideo } from "@/types/config";
 import { url } from "@/utils/url-utils";
 
 function withBase(assetPath: string): string {
@@ -43,6 +43,13 @@ export function scanAlbumPhotos(albumId: string): string[] {
  */
 export function getAlbumCover(album: GalleryAlbum, photos: string[]): string {
 	if (album.cover) return withBase(album.cover);
+	const videoCover = getAlbumVideoCover(album.videos);
+	if (videoCover) return videoCover;
 	const coverFile = photos.find((p) => /\/cover\./i.test(p));
 	return coverFile || photos[0] || "";
+}
+
+export function getAlbumVideoCover(videos?: GalleryVideo[]): string {
+	const cover = videos?.find((video) => video.cover)?.cover;
+	return cover ? withBase(cover) : "";
 }
