@@ -3,7 +3,11 @@ title: Claude Desktop 配置第三方 API 保姆级教程
 published: 2026-05-10
 description: 手把手教你在 Claude Desktop 中配置第三方 API，使用 Cowork、Projects、Artifacts 等功能，无需消耗官方订阅额度。
 image: https://raw.githubusercontent.com/mayuhaos/blog-images/main/images/20260510173358257.jpg
-tags: [AI, Claude, 教程, API]
+tags:
+  - AI
+  - Claude
+  - 教程
+  - API
 category: 技术教程
 draft: false
 ---
