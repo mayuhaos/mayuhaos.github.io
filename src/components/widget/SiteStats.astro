@@ -6,6 +6,7 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import {
 	getCategoryList,
+	getSortedDiary,
 	getSortedPosts,
 	getTagList,
 } from "@/utils/content-utils";
@@ -22,6 +23,7 @@ const siteStartDate = siteConfig.siteStartDate || "2025-01-01";
 
 // 获取所有文章
 const posts = await getSortedPosts();
+const diaryEntries = await getSortedDiary();
 const categories = await getCategoryList();
 const tags = await getTagList();
 
@@ -50,14 +52,15 @@ function formatNumber(num: number): string {
 }
 
 // 获取最新文章日期（用于客户端计算）
-const latestPost = posts.reduce((latest, post) => {
-	if (!latest) return post;
-	return post.data.published > latest.data.published ? post : latest;
-}, posts[0]);
+const latestPostDate = posts[0]?.data.published ?? null;
+const latestDiaryDate = diaryEntries[0]?.data.date ?? null;
 
-const lastPostDate = latestPost
-	? latestPost.data.published.toISOString()
-	: null;
+const lastPostDate =
+	(latestPostDate && latestDiaryDate
+		? latestPostDate > latestDiaryDate
+			? latestPostDate
+			: latestDiaryDate
+		: latestPostDate || latestDiaryDate)?.toISOString() ?? null;
 
 const todayText = i18n(I18nKey.today);
 
