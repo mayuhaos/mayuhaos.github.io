@@ -14,10 +14,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		LinkPreset.Diary,
 	];
 
-	if (siteConfig.pages.friends) {
-		links.push(LinkPreset.Friends);
-	}
-
 	if (siteConfig.pages.guestbook) {
 		links.push(LinkPreset.Guestbook);
 	}
@@ -44,6 +40,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		children: [
 			...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []),
 			LinkPreset.About,
+			...(siteConfig.pages.friends ? [LinkPreset.Friends] : []),
 		],
 	});
 
@@ -78,7 +75,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			},
 			{
 				name: "AI-token中转站",
-				url: "http://mxdemo1.qunl.com:3001/",
+				url: "https://cn.chrouter.com:8443/",
 				external: true,
 				icon: "material-symbols:token",
 			},
