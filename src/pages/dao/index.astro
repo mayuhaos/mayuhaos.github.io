@@ -13,32 +13,42 @@ const emailLink = profileConfig.links.find((link) => link.name === "Email")?.url
 
 <MainGridLayout title="所谓道" description="这里单独收录与道家、道法相关的笔记，不参与博客和日记归档。">
 	<div class="space-y-4">
-		<div class="card-base p-6 md:p-8">
-			<div class="flex items-center gap-3 mb-3">
-				<div class="h-11 w-11 rounded-xl bg-(--primary)/12 text-(--primary) flex items-center justify-center">
-					<Icon name="material-symbols:auto-stories" class="text-2xl" />
+		<div class="card-base dao-hero p-6 md:p-8 overflow-hidden relative">
+			<div class="dao-bagua dao-bagua-lg" aria-hidden="true"></div>
+			<div class="dao-trigram dao-trigram-top" aria-hidden="true"></div>
+			<div class="dao-trigram dao-trigram-bottom" aria-hidden="true"></div>
+			<div class="dao-cloud dao-cloud-left" aria-hidden="true"></div>
+			<div class="dao-cloud dao-cloud-right" aria-hidden="true"></div>
+
+			<div class="relative z-10">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="h-11 w-11 rounded-xl bg-(--primary)/12 text-(--primary) flex items-center justify-center dao-seal">
+						<Icon name="material-symbols:auto-stories" class="text-2xl" />
+					</div>
+					<div>
+						<h1 class="text-3xl font-bold text-black/90 dark:text-white/90">所谓道</h1>
+						<p class="text-sm text-black/55 dark:text-white/55 m-0 dao-subtitle">
+							这里单独收录与道家、道法相关的笔记。
+						</p>
+					</div>
 				</div>
-				<div>
-					<h1 class="text-3xl font-bold text-black/90 dark:text-white/90">所谓道</h1>
-					<p class="text-sm text-black/55 dark:text-white/55 m-0">
-						这里单独收录与道家、道法相关的笔记。
-					</p>
-				</div>
+
+				<p class="text-black/70 dark:text-white/70 leading-7 m-0 max-w-2xl">
+					敏感文章均已加密，请发送邮件申请密码，并附上想看的文章标题。
+				</p>
+
+				{
+					emailLink && (
+						<a
+							href={emailLink}
+							class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-lg text-sm font-medium bg-black/5 dark:bg-white/10 text-black/75 dark:text-white/80 hover:bg-black/8 dark:hover:bg-white/14 active:scale-[0.98] transition-all dao-mail-btn"
+						>
+							<Icon name="fa7-solid:envelope" class="text-base" />
+							<span>邮件申请密码</span>
+						</a>
+					)
+				}
 			</div>
-			<p class="text-black/70 dark:text-white/70 leading-7 m-0">
-				敏感文章均已加密，请发送邮件申请密码，并附上想看的文章标题。
-			</p>
-			{
-				emailLink && (
-					<a
-						href={emailLink}
-						class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-lg text-sm font-medium bg-black/5 dark:bg-white/10 text-black/75 dark:text-white/80 hover:bg-black/8 dark:hover:bg-white/14 active:scale-[0.98] transition-all"
-					>
-						<Icon name="fa7-solid:envelope" class="text-base" />
-						<span>邮件申请密码</span>
-					</a>
-				)
-			}
 		</div>
 
 		<div class="grid gap-4">
@@ -50,9 +60,14 @@ const emailLink = profileConfig.links.find((link) => link.name === "Email")?.url
 					return (
 						<a
 							href={getDaoUrlBySlug(entry.id)}
-							class="card-base p-5 md:p-6 block hover:scale-[1.01] active:scale-[0.99] transition-transform"
+							class="card-base dao-card p-5 md:p-6 block hover:scale-[1.01] active:scale-[0.99] transition-transform overflow-hidden relative"
 						>
-							<div class="flex flex-col-reverse md:flex-row md:items-stretch gap-5">
+							<div class="dao-card-glow" aria-hidden="true"></div>
+							<div class="dao-card-runes" aria-hidden="true"></div>
+							<div class="dao-card-corner dao-card-corner-top" aria-hidden="true"></div>
+							<div class="dao-card-corner dao-card-corner-bottom" aria-hidden="true"></div>
+
+							<div class="relative z-10 flex flex-col-reverse md:flex-row md:items-stretch gap-5">
 								<div class="flex-1 min-w-0">
 									<div class="flex items-start justify-between gap-4 mb-3">
 										<div>
@@ -63,6 +78,7 @@ const emailLink = profileConfig.links.find((link) => link.name === "Email")?.url
 												{entry.data.published.toLocaleDateString("zh-CN")}
 											</div>
 										</div>
+
 										{
 											entry.data.password && (
 												<div class="shrink-0 inline-flex items-center gap-1 rounded-lg px-3 py-1 bg-black/5 dark:bg-white/8 text-sm text-black/60 dark:text-white/60">
@@ -72,6 +88,7 @@ const emailLink = profileConfig.links.find((link) => link.name === "Email")?.url
 											)
 										}
 									</div>
+
 									<p class="text-black/70 dark:text-white/70 leading-7 m-0">
 										{entry.data.description || "进入查看这篇与道相关的记录。"}
 									</p>
@@ -100,3 +117,199 @@ const emailLink = profileConfig.links.find((link) => link.name === "Email")?.url
 		</div>
 	</div>
 </MainGridLayout>
+
+<style>
+	.dao-hero {
+		background:
+			radial-gradient(circle at top right, rgba(117, 150, 128, 0.18) 0, transparent 34%),
+			linear-gradient(135deg, rgba(170, 197, 181, 0.22) 0%, transparent 55%),
+			var(--card-bg, rgba(255, 255, 255, 0.72));
+		border: 1px solid rgba(133, 154, 140, 0.28);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.55),
+			0 16px 40px rgba(115, 143, 123, 0.08);
+	}
+
+	.dao-seal {
+		box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent);
+	}
+
+	.dao-subtitle {
+		letter-spacing: 0.08em;
+	}
+
+	.dao-mail-btn {
+		box-shadow: 0 10px 24px color-mix(in srgb, var(--primary) 10%, transparent);
+	}
+
+	.dao-bagua {
+		position: absolute;
+		border-radius: 999px;
+		opacity: 0.28;
+		border: 1px solid rgba(108, 137, 116, 0.34);
+		pointer-events: none;
+	}
+
+	.dao-bagua::before,
+	.dao-bagua::after {
+		content: "";
+		position: absolute;
+		inset: 14%;
+		border-radius: 999px;
+		border: 1px dashed rgba(108, 137, 116, 0.28);
+	}
+
+	.dao-bagua::after {
+		inset: 32%;
+	}
+
+	.dao-bagua-lg {
+		width: 220px;
+		height: 220px;
+		top: -54px;
+		right: -36px;
+	}
+
+	.dao-trigram {
+		position: absolute;
+		width: 56px;
+		height: 56px;
+		opacity: 0.38;
+		pointer-events: none;
+		background:
+			linear-gradient(to bottom,
+				rgba(95, 118, 102, 0.8) 0 6px,
+				transparent 6px 14px,
+				rgba(95, 118, 102, 0.8) 14px 20px,
+				transparent 20px 28px,
+				rgba(95, 118, 102, 0.8) 28px 34px,
+				transparent 34px 100%);
+	}
+
+	.dao-trigram-top {
+		top: 18px;
+		right: 170px;
+		transform: rotate(8deg);
+	}
+
+	.dao-trigram-bottom {
+		left: 36px;
+		bottom: 18px;
+		transform: rotate(-6deg);
+	}
+
+	.dao-cloud {
+		position: absolute;
+		width: 160px;
+		height: 58px;
+		border: 1px solid rgba(123, 150, 133, 0.28);
+		border-radius: 999px;
+		opacity: 0.28;
+		pointer-events: none;
+	}
+
+	.dao-cloud::before,
+	.dao-cloud::after {
+		content: "";
+		position: absolute;
+		border: inherit;
+		border-radius: inherit;
+	}
+
+	.dao-cloud::before {
+		width: 78px;
+		height: 34px;
+		top: -16px;
+		left: 20px;
+	}
+
+	.dao-cloud::after {
+		width: 62px;
+		height: 28px;
+		top: 10px;
+		right: 18px;
+	}
+
+	.dao-cloud-left {
+		left: -24px;
+		bottom: 24px;
+	}
+
+	.dao-cloud-right {
+		right: 136px;
+		top: 28px;
+		transform: scale(0.88);
+	}
+
+	.dao-card {
+		background:
+			linear-gradient(135deg, rgba(181, 205, 190, 0.18) 0%, transparent 44%),
+			var(--card-bg, rgba(255, 255, 255, 0.72));
+		border: 1px solid rgba(133, 154, 140, 0.2);
+		box-shadow: 0 14px 30px rgba(109, 132, 117, 0.06);
+	}
+
+	.dao-card-glow {
+		position: absolute;
+		inset: auto -30px -50px auto;
+		width: 180px;
+		height: 180px;
+		border-radius: 999px;
+		background: radial-gradient(circle, rgba(150, 179, 160, 0.24) 0, transparent 70%);
+		pointer-events: none;
+	}
+
+	.dao-card-runes {
+		position: absolute;
+		top: 16px;
+		right: 18px;
+		width: 58px;
+		height: 58px;
+		opacity: 0.18;
+		background:
+			repeating-linear-gradient(to bottom, currentColor 0 4px, transparent 4px 10px),
+			repeating-linear-gradient(to right, currentColor 0 4px, transparent 4px 10px),
+			radial-gradient(circle, rgba(123, 150, 133, 0.2) 0 24%, transparent 25%);
+		color: #6f8f76;
+		transform: rotate(45deg);
+		pointer-events: none;
+	}
+
+	.dao-card-corner {
+		position: absolute;
+		width: 34px;
+		height: 34px;
+		border-color: rgba(111, 143, 118, 0.32);
+		pointer-events: none;
+	}
+
+	.dao-card-corner-top {
+		top: 10px;
+		left: 10px;
+		border-top: 2px solid;
+		border-left: 2px solid;
+		border-top-left-radius: 12px;
+	}
+
+	.dao-card-corner-bottom {
+		right: 10px;
+		bottom: 10px;
+		border-right: 2px solid;
+		border-bottom: 2px solid;
+		border-bottom-right-radius: 12px;
+	}
+
+	@media (max-width: 768px) {
+		.dao-bagua-lg {
+			width: 150px;
+			height: 150px;
+			top: -30px;
+			right: -26px;
+		}
+
+		.dao-cloud-right {
+			right: 40px;
+			top: 18px;
+		}
+	}
+</style>
