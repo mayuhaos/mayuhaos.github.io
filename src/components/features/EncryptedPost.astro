@@ -3,21 +3,35 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { encryptContent } from "@utils/crypto-utils";
 import { Icon } from "astro-icon/components";
+import { profileConfig } from "@/config/profileConfig";
+import { siteConfig } from "@/config/siteConfig";
 
 interface Props {
 	password: string;
 	slug: string;
+	title: string;
 	hint?: string;
 }
 
-const { password, slug, hint = "" } = Astro.props;
+const { password, slug, title, hint = "" } = Astro.props;
 
 const rawHtml = await Astro.slots.render("default");
 const encryptedData = encryptContent(rawHtml, password, slug);
+const emailLink = profileConfig.links.find((link) => link.name === "Email")?.url ?? "";
+const emailAddress = emailLink.replace(/^mailto:/, "");
+const subject = `申请文章密码：${title}`;
+const body = `你好，我想申请这篇文章的查看密码。\n\n文章标题：${title}\n文章链接：${Astro.url.href}\n`;
+const mailtoLink = emailAddress
+	? `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+	: "";
 
 const labels = {
 	protected: i18n(I18nKey.passwordProtected),
 	desc: i18n(I18nKey.passwordProtectedDesc),
+	apply:
+		siteConfig.lang === "zh_CN" || siteConfig.lang === "zh_TW"
+			? "邮件申请密码"
+			: i18n(I18nKey.passwordApply),
 	hint: i18n(I18nKey.passwordHint),
 	placeholder: i18n(I18nKey.passwordPlaceholder),
 	submit: i18n(I18nKey.passwordSubmit),
@@ -37,6 +51,17 @@ const labels = {
 
       <h2 class="text-lg font-bold text-black/80 dark:text-white/80 m-0">{labels.protected}</h2>
       <p class="text-sm text-black/40 dark:text-white/40 text-center m-0">{labels.desc}</p>
+      {
+        mailtoLink && (
+          <a
+            href={mailtoLink}
+            class="inline-flex items-center gap-2 mt-1 px-4 py-2 rounded-lg text-sm font-medium bg-black/5 dark:bg-white/10 text-black/75 dark:text-white/80 hover:bg-black/8 dark:hover:bg-white/14 active:scale-[0.98] transition-all"
+          >
+            <Icon name="fa7-solid:envelope" class="text-base" />
+            <span>{labels.apply}</span>
+          </a>
+        )
+      }
 
       {hint && (
         <p class="text-xs text-black/30 dark:text-white/30 text-center m-0">{labels.hint}: {hint}</p>

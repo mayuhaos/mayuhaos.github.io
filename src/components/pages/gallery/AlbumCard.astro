@@ -11,10 +11,21 @@ interface Props {
 	date?: string;
 	location?: string;
 	tags?: string[];
-	photoCount: number;
+	itemCount: number;
+	itemLabel?: string;
 }
 
-const { id, name, cover, description, date, location, tags, photoCount } =
+const {
+	id,
+	name,
+	cover,
+	description,
+	date,
+	location,
+	tags,
+	itemCount,
+	itemLabel,
+} =
 	Astro.props;
 ---
 
@@ -41,7 +52,7 @@ const { id, name, cover, description, date, location, tags, photoCount } =
 
     <!-- Photo count badge -->
     <div class="absolute top-2 right-2 px-2 py-1 rounded-full text-xs text-white font-medium bg-black/50 backdrop-blur-sm">
-      {photoCount} {i18n(I18nKey.galleryPhotos)}
+      {itemCount} {itemLabel || i18n(I18nKey.galleryPhotos)}
     </div>
 
     <!-- Gradient overlay + info -->

@@ -307,6 +307,7 @@ enum I18nKey {
 	// 密码保护
 	passwordProtected = "passwordProtected",
 	passwordProtectedDesc = "passwordProtectedDesc",
+	passwordApply = "passwordApply",
 	passwordHint = "passwordHint",
 	passwordPlaceholder = "passwordPlaceholder",
 	passwordSubmit = "passwordSubmit",

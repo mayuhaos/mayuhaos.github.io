@@ -772,6 +772,13 @@ export type ResponsiveImageLayout = "constrained" | "full-width" | "none";
 // 图像格式类型
 export type ImageFormat = "avif" | "webp" | "png" | "jpg" | "jpeg" | "gif";
 
+export type GalleryVideo = {
+	title?: string;
+	embedUrl: string;
+	cover?: string;
+	description?: string;
+};
+
 // 相册元信息（用户在配置文件中填写）
 export type GalleryAlbum = {
 	id: string; // URL slug + 目录名，如 "japan-2025"
@@ -781,6 +788,7 @@ export type GalleryAlbum = {
 	location?: string; // 拍摄地点
 	tags?: string[]; // 标签（用于首页筛选）
 	cover?: string; // 手动指定封面（可选，省略则自动取 cover.* 或第一张）
+	videos?: GalleryVideo[];
 };
 
 // 相册配置

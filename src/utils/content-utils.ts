@@ -63,6 +63,37 @@ export async function getSortedDiary() {
 
 	return sorted;
 }
+
+async function getRawSortedDao() {
+	const allDaoEntries = await getCollection("dao", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
+
+	return allDaoEntries.sort((a, b) => {
+		if (a.data.pinned && !b.data.pinned) return -1;
+		if (!a.data.pinned && b.data.pinned) return 1;
+
+		const dateA = new Date(a.data.published);
+		const dateB = new Date(b.data.published);
+		return dateA > dateB ? -1 : 1;
+	});
+}
+
+export async function getSortedDao() {
+	const sorted = await getRawSortedDao();
+
+	for (let i = 1; i < sorted.length; i++) {
+		sorted[i].data.nextSlug = sorted[i - 1].id;
+		sorted[i].data.nextTitle = sorted[i - 1].data.title;
+	}
+	for (let i = 0; i < sorted.length - 1; i++) {
+		sorted[i].data.prevSlug = sorted[i + 1].id;
+		sorted[i].data.prevTitle = sorted[i + 1].data.title;
+	}
+
+	return sorted;
+}
+
 export type PostForList = {
 	id: string;
 	data: CollectionEntry<"posts">["data"];
@@ -88,6 +119,20 @@ export async function getSortedDiaryList(): Promise<DiaryForList[]> {
 	const sortedFullDiary = await getRawSortedDiary();
 
 	return sortedFullDiary.map((entry) => ({
+		id: entry.id,
+		data: entry.data,
+	}));
+}
+
+export type DaoForList = {
+	id: string;
+	data: CollectionEntry<"dao">["data"];
+};
+
+export async function getSortedDaoList(): Promise<DaoForList[]> {
+	const sortedFullDao = await getRawSortedDao();
+
+	return sortedFullDao.map((entry) => ({
 		id: entry.id,
 		data: entry.data,
 	}));

@@ -1,0 +1,233 @@
+---
+import { render } from "astro:content";
+import * as path from "node:path";
+import Comment from "@components/comment/index.astro";
+import Markdown from "@components/common/Markdown.astro";
+import EncryptedPost from "@components/features/EncryptedPost.astro";
+import KatexManager from "@components/features/KatexManager.astro";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import {
+	getDaoUrlBySlug,
+	getFileDirFromPath,
+	removeFileExtension,
+	url,
+} from "@utils/url-utils";
+import { Icon } from "astro-icon/components";
+import CoverImage from "@/components/common/CoverImage.astro";
+import PostMetadata from "@/components/layout/PostMeta.astro";
+import { coverImageConfig } from "@/config/coverImageConfig";
+import { siteConfig } from "@/config/siteConfig";
+import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+import { getApiUrlList, processCoverImageSync } from "@/utils/image-utils";
+import { getSortedDao } from "@/utils/content-utils";
+
+export async function getStaticPaths() {
+	const daoEntries = await getSortedDao();
+	return daoEntries.map((entry) => {
+		const slug = removeFileExtension(entry.id);
+		return {
+			params: { slug },
+			props: { entry },
+		};
+	});
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const { remarkPluginFrontmatter } = await render(entry);
+
+const bannerPostMeta = {
+	title: entry.data.title,
+	published: entry.data.published,
+	updated: entry.data.updated,
+	words: remarkPluginFrontmatter.words,
+	minutes: remarkPluginFrontmatter.minutes,
+};
+
+const processedImage = processCoverImageSync(entry.data.image, entry.id);
+const apiUrls = getApiUrlList(entry.data.image, entry.id);
+
+if (processedImage) {
+	const isLocal = !(
+		processedImage.startsWith("/") ||
+		processedImage.startsWith("http") ||
+		processedImage.startsWith("https") ||
+		processedImage.startsWith("data:")
+	);
+	if (isLocal) {
+		const basePath = getFileDirFromPath(entry.filePath || "");
+		const files = import.meta.glob<ImageMetadata>("../../**", {
+			import: "default",
+		});
+		const normalizedPath = path
+			.normalize(path.join("../../", basePath, processedImage))
+			.replace(/\\/g, "/");
+		const file = files[normalizedPath];
+		if (file) {
+			await file();
+		}
+	}
+}
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "Article",
+	headline: entry.data.title,
+	description: entry.data.description || entry.data.title,
+	datePublished: formatDateToYYYYMMDD(entry.data.published),
+	inLanguage: entry.data.lang
+		? entry.data.lang.replace("_", "-")
+		: siteConfig.lang.replace("_", "-"),
+};
+---
+
+<MainGridLayout
+	banner={processedImage}
+	title={entry.data.title}
+	description={entry.data.description}
+	lang={entry.data.lang}
+	setOGTypeArticle={true}
+	postSlug={entry.id}
+	postCategory={entry.data.category || undefined}
+	headings={headings}
+	bannerPostMeta={bannerPostMeta}
+>
+	<KatexManager slot="head" />
+
+	<script
+		is:inline
+		slot="head"
+		type="application/ld+json"
+		set:html={JSON.stringify(jsonLd)}
+	/>
+
+	<div class="flex w-full rounded-(--radius-large) overflow-hidden relative mb-4">
+		<div
+			id="post-container"
+			class="card-base z-10 px-6 md:px-9 pt-6 pb-4 relative w-full"
+		>
+			<div class="flex flex-row text-black/30 dark:text-white/30 gap-5 mb-3 transition onload-animation">
+				<div class="flex flex-row items-center">
+					<div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
+						<Icon name="material-symbols:notes-rounded" />
+					</div>
+					<div class="text-sm">
+						{remarkPluginFrontmatter.words} {" " + i18n(I18nKey.wordsCount)}
+					</div>
+				</div>
+				<div class="flex flex-row items-center">
+					<div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
+						<Icon name="material-symbols:schedule-outline-rounded" />
+					</div>
+					<div class="text-sm">
+						{remarkPluginFrontmatter.minutes}
+						{
+							" " +
+								i18n(
+									remarkPluginFrontmatter.minutes === 1
+										? I18nKey.minuteCount
+										: I18nKey.minutesCount,
+								)
+						}
+					</div>
+				</div>
+				{entry.data.password && (
+					<div class="flex flex-row items-center">
+						<div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
+							<Icon name="material-symbols:lock-outline" />
+						</div>
+						<div class="text-sm">{i18n(I18nKey.postEncrypted)}</div>
+					</div>
+				)}
+			</div>
+
+			<div class="relative onload-animation">
+				<div
+					data-pagefind-body
+					data-pagefind-weight="10"
+					data-pagefind-meta="title"
+					class="transition w-full block font-bold mb-3 text-3xl md:text-[2.25rem]/[2.75rem] text-black/90 dark:text-white/90 md:before:w-1 before:h-5 before:rounded-md before:bg-(--primary) before:absolute before:top-3 before:-left-4.5"
+				>
+					{entry.data.title}
+				</div>
+			</div>
+
+			<div class="onload-animation">
+				<PostMetadata
+					className="mb-5"
+					published={entry.data.published}
+					updated={entry.data.updated}
+					tags={entry.data.tags}
+					category={entry.data.category || undefined}
+					id={entry.id}
+				/>
+				{!processedImage && (
+					<div class="border-(--line-divider) border-dashed border-b mt-3 mb-5" />
+				)}
+			</div>
+
+			{processedImage && coverImageConfig.enableInPost && (
+				<div style="margin-top:1rem;">
+					<CoverImage
+						id="post-cover"
+						src={processedImage}
+						basePath={getFileDirFromPath(entry.filePath || "")}
+						class="mb-8 rounded-xl banner-container onload-animation"
+						preview={false}
+						apiUrls={apiUrls}
+					/>
+				</div>
+			)}
+
+			{entry.data.password ? (
+				<EncryptedPost password={entry.data.password} slug={entry.id} title={entry.data.title} hint={entry.data.passwordHint}>
+					<Markdown class="mb-6 markdown-content onload-animation">
+						<Content />
+					</Markdown>
+				</EncryptedPost>
+			) : (
+				<Markdown class="mb-6 markdown-content onload-animation">
+					<Content />
+				</Markdown>
+			)}
+		</div>
+	</div>
+
+	<div class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full">
+		<a
+			href={entry.data.nextSlug ? getDaoUrlBySlug(entry.data.nextSlug) : url("/dao/")}
+			class="w-full font-bold overflow-hidden active:scale-95"
+		>
+			<div class="btn-card rounded-2xl w-full h-15 max-w-full px-4 flex items-center justify-start! gap-4">
+				<Icon
+					name="material-symbols:chevron-left-rounded"
+					class="text-[2rem] text-(--primary)"
+				/>
+				<div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%-3rem)] text-black/75 dark:text-white/75">
+					{entry.data.nextTitle || "所谓道"}
+				</div>
+			</div>
+		</a>
+
+		<a
+			href={entry.data.prevSlug ? getDaoUrlBySlug(entry.data.prevSlug) : url("/dao/")}
+			class="w-full font-bold overflow-hidden active:scale-95"
+		>
+			<div class="btn-card rounded-2xl w-full h-15 max-w-full px-4 flex items-center justify-end! gap-4">
+				<div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%-3rem)] text-black/75 dark:text-white/75">
+					{entry.data.prevTitle || "所谓道"}
+				</div>
+				<Icon
+					name="material-symbols:chevron-right-rounded"
+					class="text-[2rem] text-(--primary)"
+				/>
+			</div>
+		</a>
+	</div>
+
+	{entry.data.comment && !entry.data.password && (
+		<Comment post={entry} customPath={`/dao/${removeFileExtension(entry.id)}/`} />
+	)}
+</MainGridLayout>

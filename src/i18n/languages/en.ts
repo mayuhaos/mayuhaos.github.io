@@ -321,7 +321,8 @@ export const en: Translation = {
 	// Password Protection
 	[Key.passwordProtected]: "Password Protected",
 	[Key.passwordProtectedDesc]:
-		"This article is password protected. Please enter the password to view the content.",
+		"Sensitive articles are encrypted. Please email to request the password and include the title of the article you want to read.",
+	[Key.passwordApply]: "Request Password by Email",
 	[Key.passwordHint]: "Hint",
 	[Key.passwordPlaceholder]: "Enter password",
 	[Key.passwordSubmit]: "Unlock",

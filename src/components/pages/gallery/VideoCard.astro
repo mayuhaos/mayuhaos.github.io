@@ -1,0 +1,52 @@
+---
+interface Props {
+	title?: string;
+	embedUrl: string;
+	description?: string;
+}
+
+const { title, embedUrl, description } = Astro.props;
+const isPlaceholder = embedUrl === "about:blank";
+---
+
+<article class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-sm overflow-hidden shadow-sm">
+  <div class="w-full bg-neutral-100 dark:bg-neutral-900">
+    {isPlaceholder ? (
+      <div class="h-[280px] sm:h-[360px] lg:h-[468px] flex flex-col items-center justify-center text-center px-6 text-neutral-500 dark:text-neutral-400">
+        <div class="text-base font-medium text-neutral-700 dark:text-neutral-200">
+          视频链接待补充
+        </div>
+        <p class="mt-2 text-sm leading-relaxed">
+          将 `embedUrl` 替换为 B 站 iframe 地址后，这里会直接显示视频。
+        </p>
+      </div>
+    ) : (
+      <iframe
+        width="100%"
+        height="468"
+        src={embedUrl}
+        title={title || "Bilibili video player"}
+        scrolling="no"
+        border="0"
+        frameborder="no"
+        framespacing="0"
+        allowfullscreen="true"
+      />
+    )}
+  </div>
+
+  {(title || description) && (
+    <div class="px-5 py-4">
+      {title && (
+        <h3 class="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+          {title}
+        </h3>
+      )}
+      {description && (
+        <p class="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+          {description}
+        </p>
+      )}
+    </div>
+  )}
+</article>

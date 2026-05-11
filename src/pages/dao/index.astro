@@ -1,0 +1,102 @@
+---
+import { Icon } from "astro-icon/components";
+import CoverImage from "@/components/common/CoverImage.astro";
+import { profileConfig } from "@/config/profileConfig";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getSortedDaoList } from "@/utils/content-utils";
+import { getApiUrlList, processCoverImageSync } from "@/utils/image-utils";
+import { getDaoUrlBySlug, getFileDirFromPath } from "@/utils/url-utils";
+
+const daoList = await getSortedDaoList();
+const emailLink = profileConfig.links.find((link) => link.name === "Email")?.url ?? "";
+---
+
+<MainGridLayout title="所谓道" description="这里单独收录与道家、道法相关的笔记，不参与博客和日记归档。">
+	<div class="space-y-4">
+		<div class="card-base p-6 md:p-8">
+			<div class="flex items-center gap-3 mb-3">
+				<div class="h-11 w-11 rounded-xl bg-(--primary)/12 text-(--primary) flex items-center justify-center">
+					<Icon name="material-symbols:auto-stories" class="text-2xl" />
+				</div>
+				<div>
+					<h1 class="text-3xl font-bold text-black/90 dark:text-white/90">所谓道</h1>
+					<p class="text-sm text-black/55 dark:text-white/55 m-0">
+						这里单独收录与道家、道法相关的笔记。
+					</p>
+				</div>
+			</div>
+			<p class="text-black/70 dark:text-white/70 leading-7 m-0">
+				敏感文章均已加密，请发送邮件申请密码，并附上想看的文章标题。
+			</p>
+			{
+				emailLink && (
+					<a
+						href={emailLink}
+						class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-lg text-sm font-medium bg-black/5 dark:bg-white/10 text-black/75 dark:text-white/80 hover:bg-black/8 dark:hover:bg-white/14 active:scale-[0.98] transition-all"
+					>
+						<Icon name="fa7-solid:envelope" class="text-base" />
+						<span>邮件申请密码</span>
+					</a>
+				)
+			}
+		</div>
+
+		<div class="grid gap-4">
+			{
+				daoList.map((entry) => {
+					const processedImage = processCoverImageSync(entry.data.image, entry.id);
+					const apiUrls = getApiUrlList(entry.data.image, entry.id);
+
+					return (
+						<a
+							href={getDaoUrlBySlug(entry.id)}
+							class="card-base p-5 md:p-6 block hover:scale-[1.01] active:scale-[0.99] transition-transform"
+						>
+							<div class="flex flex-col-reverse md:flex-row md:items-stretch gap-5">
+								<div class="flex-1 min-w-0">
+									<div class="flex items-start justify-between gap-4 mb-3">
+										<div>
+											<div class="text-2xl font-bold text-black/90 dark:text-white/90 mb-2">
+												{entry.data.title}
+											</div>
+											<div class="text-sm text-black/45 dark:text-white/45">
+												{entry.data.published.toLocaleDateString("zh-CN")}
+											</div>
+										</div>
+										{
+											entry.data.password && (
+												<div class="shrink-0 inline-flex items-center gap-1 rounded-lg px-3 py-1 bg-black/5 dark:bg-white/8 text-sm text-black/60 dark:text-white/60">
+													<Icon name="material-symbols:lock-outline" />
+													<span>已加密</span>
+												</div>
+											)
+										}
+									</div>
+									<p class="text-black/70 dark:text-white/70 leading-7 m-0">
+										{entry.data.description || "进入查看这篇与道相关的记录。"}
+									</p>
+								</div>
+
+								{
+									processedImage && (
+										<div class="w-full md:w-64 shrink-0">
+											<CoverImage
+												src={processedImage}
+												basePath={getFileDirFromPath(entry.filePath || "")}
+												alt={entry.data.title}
+												class="w-full aspect-[16/10] rounded-xl overflow-hidden"
+												preview={false}
+												loading="lazy"
+												apiUrls={apiUrls}
+											/>
+										</div>
+									)
+								}
+							</div>
+						</a>
+					);
+				})
+			}
+		</div>
+	</div>
+</MainGridLayout>

@@ -31,6 +31,11 @@ export function getDiaryUrlBySlug(slug: string): string {
 	return url(`/diary/${slugWithoutExt}/`);
 }
 
+export function getDaoUrlBySlug(slug: string): string {
+	const slugWithoutExt = removeFileExtension(slug);
+	return url(`/dao/${slugWithoutExt}/`);
+}
+
 export function getTagUrl(tag: string): string {
 	if (!tag) return url("/archive/");
 	return url(`/archive/?tag=${encodeURIComponent(tag.trim())}`);
