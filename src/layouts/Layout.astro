@@ -23,7 +23,11 @@ import {
 } from "@/constants/constants";
 import { defaultFavicons } from "@/constants/icon";
 import type { Favicon } from "@/types/config";
-import { getDefaultBackground, isHomePage } from "@/utils/layout-utils";
+import {
+	getDefaultBackground,
+	getEffectiveWallpaperMode,
+	isHomePage,
+} from "@/utils/layout-utils";
 import { url } from "@/utils/url-utils";
 
 import "@/styles/main.css";
@@ -47,6 +51,10 @@ let { title, banner, description, lang, setOGTypeArticle, postSlug } =
 // Swup can update the body for each page visit, but it's after the page transition, causing a delay for banner height change
 // so use Swup hooks instead to change the height immediately when a link is clicked
 const isHomePageCheck = isHomePage(Astro.url.pathname);
+const effectiveWallpaperMode = getEffectiveWallpaperMode(
+	backgroundWallpaper.mode,
+	Astro.url.pathname,
+);
 
 // defines global css variables
 // why doing this in Layout instead of GlobalStyles: https://github.com/withastro/astro/issues/6728#issuecomment-1502203757
@@ -66,7 +74,7 @@ if (!banner || typeof banner !== "string" || banner.trim() === "") {
 // TODO don't use post cover as banner for now
 banner = getDefaultBackground();
 
-const enableBanner = backgroundWallpaper.mode === "banner";
+const enableBanner = effectiveWallpaperMode === "banner";
 
 let pageTitle: string;
 if (title) {
@@ -95,7 +103,7 @@ const siteLang = lang.replace("_", "-");
 ---
 
 <!doctype html>
-<html lang={siteLang} class="bg-(--page-bg) text-[14px] md:text-[16px]" data-wallpaper-mode={backgroundWallpaper.mode}>
+<html lang={siteLang} class="bg-(--page-bg) text-[14px] md:text-[16px]" data-wallpaper-mode={effectiveWallpaperMode}>
   <head>
     <meta charset="UTF-8" />
     {siteConfig.analytics?.googleAnalyticsId && (
@@ -346,9 +354,25 @@ const siteLang = lang.replace("_", "-");
       const WALLPAPER_FULLSCREEN = "fullscreen";
       const WALLPAPER_OVERLAY = "overlay";
       const WALLPAPER_NONE = "none";
-      const wallpaperMode = isWallpaperSwitchable
+      const requestedWallpaperMode = isWallpaperSwitchable
         ? localStorage.getItem("wallpaperMode") || defaultWallpaperMode
         : defaultWallpaperMode;
+
+      function resolveWallpaperModeByPath(modeValue) {
+        const isHomePage =
+          window.location.pathname === baseUrl ||
+          (baseUrl !== "/" &&
+            window.location.pathname === baseUrl.replace(/\/$/, "")) ||
+          window.location.pathname === "/";
+
+        if (modeValue === WALLPAPER_FULLSCREEN && !isHomePage) {
+          return WALLPAPER_BANNER;
+        }
+
+        return modeValue;
+      }
+
+      const wallpaperMode = resolveWallpaperModeByPath(requestedWallpaperMode);
 
       // 设置data-wallpaper-mode属性
       document.documentElement.setAttribute(
@@ -878,7 +902,8 @@ function disableAnimation() {
   }
 
   function showBanner() {
-    const isBannerMode = backgroundWallpaper.mode === "banner";
+    const isBannerMode =
+      document.documentElement.getAttribute("data-wallpaper-mode") === "banner";
     if (!isBannerMode) return;
 
     // 使用requestAnimationFrame优化DOM操作
@@ -1191,6 +1216,7 @@ function disableAnimation() {
       }
     });
     window.swup.hooks.on("page:view", () => {
+      initWallpaperMode();
       // 更新网格列数和侧边栏组件可见性
       updateMainGridCols();
       updateSidebarComponentsVisibility();

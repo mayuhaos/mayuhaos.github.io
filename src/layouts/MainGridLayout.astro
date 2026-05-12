@@ -27,7 +27,11 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
 import { getImageQuality } from "@/utils/image-utils";
-import { getBackgroundImages, isHomePage } from "@/utils/layout-utils";
+import {
+	getBackgroundImages,
+	getEffectiveWallpaperMode,
+	isHomePage,
+} from "@/utils/layout-utils";
 import {
 	generateGridClasses,
 	generateMainContentClasses,
@@ -74,10 +78,15 @@ const {
 } = Astro.props;
 
 // 检查背景壁纸模式和是否允许切换
-const isBannerMode = backgroundWallpaper.mode === "banner";
-const isFullscreenMode = backgroundWallpaper.mode === "fullscreen";
-const isOverlayMode = backgroundWallpaper.mode === "overlay";
-const isBackgroundEnabled = backgroundWallpaper.mode !== "none";
+const isHomePageCheck = isHomePage(Astro.url.pathname);
+const effectiveWallpaperMode = getEffectiveWallpaperMode(
+	backgroundWallpaper.mode,
+	Astro.url.pathname,
+);
+const isBannerMode = effectiveWallpaperMode === "banner";
+const isFullscreenMode = effectiveWallpaperMode === "fullscreen";
+const isOverlayMode = effectiveWallpaperMode === "overlay";
+const isBackgroundEnabled = effectiveWallpaperMode !== "none";
 const isWallpaperSwitchable = backgroundWallpaper.switchable ?? true;
 
 // 检查是否启用水波纹动画效果
@@ -110,8 +119,6 @@ const shouldRenderGradient =
 	gradientEnabledOnDesktop || gradientEnabledOnMobile || gradientSwitchable;
 
 // 检查是否为首页
-const isHomePageCheck = isHomePage(Astro.url.pathname);
-
 const shouldRenderCategoryBar = !!siteConfig.categoryBar;
 
 // 检查是否在文章详情页
