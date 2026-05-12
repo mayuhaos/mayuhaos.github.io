@@ -1,9 +1,7 @@
 ---
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
-import { encryptContent } from "@utils/crypto-utils";
+import QRCode from "qrcode";
 import { Icon } from "astro-icon/components";
-import { profileConfig } from "@/config/profileConfig";
+import { encryptContent } from "@utils/crypto-utils";
 import { siteConfig } from "@/config/siteConfig";
 
 interface Props {
@@ -17,83 +15,212 @@ const { password, slug, title, hint = "" } = Astro.props;
 
 const rawHtml = await Astro.slots.render("default");
 const encryptedData = encryptContent(rawHtml, password, slug);
-const emailLink = profileConfig.links.find((link) => link.name === "Email")?.url ?? "";
-const emailAddress = emailLink.replace(/^mailto:/, "");
-const subject = `申请文章密码：${title}`;
-const body = `你好，我想申请这篇文章的查看密码。\n\n文章标题：${title}\n文章链接：${Astro.url.href}\n`;
-const mailtoLink = emailAddress
-	? `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-	: "";
 
-const labels = {
-	protected: i18n(I18nKey.passwordProtected),
-	desc: i18n(I18nKey.passwordProtectedDesc),
-	apply:
-		siteConfig.lang === "zh_CN" || siteConfig.lang === "zh_TW"
-			? "邮件申请密码"
-			: i18n(I18nKey.passwordApply),
-	hint: i18n(I18nKey.passwordHint),
-	placeholder: i18n(I18nKey.passwordPlaceholder),
-	submit: i18n(I18nKey.passwordSubmit),
-	error: i18n(I18nKey.passwordError),
+const unlockConfig = siteConfig.wechatUnlock;
+const isChinese =
+	siteConfig.lang === "zh_CN" || siteConfig.lang === "zh_TW";
+
+let qrImageSrc = unlockConfig.qrImage?.trim() ?? "";
+if (!qrImageSrc && unlockConfig.qrLink?.trim()) {
+	qrImageSrc = await QRCode.toDataURL(unlockConfig.qrLink, {
+		margin: 1,
+		width: 320,
+	});
+}
+
+const labels = isChinese
+	? {
+			protected: "公众号扫码解锁",
+			desc: "这篇文章已加密，请先关注公众号并回复关键词获取 10 分钟有效口令。",
+			step1: "扫码关注公众号",
+			step2: `回复关键词“${unlockConfig.keyword}”`,
+			step3: "获取 10 分钟有效口令",
+			step4: "回到当前页面输入口令解锁",
+			keyword: "回复关键词",
+			keywordAction: "复制关键词",
+			keywordCopied: "关键词已复制",
+			keywordCopyFailed: "复制失败，请手动复制",
+			accountName: "公众号",
+			placeholder: "请输入公众号返回的动态口令",
+			submit: "解锁文章",
+			submitting: "正在验证...",
+			errorDefault: "口令错误或已过期，请重新获取。",
+			errorConfig: "解锁服务未配置，请先补全公众号解锁配置。",
+			errorKeyMissing: "未找到这篇文章的解锁密钥，请检查 Worker 和 KV 配置。",
+			errorNetwork: "解锁请求失败，请稍后重试。",
+			errorUnknown: "解锁失败，请稍后再试。",
+			qrUnavailable: "暂未配置公众号二维码，请先在站点配置中补充。",
+			window: "动态口令 10 分钟内有效，过期后请重新向公众号获取。",
+			hintLabel: "提示",
+			qrAlt: "公众号二维码",
+		}
+	: {
+			protected: "Unlock With WeChat",
+			desc: "This post is encrypted. Follow the WeChat account and reply with the keyword to get a 10-minute unlock code.",
+			step1: "Scan to follow the WeChat account",
+			step2: `Reply with the keyword "${unlockConfig.keyword}"`,
+			step3: "Get a 10-minute unlock code",
+			step4: "Come back and enter the code to unlock",
+			keyword: "Keyword",
+			keywordAction: "Copy keyword",
+			keywordCopied: "Keyword copied",
+			keywordCopyFailed: "Copy failed. Please copy it manually.",
+			accountName: "WeChat account",
+			placeholder: "Enter the temporary code from WeChat",
+			submit: "Unlock post",
+			submitting: "Verifying...",
+			errorDefault: "The code is invalid or expired. Please request a new one.",
+			errorConfig: "Unlock service is not configured yet.",
+			errorKeyMissing: "The article key was not found. Check the Worker and KV setup.",
+			errorNetwork: "Unlock request failed. Please try again later.",
+			errorUnknown: "Unlock failed. Please try again later.",
+			qrUnavailable: "No QR code is configured yet.",
+			window: "The dynamic code stays valid for 10 minutes.",
+			hintLabel: "Hint",
+			qrAlt: "WeChat QR code",
+		};
+
+const runtimeConfig = {
+	unlockApiBase: unlockConfig.enabled ? unlockConfig.apiBase : "",
+	keyword: unlockConfig.keyword,
+	labels: {
+		defaultError: labels.errorDefault,
+		configError: labels.errorConfig,
+		keyMissingError: labels.errorKeyMissing,
+		networkError: labels.errorNetwork,
+		unknownError: labels.errorUnknown,
+		submit: labels.submit,
+		submitting: labels.submitting,
+		copySuccess: labels.keywordCopied,
+		copyFailed: labels.keywordCopyFailed,
+	},
 };
 ---
 
 <div
-  id="encrypted-container"
-  data-encrypted={encryptedData}
-  data-slug={slug}
+	id="encrypted-container"
+	data-encrypted={encryptedData}
+	data-slug={slug}
+	data-runtime={JSON.stringify(runtimeConfig)}
 >
-  <!-- Lock UI -->
-  <div id="password-ui" class="flex justify-center py-16 px-4">
-    <div class="card-base flex flex-col items-center gap-3 max-w-100 w-full p-8">
-      <Icon name="material-symbols:shield-lock" class="text-8xl text-(--primary)" />
+	<div id="password-ui" class="flex justify-center py-16 px-4">
+		<div class="card-base flex flex-col gap-6 max-w-5xl w-full p-6 md:p-8">
+			<div class="flex flex-col items-center gap-3 text-center">
+				<div class="h-20 w-20 rounded-3xl bg-(--primary)/12 text-(--primary) flex items-center justify-center">
+					<Icon name="material-symbols:shield-lock" class="text-5xl" />
+				</div>
+				<h2 class="text-2xl font-bold text-black/85 dark:text-white/85 m-0">
+					{labels.protected}
+				</h2>
+				<p class="text-sm md:text-base text-black/45 dark:text-white/45 text-center m-0 max-w-2xl">
+					{labels.desc}
+				</p>
+				<p class="text-sm text-black/55 dark:text-white/55 m-0">
+					{title}
+				</p>
+			</div>
 
-      <h2 class="text-lg font-bold text-black/80 dark:text-white/80 m-0">{labels.protected}</h2>
-      <p class="text-sm text-black/40 dark:text-white/40 text-center m-0">{labels.desc}</p>
-      {
-        mailtoLink && (
-          <a
-            href={mailtoLink}
-            class="inline-flex items-center gap-2 mt-1 px-4 py-2 rounded-lg text-sm font-medium bg-black/5 dark:bg-white/10 text-black/75 dark:text-white/80 hover:bg-black/8 dark:hover:bg-white/14 active:scale-[0.98] transition-all"
-          >
-            <Icon name="fa7-solid:envelope" class="text-base" />
-            <span>{labels.apply}</span>
-          </a>
-        )
-      }
+			<div class="grid gap-4 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
+				<div class="rounded-2xl bg-black/4 dark:bg-white/6 border border-black/6 dark:border-white/8 p-5 flex flex-col items-center gap-4">
+					<div class="text-sm font-medium text-black/70 dark:text-white/75">
+						{labels.accountName}: {unlockConfig.name}
+					</div>
+					{
+						qrImageSrc ? (
+							<img
+								src={qrImageSrc}
+								alt={labels.qrAlt}
+								class="w-full max-w-56 aspect-square rounded-2xl bg-white object-contain p-2 shadow-sm"
+								loading="lazy"
+								decoding="async"
+							/>
+						) : (
+							<div class="w-full max-w-56 aspect-square rounded-2xl border border-dashed border-black/10 dark:border-white/12 bg-white/70 dark:bg-black/10 flex items-center justify-center text-center text-sm text-black/45 dark:text-white/45 px-6">
+								{labels.qrUnavailable}
+							</div>
+						)
+					}
+					<div class="inline-flex items-center gap-2 rounded-full bg-black/5 dark:bg-white/8 px-3 py-1 text-xs text-black/60 dark:text-white/60">
+						<Icon name="material-symbols:timer-outline-rounded" class="text-base" />
+						<span>{labels.window}</span>
+					</div>
+				</div>
 
-      {hint && (
-        <p class="text-xs text-black/30 dark:text-white/30 text-center m-0">{labels.hint}: {hint}</p>
-      )}
+				<div class="rounded-2xl bg-black/3 dark:bg-white/5 border border-black/6 dark:border-white/8 p-5 md:p-6">
+					<ol class="m-0 pl-5 space-y-3 text-sm md:text-base text-black/75 dark:text-white/78">
+						<li>{labels.step1}</li>
+						<li>
+							<span>{labels.step2}</span>
+							<button
+								id="copy-keyword"
+								type="button"
+								class="ml-3 inline-flex items-center gap-1 rounded-full bg-black/5 dark:bg-white/10 px-3 py-1 text-xs font-medium text-black/65 dark:text-white/75 hover:bg-black/8 dark:hover:bg-white/14 transition"
+							>
+								<Icon name="material-symbols:content-copy-outline-rounded" class="text-sm" />
+								<span>{labels.keywordAction}</span>
+							</button>
+						</li>
+						<li>{labels.step3}</li>
+						<li>{labels.step4}</li>
+					</ol>
 
-      <form id="password-form" class="w-full mt-2 space-y-2">
-        <input
-          id="password-input"
-          name="password"
-          type="password"
-          placeholder={labels.placeholder}
-          autocomplete="off"
-          class="w-full px-3 py-2 rounded-lg text-sm bg-black/5 dark:bg-white/10
-                 border border-black/8 dark:border-white/8
-                 text-black/80 dark:text-white/80 placeholder-black/25 dark:placeholder-white/25
-                 outline-none focus:border-(--primary) transition"
-        />
-        <button
-          type="submit"
-          class="w-full py-2 rounded-lg text-sm font-medium bg-(--primary) text-white dark:text-black/70
-                 hover:opacity-85 active:scale-[0.98] transition-all"
-        >
-          {labels.submit}
-        </button>
-      </form>
+					<div class="mt-5 rounded-2xl bg-(--primary)/8 border border-(--primary)/20 p-4">
+						<div class="text-xs uppercase tracking-[0.2em] text-(--primary)/80">
+							{labels.keyword}
+						</div>
+						<div class="mt-2 flex items-center gap-3">
+							<div class="text-xl md:text-2xl font-semibold text-(--primary)">
+								{unlockConfig.keyword}
+							</div>
+							<div
+								id="copy-keyword-feedback"
+								class="text-xs text-black/45 dark:text-white/45 min-h-[1rem]"
+								aria-live="polite"
+							></div>
+						</div>
+					</div>
 
-      <p id="password-error" class="text-xs text-red-500 dark:text-red-400 m-0 hidden">{labels.error}</p>
-    </div>
-  </div>
+					{hint && (
+						<p class="mt-4 text-xs text-black/40 dark:text-white/40 m-0">
+							{labels.hintLabel}: {hint}
+						</p>
+					)}
 
-  <!-- Decrypted content injected here -->
-  <div id="decrypted-content" class="hidden"></div>
+					<form id="password-form" class="mt-5 space-y-3">
+						<input
+							id="password-input"
+							name="password"
+							type="password"
+							placeholder={labels.placeholder}
+							autocomplete="one-time-code"
+							class="w-full px-4 py-3 rounded-xl text-sm bg-black/5 dark:bg-white/10
+								border border-black/8 dark:border-white/8
+								text-black/80 dark:text-white/80 placeholder-black/30 dark:placeholder-white/30
+								outline-none focus:border-(--primary) transition"
+						/>
+						<button
+							id="password-submit"
+							type="submit"
+							class="w-full py-3 rounded-xl text-sm font-medium bg-(--primary) text-white dark:text-black/70
+								hover:opacity-85 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+						>
+							{labels.submit}
+						</button>
+					</form>
+
+					<p
+						id="password-error"
+						class="text-xs text-red-500 dark:text-red-400 m-0 mt-3 hidden"
+						aria-live="polite"
+					>
+						{labels.errorDefault}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="decrypted-content" class="hidden"></div>
 </div>
 
 <script is:inline>
@@ -108,20 +235,22 @@ const labels = {
 
   var encryptedData = container.getAttribute('data-encrypted');
   var slug = container.getAttribute('data-slug');
-  var cacheKey = 'pw:' + slug;
+  var runtime = JSON.parse(container.getAttribute('data-runtime') || '{}');
+  var cacheKey = 'pw:key:' + slug;
 
   var ui = document.getElementById('password-ui');
   var form = document.getElementById('password-form');
   var input = document.getElementById('password-input');
+  var submitButton = document.getElementById('password-submit');
   var errorEl = document.getElementById('password-error');
   var contentEl = document.getElementById('decrypted-content');
+  var copyKeywordButton = document.getElementById('copy-keyword');
+  var copyFeedbackEl = document.getElementById('copy-keyword-feedback');
 
   function showContent(html) {
     contentEl.innerHTML = html;
     contentEl.classList.remove('hidden');
     ui.classList.add('hidden');
-    // Scripts injected via innerHTML are inert — re-create them so they execute
-    // Reset mermaid singleton so its render script re-initializes after decryption
     if (typeof window.mermaidInitialized !== 'undefined') {
       window.mermaidInitialized = false;
     }
@@ -135,18 +264,26 @@ const labels = {
       ns.textContent = old.textContent;
       old.parentNode.replaceChild(ns, old);
     }
-    // Re-init TOC after content is in DOM
     setTimeout(function() {
       document.dispatchEvent(new CustomEvent('password:decrypted'));
     }, 100);
   }
 
-  function showError() {
+  function setError(message) {
+    errorEl.textContent = message || runtime.labels.defaultError;
     errorEl.classList.remove('hidden');
   }
 
-  function hideError() {
+  function clearError() {
     errorEl.classList.add('hidden');
+    errorEl.textContent = runtime.labels.defaultError;
+  }
+
+  function setSubmitting(isSubmitting) {
+    submitButton.disabled = isSubmitting;
+    submitButton.textContent = isSubmitting
+      ? runtime.labels.submitting
+      : runtime.labels.submit;
   }
 
   function base64ToBytes(b64) {
@@ -158,7 +295,7 @@ const labels = {
     return bytes;
   }
 
-  async function decrypt(pwd) {
+  async function decrypt(keyValue) {
     var raw = base64ToBytes(encryptedData);
     var salt = raw.slice(0, SALT_LEN);
     var iv = raw.slice(SALT_LEN, SALT_LEN + IV_LEN);
@@ -171,7 +308,7 @@ const labels = {
 
     var enc = new TextEncoder();
     var keyMaterial = await crypto.subtle.importKey(
-      'raw', enc.encode(pwd), 'PBKDF2', false, ['deriveBits', 'deriveKey']
+      'raw', enc.encode(keyValue), 'PBKDF2', false, ['deriveBits', 'deriveKey']
     );
     var key = await crypto.subtle.deriveKey(
       { name: 'PBKDF2', salt: salt, iterations: ITERATIONS, hash: 'SHA-256' },
@@ -184,28 +321,104 @@ const labels = {
     return new TextDecoder().decode(decrypted);
   }
 
-  // Handle form submit
+  function normalizeApiBase(apiBase) {
+    return (apiBase || '').replace(/\/+$/, '');
+  }
+
+  function mapUnlockError(code) {
+    if (code === 'article_key_not_found') {
+      return runtime.labels.keyMissingError;
+    }
+    if (code === 'unlock_service_not_configured') {
+      return runtime.labels.configError;
+    }
+    if (code === 'invalid_or_expired_code' || code === 'invalid_request') {
+      return runtime.labels.defaultError;
+    }
+    return runtime.labels.unknownError;
+  }
+
+  async function fetchArticleKey(code) {
+    var apiBase = normalizeApiBase(runtime.unlockApiBase);
+    if (!apiBase) {
+      throw new Error(runtime.labels.configError);
+    }
+
+    var response;
+    try {
+      response = await fetch(apiBase + '/api/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: slug, code: code })
+      });
+    } catch (error) {
+      throw new Error(runtime.labels.networkError);
+    }
+
+    var payload = {};
+    try {
+      payload = await response.json();
+    } catch (error) {
+      throw new Error(runtime.labels.unknownError);
+    }
+
+    if (!response.ok || !payload.ok || !payload.key) {
+      throw new Error(mapUnlockError(payload.message));
+    }
+
+    return payload.key;
+  }
+
+  async function copyKeyword() {
+    if (!runtime.keyword) return;
+    try {
+      await navigator.clipboard.writeText(runtime.keyword);
+      copyFeedbackEl.textContent = runtime.labels.copySuccess;
+    } catch (error) {
+      copyFeedbackEl.textContent = runtime.labels.copyFailed;
+    }
+    setTimeout(function() {
+      copyFeedbackEl.textContent = '';
+    }, 2400);
+  }
+
+  if (copyKeywordButton) {
+    copyKeywordButton.addEventListener('click', copyKeyword);
+  }
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    var pwd = input.value.trim();
-    if (!pwd) return;
-    hideError();
-    decrypt(pwd).then(function(html) {
-      sessionStorage.setItem(cacheKey, pwd);
-      showContent(html);
-    }).catch(function() {
-      showError();
-    });
+    var code = input.value.trim();
+    if (!code) return;
+
+    clearError();
+    setSubmitting(true);
+
+    fetchArticleKey(code)
+      .then(function(articleKey) {
+        sessionStorage.setItem(cacheKey, articleKey);
+        return decrypt(articleKey);
+      })
+      .then(function(html) {
+        showContent(html);
+      })
+      .catch(function(error) {
+        setError(error && error.message ? error.message : runtime.labels.defaultError);
+      })
+      .finally(function() {
+        setSubmitting(false);
+      });
   });
 
-  // Try cached password
-  var cached = sessionStorage.getItem(cacheKey);
-  if (cached) {
-    decrypt(cached).then(function(html) {
-      showContent(html);
-    }).catch(function() {
-      sessionStorage.removeItem(cacheKey);
-    });
+  var cachedKey = sessionStorage.getItem(cacheKey);
+  if (cachedKey) {
+    decrypt(cachedKey)
+      .then(function(html) {
+        showContent(html);
+      })
+      .catch(function() {
+        sessionStorage.removeItem(cacheKey);
+      });
   }
 })();
 </script>
