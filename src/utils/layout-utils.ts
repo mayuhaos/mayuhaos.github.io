@@ -1,3 +1,4 @@
+import type { WALLPAPER_MODE } from "@/types/config";
 import { backgroundWallpaper } from "../config";
 
 // 将单个值或数组统一为数组
@@ -71,6 +72,18 @@ export const isHomePage = (pathname: string): boolean => {
 	if (pathname === "/") return true;
 
 	return false;
+};
+
+// 首页保留全屏壁纸，内页自动退回横幅壁纸。
+export const getEffectiveWallpaperMode = (
+	mode: WALLPAPER_MODE,
+	pathname: string,
+): WALLPAPER_MODE => {
+	if (mode === "fullscreen" && !isHomePage(pathname)) {
+		return "banner";
+	}
+
+	return mode;
 };
 
 // 获取横幅偏移量

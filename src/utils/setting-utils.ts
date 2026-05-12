@@ -16,7 +16,10 @@ import {
 	sakuraConfig,
 	siteConfig,
 } from "../config";
-import { isHomePage as checkIsHomePage } from "./layout-utils";
+import {
+	getEffectiveWallpaperMode,
+	isHomePage as checkIsHomePage,
+} from "./layout-utils";
 
 // Declare global functions
 declare global {
@@ -283,7 +286,12 @@ export function applyWallpaperModeToDocument(
 ) {
 	// 检查是否允许切换壁纸模式
 	const isSwitchable = backgroundWallpaper.switchable ?? true;
-	if (!isSwitchable) {
+	const requestedMode = isSwitchable ? mode : backgroundWallpaper.mode;
+	const effectiveMode = getEffectiveWallpaperMode(
+		requestedMode,
+		window.location.pathname,
+	);
+	if (false) {
 		// 如果不允许切换，直接返回，不执行任何操作
 		return;
 	}
@@ -295,9 +303,9 @@ export function applyWallpaperModeToDocument(
 		) as WALLPAPER_MODE) || backgroundWallpaper.mode;
 
 	// 如果模式没有变化，直接返回
-	if (currentMode === mode) {
+	if (currentMode === effectiveMode) {
 		// 即使是相同模式，也要确保UI状态正确
-		ensureWallpaperState(mode);
+		ensureWallpaperState(effectiveMode);
 		return;
 	}
 
@@ -305,7 +313,7 @@ export function applyWallpaperModeToDocument(
 	document.documentElement.classList.add("is-wallpaper-transitioning");
 
 	// 更新数据属性
-	document.documentElement.setAttribute("data-wallpaper-mode", mode);
+	document.documentElement.setAttribute("data-wallpaper-mode", effectiveMode);
 
 	// 使用 requestAnimationFrame 确保在下一帧执行，避免闪屏
 	requestAnimationFrame(() => {
@@ -319,7 +327,7 @@ export function applyWallpaperModeToDocument(
 		);
 
 		// 根据模式添加相应的CSS类
-		switch (mode) {
+		switch (effectiveMode) {
 			case WALLPAPER_BANNER:
 				body.classList.add("enable-banner");
 				showBannerMode(true);
@@ -344,7 +352,7 @@ export function applyWallpaperModeToDocument(
 		}
 
 		// 更新导航栏透明模式
-		updateNavbarTransparency(mode);
+		updateNavbarTransparency(effectiveMode);
 
 		// 在下一帧移除过渡保护类
 		requestAnimationFrame(() => {
