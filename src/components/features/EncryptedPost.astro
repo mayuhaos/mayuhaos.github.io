@@ -40,7 +40,6 @@ const labels = isChinese
 			keywordAction: "\u590d\u5236\u5173\u952e\u8bcd",
 			keywordCopied: "\u5df2\u590d\u5236\u5173\u952e\u8bcd",
 			keywordCopyFailed: "\u590d\u5236\u5931\u8d25\uff0c\u8bf7\u624b\u52a8\u590d\u5236",
-			viewCodePage: "\u6253\u5f00\u53e3\u4ee4\u9875",
 			accountName: "\u516c\u4f17\u53f7",
 			placeholder: "\u8bf7\u8f93\u5165\u5f53\u524d\u52a8\u6001\u53e3\u4ee4",
 			submit: "\u89e3\u9501\u6587\u7ae0",
@@ -67,7 +66,6 @@ const labels = isChinese
 			keywordAction: "Copy keyword",
 			keywordCopied: "Keyword copied",
 			keywordCopyFailed: "Copy failed. Please copy it manually.",
-			viewCodePage: "Open code page",
 			accountName: "WeChat account",
 			placeholder: "Enter the current unlock code",
 			submit: "Unlock post",
@@ -87,7 +85,6 @@ const labels = isChinese
 const runtimeConfig = {
 	dataUrl: unlockConfig.enabled ? unlockConfig.apiBase : "",
 	keyword: unlockConfig.keyword,
-	codePagePath: unlockConfig.codePagePath,
 	labels: {
 		defaultError: labels.errorDefault,
 		configError: labels.errorConfig,
@@ -166,20 +163,7 @@ const runtimeConfig = {
 								<span>{labels.keywordAction}</span>
 							</button>
 						</li>
-						<li>
-							<div class="flex flex-wrap items-center gap-3">
-								<span>{labels.step3}</span>
-								<a
-									href={unlockConfig.codePagePath}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="inline-flex items-center gap-1 rounded-full bg-(--primary)/10 text-(--primary) px-3 py-1 text-xs font-medium hover:bg-(--primary)/15 transition"
-								>
-									<Icon name="material-symbols:open-in-new-rounded" class="text-sm" />
-									<span>{labels.viewCodePage}</span>
-								</a>
-							</div>
-						</li>
+						<li>{labels.step3}</li>
 						<li>{labels.step4}</li>
 					</ol>
 
