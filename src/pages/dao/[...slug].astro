@@ -37,6 +37,17 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const { remarkPluginFrontmatter } = await render(entry);
+const contentRoot = path.join(process.cwd(), "src", "content");
+const unlockSlug = entry.filePath
+	? path
+			.relative(
+				path.isAbsolute(entry.filePath)
+					? contentRoot
+					: path.join("src", "content"),
+				entry.filePath,
+			)
+			.replace(/\\/g, "/")
+	: entry.id;
 
 const bannerPostMeta = {
 	title: entry.data.title,
@@ -193,7 +204,7 @@ const jsonLd = {
 
 			<div class="relative z-10">
 				{entry.data.password ? (
-					<EncryptedPost password={entry.data.password} slug={entry.id} title={entry.data.title} hint={entry.data.passwordHint}>
+					<EncryptedPost password={entry.data.password} slug={unlockSlug} title={entry.data.title} hint={entry.data.passwordHint}>
 						<Markdown class="mb-6 markdown-content onload-animation">
 							<Content />
 						</Markdown>

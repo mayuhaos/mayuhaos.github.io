@@ -7,6 +7,8 @@ type SiteConfigWithWechatUnlock = SiteConfig & {
 		name: string;
 		keyword: string;
 		apiBase: string;
+		codePagePath: string;
+		windowMinutes: number;
 		qrImage?: string;
 		qrLink?: string;
 	};
@@ -24,7 +26,7 @@ export const siteConfig: SiteConfigWithWechatUnlock = {
 	subtitle: "Site",
 
 	// 站点 URL
-	site_url: "https://mayuhaos.github.io",
+	site_url: "https://yuhao.bbroot.com",
 
 	// 站点描述
 	description:
@@ -46,7 +48,9 @@ export const siteConfig: SiteConfigWithWechatUnlock = {
 		enabled: true,
 		name: "Mars 公众号",
 		keyword: "口令",
-		apiBase: "https://your-worker.example.workers.dev",
+		apiBase: "/data/wechat-unlock.json",
+		codePagePath: "/wechat-code/",
+		windowMinutes: 720,
 		qrImage: "/assets/images/wechat/official-account-qr.jpeg",
 		qrLink: "",
 	},

@@ -1,0 +1,47 @@
+name: Refresh WeChat Unlock Data
+
+on:
+  schedule:
+    - cron: "5 */12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.14.4
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Generate unlock data
+        env:
+          WECHAT_UNLOCK_SECRET: ${{ secrets.WECHAT_UNLOCK_SECRET }}
+          WECHAT_UNLOCK_WINDOW_MINUTES: "720"
+        run: pnpm run generate-wechat-unlock
+
+      - name: Commit updated unlock data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/wechat-unlock.json
+          git diff --staged --quiet && exit 0
+          git commit -m "Refresh WeChat unlock data"
+          git push origin HEAD:master

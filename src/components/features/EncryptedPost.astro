@@ -30,65 +30,71 @@ if (!qrImageSrc && unlockConfig.qrLink?.trim()) {
 
 const labels = isChinese
 	? {
-			protected: "公众号扫码解锁",
-			desc: "这篇文章已加密，请先关注公众号并回复关键词获取 10 分钟有效口令。",
-			step1: "扫码关注公众号",
-			step2: `回复关键词“${unlockConfig.keyword}”`,
-			step3: "获取 10 分钟有效口令",
-			step4: "回到当前页面输入口令解锁",
-			keyword: "回复关键词",
-			keywordAction: "复制关键词",
-			keywordCopied: "关键词已复制",
-			keywordCopyFailed: "复制失败，请手动复制",
-			accountName: "公众号",
-			placeholder: "请输入公众号返回的动态口令",
-			submit: "解锁文章",
-			submitting: "正在验证...",
-			errorDefault: "口令错误或已过期，请重新获取。",
-			errorConfig: "解锁服务未配置，请先补全公众号解锁配置。",
-			errorKeyMissing: "未找到这篇文章的解锁密钥，请检查 Worker 和 KV 配置。",
-			errorNetwork: "解锁请求失败，请稍后重试。",
-			errorUnknown: "解锁失败，请稍后再试。",
-			qrUnavailable: "暂未配置公众号二维码，请先在站点配置中补充。",
-			window: "动态口令 10 分钟内有效，过期后请重新向公众号获取。",
-			hintLabel: "提示",
-			qrAlt: "公众号二维码",
+			protected: "\u516c\u4f17\u53f7\u53e3\u4ee4\u89e3\u9501",
+			desc: "\u8fd9\u7bc7\u6587\u7ae0\u5df2\u52a0\u5bc6\uff0c\u8bf7\u5148\u5173\u6ce8\u516c\u4f17\u53f7\uff0c\u56de\u590d\u5173\u952e\u8bcd\u540e\u67e5\u770b\u5f53\u65e5\u53e3\u4ee4\u3002",
+			step1: "\u626b\u7801\u5173\u6ce8\u516c\u4f17\u53f7",
+			step2: `\u56de\u590d\u5173\u952e\u8bcd\u201c${unlockConfig.keyword}\u201d`,
+			step3: "\u6253\u5f00\u53e3\u4ee4\u9875\u67e5\u770b\u4eca\u65e5\u53e3\u4ee4",
+			step4: "\u56de\u5230\u672c\u9875\u8f93\u5165\u53e3\u4ee4\u89e3\u9501",
+			keyword: "\u5173\u952e\u8bcd",
+			keywordAction: "\u590d\u5236\u5173\u952e\u8bcd",
+			keywordCopied: "\u5df2\u590d\u5236\u5173\u952e\u8bcd",
+			keywordCopyFailed: "\u590d\u5236\u5931\u8d25\uff0c\u8bf7\u624b\u52a8\u590d\u5236",
+			viewCodePage: "\u6253\u5f00\u53e3\u4ee4\u9875",
+			accountName: "\u516c\u4f17\u53f7",
+			placeholder: "\u8bf7\u8f93\u5165\u5f53\u524d\u52a8\u6001\u53e3\u4ee4",
+			submit: "\u89e3\u9501\u6587\u7ae0",
+			submitting: "\u6b63\u5728\u9a8c\u8bc1...",
+			errorDefault: "\u53e3\u4ee4\u9519\u8bef\u6216\u5df2\u8fc7\u671f\uff0c\u8bf7\u91cd\u65b0\u83b7\u53d6\u3002",
+			errorConfig: "\u53e3\u4ee4\u6570\u636e\u6682\u672a\u751f\u6210\uff0c\u8bf7\u7a0d\u540e\u518d\u8bd5\u3002",
+			errorKeyMissing: "\u672a\u627e\u5230\u8fd9\u7bc7\u6587\u7ae0\u7684\u89e3\u9501\u5bc6\u94a5\uff0c\u8bf7\u68c0\u67e5\u5b9a\u65f6\u751f\u6210\u811a\u672c\u3002",
+			errorNetwork: "\u52a0\u8f7d\u53e3\u4ee4\u6570\u636e\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u518d\u8bd5\u3002",
+			errorUnknown: "\u89e3\u9501\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u518d\u8bd5\u3002",
+			errorExpired: "\u5f53\u524d\u53e3\u4ee4\u7a97\u53e3\u5df2\u5207\u6362\uff0c\u8bf7\u56de\u516c\u4f17\u53f7\u91cd\u65b0\u67e5\u770b\u53e3\u4ee4\u3002",
+			qrUnavailable: "\u6682\u672a\u914d\u7f6e\u516c\u4f17\u53f7\u4e8c\u7ef4\u7801\u3002",
+			window: "\u53e3\u4ee4\u6bcf 12 \u5c0f\u65f6\u81ea\u52a8\u66f4\u65b0\u4e00\u6b21\u3002",
+			hintLabel: "\u63d0\u793a",
+			qrAlt: "\u516c\u4f17\u53f7\u4e8c\u7ef4\u7801",
 		}
 	: {
 			protected: "Unlock With WeChat",
-			desc: "This post is encrypted. Follow the WeChat account and reply with the keyword to get a 10-minute unlock code.",
+			desc: "This post is encrypted. Follow the WeChat account, reply with the keyword, then open the code page to get the current unlock code.",
 			step1: "Scan to follow the WeChat account",
 			step2: `Reply with the keyword "${unlockConfig.keyword}"`,
-			step3: "Get a 10-minute unlock code",
+			step3: "Open the code page to view the current code",
 			step4: "Come back and enter the code to unlock",
 			keyword: "Keyword",
 			keywordAction: "Copy keyword",
 			keywordCopied: "Keyword copied",
 			keywordCopyFailed: "Copy failed. Please copy it manually.",
+			viewCodePage: "Open code page",
 			accountName: "WeChat account",
-			placeholder: "Enter the temporary code from WeChat",
+			placeholder: "Enter the current unlock code",
 			submit: "Unlock post",
 			submitting: "Verifying...",
 			errorDefault: "The code is invalid or expired. Please request a new one.",
-			errorConfig: "Unlock service is not configured yet.",
-			errorKeyMissing: "The article key was not found. Check the Worker and KV setup.",
-			errorNetwork: "Unlock request failed. Please try again later.",
+			errorConfig: "Unlock data is not ready yet.",
+			errorKeyMissing: "The article key was not found in the generated unlock data.",
+			errorNetwork: "Unlock data could not be loaded. Please try again later.",
 			errorUnknown: "Unlock failed. Please try again later.",
+			errorExpired: "The current code window has already changed. Please request the latest code again.",
 			qrUnavailable: "No QR code is configured yet.",
-			window: "The dynamic code stays valid for 10 minutes.",
+			window: "The code refreshes every 12 hours.",
 			hintLabel: "Hint",
 			qrAlt: "WeChat QR code",
 		};
 
 const runtimeConfig = {
-	unlockApiBase: unlockConfig.enabled ? unlockConfig.apiBase : "",
+	dataUrl: unlockConfig.enabled ? unlockConfig.apiBase : "",
 	keyword: unlockConfig.keyword,
+	codePagePath: unlockConfig.codePagePath,
 	labels: {
 		defaultError: labels.errorDefault,
 		configError: labels.errorConfig,
 		keyMissingError: labels.errorKeyMissing,
 		networkError: labels.errorNetwork,
 		unknownError: labels.errorUnknown,
+		expiredError: labels.errorExpired,
 		submit: labels.submit,
 		submitting: labels.submitting,
 		copySuccess: labels.keywordCopied,
@@ -160,7 +166,20 @@ const runtimeConfig = {
 								<span>{labels.keywordAction}</span>
 							</button>
 						</li>
-						<li>{labels.step3}</li>
+						<li>
+							<div class="flex flex-wrap items-center gap-3">
+								<span>{labels.step3}</span>
+								<a
+									href={unlockConfig.codePagePath}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="inline-flex items-center gap-1 rounded-full bg-(--primary)/10 text-(--primary) px-3 py-1 text-xs font-medium hover:bg-(--primary)/15 transition"
+								>
+									<Icon name="material-symbols:open-in-new-rounded" class="text-sm" />
+									<span>{labels.viewCodePage}</span>
+								</a>
+							</div>
+						</li>
 						<li>{labels.step4}</li>
 					</ol>
 
@@ -190,9 +209,10 @@ const runtimeConfig = {
 						<input
 							id="password-input"
 							name="password"
-							type="password"
+							type="text"
 							placeholder={labels.placeholder}
 							autocomplete="one-time-code"
+							spellcheck="false"
 							class="w-full px-4 py-3 rounded-xl text-sm bg-black/5 dark:bg-white/10
 								border border-black/8 dark:border-white/8
 								text-black/80 dark:text-white/80 placeholder-black/30 dark:placeholder-white/30
@@ -257,12 +277,12 @@ const runtimeConfig = {
     var scripts = contentEl.querySelectorAll('script');
     for (var i = 0; i < scripts.length; i++) {
       var old = scripts[i];
-      var ns = document.createElement('script');
+      var replacement = document.createElement('script');
       for (var j = 0; j < old.attributes.length; j++) {
-        ns.setAttribute(old.attributes[j].name, old.attributes[j].value);
+        replacement.setAttribute(old.attributes[j].name, old.attributes[j].value);
       }
-      ns.textContent = old.textContent;
-      old.parentNode.replaceChild(ns, old);
+      replacement.textContent = old.textContent;
+      old.parentNode.replaceChild(replacement, old);
     }
     setTimeout(function() {
       document.dispatchEvent(new CustomEvent('password:decrypted'));
@@ -295,8 +315,8 @@ const runtimeConfig = {
     return bytes;
   }
 
-  async function decrypt(keyValue) {
-    var raw = base64ToBytes(encryptedData);
+  async function decryptPayload(keyValue, payloadBase64) {
+    var raw = base64ToBytes(payloadBase64);
     var salt = raw.slice(0, SALT_LEN);
     var iv = raw.slice(SALT_LEN, SALT_LEN + IV_LEN);
     var authTag = raw.slice(SALT_LEN + IV_LEN, SALT_LEN + IV_LEN + TAG_LEN);
@@ -308,7 +328,11 @@ const runtimeConfig = {
 
     var enc = new TextEncoder();
     var keyMaterial = await crypto.subtle.importKey(
-      'raw', enc.encode(keyValue), 'PBKDF2', false, ['deriveBits', 'deriveKey']
+      'raw',
+      enc.encode(keyValue),
+      'PBKDF2',
+      false,
+      ['deriveBits', 'deriveKey']
     );
     var key = await crypto.subtle.deriveKey(
       { name: 'PBKDF2', salt: salt, iterations: ITERATIONS, hash: 'SHA-256' },
@@ -321,52 +345,106 @@ const runtimeConfig = {
     return new TextDecoder().decode(decrypted);
   }
 
-  function normalizeApiBase(apiBase) {
-    return (apiBase || '').replace(/\/+$/, '');
+  function normalizeDataUrl(url) {
+    return (url || '').trim();
   }
 
-  function mapUnlockError(code) {
-    if (code === 'article_key_not_found') {
-      return runtime.labels.keyMissingError;
-    }
-    if (code === 'unlock_service_not_configured') {
-      return runtime.labels.configError;
-    }
-    if (code === 'invalid_or_expired_code' || code === 'invalid_request') {
-      return runtime.labels.defaultError;
-    }
-    return runtime.labels.unknownError;
-  }
-
-  async function fetchArticleKey(code) {
-    var apiBase = normalizeApiBase(runtime.unlockApiBase);
-    if (!apiBase) {
+  async function loadUnlockData() {
+    var dataUrl = normalizeDataUrl(runtime.dataUrl);
+    if (!dataUrl) {
       throw new Error(runtime.labels.configError);
     }
 
+    var separator = dataUrl.indexOf('?') === -1 ? '?' : '&';
+    var requestUrl = dataUrl + separator + 'ts=' + Date.now();
+
     var response;
     try {
-      response = await fetch(apiBase + '/api/unlock', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug: slug, code: code })
+      response = await fetch(requestUrl, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' }
       });
     } catch (error) {
       throw new Error(runtime.labels.networkError);
     }
 
-    var payload = {};
+    if (!response.ok) {
+      throw new Error(runtime.labels.networkError);
+    }
+
+    var payload;
     try {
       payload = await response.json();
     } catch (error) {
       throw new Error(runtime.labels.unknownError);
     }
 
-    if (!response.ok || !payload.ok || !payload.key) {
-      throw new Error(mapUnlockError(payload.message));
+    if (!payload || payload.ok === false) {
+      throw new Error(runtime.labels.configError);
     }
 
-    return payload.key;
+    return payload;
+  }
+
+  function findActiveWindow(payload) {
+    var windows = Array.isArray(payload.windows) ? payload.windows : [];
+    var now = Date.now();
+
+    for (var i = 0; i < windows.length; i++) {
+      var item = windows[i];
+      var startsAt = Date.parse(item.startsAt || '');
+      var expiresAt = Date.parse(item.expiresAt || '');
+      if (!Number.isNaN(startsAt) && !Number.isNaN(expiresAt) && now >= startsAt && now < expiresAt) {
+        return item;
+      }
+    }
+
+    return null;
+  }
+
+  function buildSlugCandidates(value) {
+    var normalized = (value || '').replace(/^\/+|\/+$/g, '');
+    var noExt = normalized.replace(/\.(md|mdx)$/i, '');
+    var candidates = [normalized, noExt, noExt + '.md', noExt + '.mdx'];
+    var unique = [];
+
+    for (var i = 0; i < candidates.length; i++) {
+      if (candidates[i] && unique.indexOf(candidates[i]) === -1) {
+        unique.push(candidates[i]);
+      }
+    }
+
+    return unique;
+  }
+
+  async function fetchArticleKey(code) {
+    var payload = await loadUnlockData();
+    var activeWindow = findActiveWindow(payload);
+
+    if (!activeWindow) {
+      throw new Error(runtime.labels.expiredError);
+    }
+
+    var articleKeys = activeWindow.articleKeys || {};
+    var candidates = buildSlugCandidates(slug);
+    var wrappedKey = '';
+    for (var i = 0; i < candidates.length; i++) {
+      if (articleKeys[candidates[i]]) {
+        wrappedKey = articleKeys[candidates[i]];
+        break;
+      }
+    }
+
+    if (!wrappedKey) {
+      throw new Error(runtime.labels.keyMissingError);
+    }
+
+    try {
+      return await decryptPayload(code, wrappedKey);
+    } catch (error) {
+      throw new Error(runtime.labels.defaultError);
+    }
   }
 
   async function copyKeyword() {
@@ -386,8 +464,8 @@ const runtimeConfig = {
     copyKeywordButton.addEventListener('click', copyKeyword);
   }
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
     var code = input.value.trim();
     if (!code) return;
 
@@ -397,7 +475,7 @@ const runtimeConfig = {
     fetchArticleKey(code)
       .then(function(articleKey) {
         sessionStorage.setItem(cacheKey, articleKey);
-        return decrypt(articleKey);
+        return decryptPayload(articleKey, encryptedData);
       })
       .then(function(html) {
         showContent(html);
@@ -412,7 +490,7 @@ const runtimeConfig = {
 
   var cachedKey = sessionStorage.getItem(cacheKey);
   if (cachedKey) {
-    decrypt(cachedKey)
+    decryptPayload(cachedKey, encryptedData)
       .then(function(html) {
         showContent(html);
       })
