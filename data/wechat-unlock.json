@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-14T16:13:45.953Z",
+  "windowMinutes": 720,
+  "windows": [
+    {
+      "windowId": 41175,
+      "code": "FEE1FDBA",
+      "startsAt": "2026-05-14T12:00:00.000Z",
+      "expiresAt": "2026-05-15T00:00:00.000Z",
+      "articleKeys": {
+        "dao/婚姻占卜术（术）.md": "AQ/5RAO0vyhkBcXorYlRTSeyt2nvG21rT5IVaKEwXCJlidBN6uVPKYzNfCbUzM+cuMg=",
+        "dao/婚姻占卜术（术）": "nQpo7w1KPYxvvGC+XvZMbOeed7W0YnZDhKz3HQgYfNRMd+mwVA7IPOR56nVIUtCkqfo=",
+        "dao/婚姻占卜术（术）.mdx": "pKhC7whKfho9ro7olhbhgl9h2oBMJP1a/rPxEy9Ca+/1OO7izBzR9XgRU10vg/WEfSA=",
+        "dao/掐指神通术（术）.md": "hWWrXr3RVzH9nw3nOQ5+VBurC6chVIoXok1/wMYXZIOM/PrNwGppgl4tN9TbLpY+q+I=",
+        "dao/掐指神通术（术）": "c4LgECfjwe3kMr8EourEEelgDg6dkFh1UnOEs6tB/xLm2dRdevW35fKcs3oYAqpJHpw=",
+        "dao/掐指神通术（术）.mdx": "QlBMEh+C1g9eT0W0sQux5Z6fNqHB+wYcBlNs8koCHTr49QWiMQHMj5QdxcHzaNakvW4="
+      }
+    },
+    {
+      "windowId": 41176,
+      "code": "E9EB38E7",
+      "startsAt": "2026-05-15T00:00:00.000Z",
+      "expiresAt": "2026-05-15T12:00:00.000Z",
+      "articleKeys": {
+        "dao/婚姻占卜术（术）.md": "ySXr3ilksWF+s1d2rLUMsppD3F8JrIqZ+ryRHeK2uf/elosAfO6uY+n9MqzwfF3odBU=",
+        "dao/婚姻占卜术（术）": "81v8t3Mmd6PbcpRwQi56XFyoVpUYCXkaxdWYLATAmgDxidd62UwHx5sndzGpM13DwwE=",
+        "dao/婚姻占卜术（术）.mdx": "gU0xhhHiNKxA1vTErUUeSb+rKA2G3ZLVKkFvNUa+mIflsWRsNpcreSOmtdzcIXw6bYg=",
+        "dao/掐指神通术（术）.md": "0liHVAJTDxMrm0YR1spFL9i+f6hhv7/BNW8AeCTazL5vqO9zDRkf6uL3tm+NVdsXZog=",
+        "dao/掐指神通术（术）": "jhX+NCkDii1xEpsnNv0d2ABx7L2KbYsRVY8i8+sryq0cN9C8EmJBPHzdvTOQ9xHfBtQ=",
+        "dao/掐指神通术（术）.mdx": "aVVS22q5TE9kV+I9kfkQaLrPeLiEgCGvePdj0jAWN7ykAQIheZ3K/vP4LRHQkf17n/U="
+      }
+    }
+  ]
+}
