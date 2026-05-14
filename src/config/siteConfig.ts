@@ -1,11 +1,22 @@
 import type { SiteConfig } from "@/types/config";
 import { fontConfig } from "./fontConfig";
 
+type SiteConfigWithWechatUnlock = SiteConfig & {
+	wechatUnlock: {
+		enabled: boolean;
+		name: string;
+		keyword: string;
+		apiBase: string;
+		qrImage?: string;
+		qrLink?: string;
+	};
+};
+
 // 定义站点语言
 // 语言代码，例如：'zh_CN', 'zh_TW', 'en', 'ja', 'ru'。
 const SITE_LANG = "zh_CN";
 
-export const siteConfig: SiteConfig = {
+export const siteConfig: SiteConfigWithWechatUnlock = {
 	// 站点标题
 	title: "Mars",
 
@@ -31,6 +42,15 @@ export const siteConfig: SiteConfig = {
 	],
 
 	// 主题色
+	wechatUnlock: {
+		enabled: true,
+		name: "Mars 公众号",
+		keyword: "口令",
+		apiBase: "https://your-worker.example.workers.dev",
+		qrImage: "/assets/images/wechat/official-account-qr.jpeg",
+		qrLink: "",
+	},
+
 	themeColor: {
 		// 主题色的默认色相，范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345
 		hue: 165,
