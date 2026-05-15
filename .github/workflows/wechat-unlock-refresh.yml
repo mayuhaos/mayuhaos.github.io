@@ -2,7 +2,7 @@ name: Refresh WeChat Unlock Data
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "0 20 * * *"
   workflow_dispatch:
 
 permissions:
@@ -34,7 +34,8 @@ jobs:
       - name: Generate unlock data
         env:
           WECHAT_UNLOCK_SECRET: ${{ secrets.WECHAT_UNLOCK_SECRET }}
-          WECHAT_UNLOCK_WINDOW_MINUTES: "5"
+          WECHAT_UNLOCK_WINDOW_MINUTES: "1440"
+          WECHAT_UNLOCK_WINDOW_OFFSET_MINUTES: "1260"
         run: pnpm run generate-wechat-unlock
 
       - name: Commit updated unlock data

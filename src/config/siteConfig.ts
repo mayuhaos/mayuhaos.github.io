@@ -50,7 +50,7 @@ export const siteConfig: SiteConfigWithWechatUnlock = {
 		keyword: "口令",
 		apiBase: "/data/wechat-unlock.json",
 		codePagePath: "/wechat-code/",
-		windowMinutes: 5,
+		windowMinutes: 1440,
 		qrImage: "/assets/images/wechat/official-account-qr.jpeg",
 		qrLink: "",
 	},

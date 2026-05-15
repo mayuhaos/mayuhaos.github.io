@@ -8,7 +8,11 @@ const OUTPUT_DIR = path.join(ROOT, "public", "data");
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "wechat-unlock.json");
 const SECRET = process.env.WECHAT_UNLOCK_SECRET || "change-me-in-actions-secret";
 const WINDOW_MINUTES = Number(process.env.WECHAT_UNLOCK_WINDOW_MINUTES || "1440");
+const WINDOW_OFFSET_MINUTES = Number(
+	process.env.WECHAT_UNLOCK_WINDOW_OFFSET_MINUTES || "0",
+);
 const WINDOW_MS = WINDOW_MINUTES * 60 * 1000;
+const WINDOW_OFFSET_MS = WINDOW_OFFSET_MINUTES * 60 * 1000;
 const SALT_LEN = 16;
 const IV_LEN = 12;
 const TAG_LEN = 16;
@@ -22,7 +26,9 @@ if (!SECRET || SECRET === "change-me-in-actions-secret") {
 	process.exit(1);
 }
 
-const windowStartMs = Math.floor(Date.now() / WINDOW_MS) * WINDOW_MS;
+const windowStartMs =
+	Math.floor((Date.now() - WINDOW_OFFSET_MS) / WINDOW_MS) * WINDOW_MS +
+	WINDOW_OFFSET_MS;
 const currentWindow = buildWindow(windowStartMs);
 const nextWindow = buildWindow(windowStartMs + WINDOW_MS);
 
@@ -53,11 +59,11 @@ function buildWindow(windowStart) {
 }
 
 function buildDynamicCode(secret, windowId) {
-	return createHmac("sha256", secret)
+	const hash = createHmac("sha256", secret)
 		.update(String(windowId))
-		.digest("hex")
-		.slice(0, 8)
-		.toUpperCase();
+		.digest();
+	const number = hash.readUInt32BE(0) % 10000;
+	return String(number).padStart(4, "0");
 }
 
 async function collectProtectedArticles() {
