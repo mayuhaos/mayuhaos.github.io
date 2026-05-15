@@ -1,4 +1,298 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年5月15日 17:06:25</lastBuildDate><item><title>StackPrism：比 Wappalyzer 更愿意深挖线索的栈探针</title><link>https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/stackprism%E6%AF%94-wappalyzer-%E6%9B%B4%E6%84%BF%E6%84%8F%E6%B7%B1%E6%8C%96%E7%BA%BF%E7%B4%A2%E7%9A%84%E6%A0%88%E6%8E%A2%E9%92%88/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/stackprism%E6%AF%94-wappalyzer-%E6%9B%B4%E6%84%BF%E6%84%8F%E6%B7%B1%E6%8C%96%E7%BA%BF%E7%B4%A2%E7%9A%84%E6%A0%88%E6%8E%A2%E9%92%88/</guid><description>一个开源的网页技术栈检测扩展，从 DOM、资源 URL、响应头到动态加载都不放过，适合前端、独立开发者和喜欢拆站的人。</description><pubDate>Tue, 12 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;如果你平时喜欢看别人网站怎么做的，那你大概率用过 Wappalyzer。它足够经典，也足够省事，但只要你认真拆过一些现代站点，就会很快发现一个问题：很多技术线索根本不在表面上，尤其是那些动态加载、按需注入、或者藏在源码快照和响应头里的东西。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年5月15日 17:10:55</lastBuildDate><item><title>2026 还值得装的免费 AI 编程工具：Cursor、Copilot、Gemini Code Assist 怎么选</title><link>https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/2026-%E8%BF%98%E5%80%BC%E5%BE%97%E8%A3%85%E7%9A%84%E5%85%8D%E8%B4%B9-ai-%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7cursorcopilotgemini-code-assist-%E6%80%8E%E4%B9%88%E9%80%89/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/2026-%E8%BF%98%E5%80%BC%E5%BE%97%E8%A3%85%E7%9A%84%E5%85%8D%E8%B4%B9-ai-%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7cursorcopilotgemini-code-assist-%E6%80%8E%E4%B9%88%E9%80%89/</guid><description>如果你不想一上来就为 AI 编程工具付费，这篇文章可以帮你快速筛出现在还值得试的几款免费方案，以及它们各自更适合什么样的开发者。</description><pubDate>Fri, 15 May 2026 00:00:00 GMT</pubDate><content:encoded>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;工具&lt;/th&gt;&lt;th&gt;分类&lt;/th&gt;&lt;th&gt;描述&lt;/th&gt;&lt;th&gt;免费额度&lt;/th&gt;&lt;th&gt;评分&lt;/th&gt;&lt;th&gt;标签&lt;/th&gt;&lt;th&gt;备注&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://chatgpt.com/codex/&quot; target=&quot;_blank&quot;&gt;Codex&lt;/a&gt;&lt;/td&gt;&lt;td&gt;模型应用&lt;/td&gt;&lt;td&gt;OpenAI 的 ChatGPT 编程应用&lt;/td&gt;&lt;td&gt;按 5 小时、1 周、1 个月计算 Token 限额&lt;/td&gt;&lt;td&gt;9/10&lt;/td&gt;&lt;td&gt;模型、桌面应用&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://developers.openai.com/community/students&quot; target=&quot;_blank&quot;&gt;学生可获得 $100 额度&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://codeassist.google/&quot; target=&quot;_blank&quot;&gt;Gemini Code Assist&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE 扩展 &amp;amp; 终端应用&lt;/td&gt;&lt;td&gt;Google 的 AI 编程助手&lt;/td&gt;&lt;td&gt;每天最多 1000 次请求&lt;/td&gt;&lt;td&gt;7/10&lt;/td&gt;&lt;td&gt;IDE 扩展、终端应用&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://cursor.com/&quot; target=&quot;_blank&quot;&gt;Cursor&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE&lt;/td&gt;&lt;td&gt;AI 原生代码编辑器&lt;/td&gt;&lt;td&gt;每月 2000 次补全 + 50 次慢速高级请求&lt;/td&gt;&lt;td&gt;8/10&lt;/td&gt;&lt;td&gt;IDE、桌面应用&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://cursor.com/students&quot; target=&quot;_blank&quot;&gt;学生可免费获得一年 Pro&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://www.qodo.ai/&quot; target=&quot;_blank&quot;&gt;Qodo&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE 扩展&lt;/td&gt;&lt;td&gt;AI 驱动的测试与编程工具&lt;/td&gt;&lt;td&gt;每月 75 Credits&lt;/td&gt;&lt;td&gt;6/10&lt;/td&gt;&lt;td&gt;IDE 扩展、开源&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://opencode.ai/&quot; target=&quot;_blank&quot;&gt;OpenCode&lt;/a&gt;&lt;/td&gt;&lt;td&gt;终端应用&lt;/td&gt;&lt;td&gt;开源版 Claude Code 替代方案&lt;/td&gt;&lt;td&gt;基础模型免费，可接入 API Key 使用更强模型&lt;/td&gt;&lt;td&gt;7/10&lt;/td&gt;&lt;td&gt;终端应用、开源&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://github.com/features/copilot&quot; target=&quot;_blank&quot;&gt;GitHub Copilot&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE 扩展 &amp;amp; 终端应用&lt;/td&gt;&lt;td&gt;AI 结对编程助手&lt;/td&gt;&lt;td&gt;每月 2000 次补全&lt;/td&gt;&lt;td&gt;6/10&lt;/td&gt;&lt;td&gt;IDE 扩展、终端应用&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://docs.github.com/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-students&quot; target=&quot;_blank&quot;&gt;学生可免费使用高级版&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://www.jetbrains.com/junie/&quot; target=&quot;_blank&quot;&gt;Junie&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE 扩展&lt;/td&gt;&lt;td&gt;JetBrains AI 工具&lt;/td&gt;&lt;td&gt;每 30 天 3 个 AI Credits&lt;/td&gt;&lt;td&gt;3/10&lt;/td&gt;&lt;td&gt;IDE 扩展&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://www.jetbrains.com/academy/student-pack/&quot; target=&quot;_blank&quot;&gt;JetBrains 学生包内含免费 AI 功能&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://github.com/cline/cline&quot; target=&quot;_blank&quot;&gt;Cline&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE 扩展 &amp;amp; 终端应用&lt;/td&gt;&lt;td&gt;开源 AI 助手&lt;/td&gt;&lt;td&gt;免费不限量，可接入 API&lt;/td&gt;&lt;td&gt;3/10&lt;/td&gt;&lt;td&gt;IDE 扩展、终端应用&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://ollama.com/&quot; target=&quot;_blank&quot;&gt;Ollama&lt;/a&gt;&lt;/td&gt;&lt;td&gt;终端应用 &amp;amp; API&lt;/td&gt;&lt;td&gt;本地运行大模型&lt;/td&gt;&lt;td&gt;完全免费开源，可运行 Llama、Mistral 等模型&lt;/td&gt;&lt;td&gt;5/10&lt;/td&gt;&lt;td&gt;终端应用、开源&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://github.com/continuedev/continue&quot; target=&quot;_blank&quot;&gt;Continue&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE 扩展 &amp;amp; 终端应用&lt;/td&gt;&lt;td&gt;开源 Copilot 替代方案&lt;/td&gt;&lt;td&gt;无限使用（本地或 API 模式）&lt;/td&gt;&lt;td&gt;4/10&lt;/td&gt;&lt;td&gt;IDE 扩展、开源、终端应用&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://windsurf.com/&quot; target=&quot;_blank&quot;&gt;Windsurf&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE 扩展 &amp;amp; IDE&lt;/td&gt;&lt;td&gt;Codeium 推出的 AI IDE&lt;/td&gt;&lt;td&gt;免费版可用，部分高级功能受限&lt;/td&gt;&lt;td&gt;7/10&lt;/td&gt;&lt;td&gt;IDE、IDE 扩展&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://voideditor.com/&quot; target=&quot;_blank&quot;&gt;Void&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE&lt;/td&gt;&lt;td&gt;开源 AI Code Editor&lt;/td&gt;&lt;td&gt;完全免费开源，可接入 API&lt;/td&gt;&lt;td&gt;5/10&lt;/td&gt;&lt;td&gt;IDE、开源&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://kiro.dev/&quot; target=&quot;_blank&quot;&gt;Kiro&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE&lt;/td&gt;&lt;td&gt;AWS 推出的 AI IDE&lt;/td&gt;&lt;td&gt;免费预览期&lt;/td&gt;&lt;td&gt;4/10&lt;/td&gt;&lt;td&gt;IDE&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://zed.dev/ai&quot; target=&quot;_blank&quot;&gt;Zed AI&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE&lt;/td&gt;&lt;td&gt;Zed 编辑器内置 AI 功能&lt;/td&gt;&lt;td&gt;基础功能免费，部分模型需 API&lt;/td&gt;&lt;td&gt;6/10&lt;/td&gt;&lt;td&gt;IDE&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://tabbyml.com/&quot; target=&quot;_blank&quot;&gt;Tabby&lt;/a&gt;&lt;/td&gt;&lt;td&gt;IDE 扩展 &amp;amp; 自部署&lt;/td&gt;&lt;td&gt;开源本地代码补全工具&lt;/td&gt;&lt;td&gt;完全免费开源&lt;/td&gt;&lt;td&gt;5/10&lt;/td&gt;&lt;td&gt;IDE 扩展、开源、自部署&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;这两年 AI 编程工具已经多到有点眼花了。&lt;/p&gt;
+&lt;p&gt;问题不是“有没有工具可用”，而是你刚打开官网时，很难第一眼看明白三件事：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;哪个真的能免费用&lt;/li&gt;
+&lt;li&gt;哪个免费版不是摆设&lt;/li&gt;
+&lt;li&gt;哪个适合你现在的开发方式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以这篇就不铺概念了，直接按“普通开发者今天装上去能不能用、值不值得长期留着”的角度来盘一遍。&lt;/p&gt;
+&lt;p&gt;先说结论：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;想要免费额度最宽松，优先看 &lt;code&gt;Gemini Code Assist&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;想要 GitHub 生态里最省心，优先看 &lt;code&gt;GitHub Copilot Free&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;想试 AI 原生编辑器，&lt;code&gt;Cursor&lt;/code&gt; 依然值得装，但免费版没有以前那么豪横&lt;/li&gt;
+&lt;li&gt;想完全掌控模型和成本，&lt;code&gt;Cline + Ollama&lt;/code&gt; 这条路更自由&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Continue&lt;/code&gt; 适合折腾型用户，不一定最省事，但很适合自己搭工作流&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Codex&lt;/code&gt; 很强，但严格说它不是这篇“免费清单”里的性价比首选&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;section&gt;&lt;h2&gt;1. Gemini Code Assist：免费党最该先装的一个&lt;a href=&quot;#1-gemini-code-assist免费党最该先装的一个&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你现在只想找一个“先用起来再说”的 AI 编程助手，我会把第一推荐给 &lt;a href=&quot;https://developers.google.com/gemini-code-assist/docs/overview?hl=en&quot; target=&quot;_blank&quot;&gt;Gemini Code Assist&lt;/a&gt;。&lt;/p&gt;&lt;p&gt;它最猛的地方不是模型名，而是免费版给得真的不算小气。按照 Google 官方文档，截至 &lt;strong&gt;2026 年 5 月 15 日&lt;/strong&gt;：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;面向个人开发者的版本可以免费使用&lt;/li&gt;
+&lt;li&gt;使用个人 Gmail 账号即可开通&lt;/li&gt;
+&lt;li&gt;每位用户每天有 &lt;strong&gt;1000 次请求额度&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;每月有 &lt;strong&gt;180,000 次代码补全&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;对大多数个人项目、学习项目、日常修 bug 来说，这个额度已经不是“尝鲜级别”，而是能实打实用进日常开发流里。&lt;/p&gt;&lt;p&gt;它适合的人也很明确：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;你主要在 VS Code、JetBrains 或 Android Studio 里写代码&lt;/li&gt;
+&lt;li&gt;你不想折腾 API Key&lt;/li&gt;
+&lt;li&gt;你想要一个装完就能开始补全、问答、改代码的工具&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;它不算完美的地方也要提前说清楚。Gemini Code Assist 给人的感觉是“很能用、很稳”，但在某些复杂工程任务上，它未必总是最有主导性、最像一个强 Agent。它更像一个持续在线、额度很厚的编程搭子。&lt;/p&gt;&lt;p&gt;如果你现在还没装任何 AI 编程工具，从它开始，基本不会错。&lt;/p&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;2. GitHub Copilot Free：最像“通用默认选项”的免费方案&lt;a href=&quot;#2-github-copilot-free最像通用默认选项的免费方案&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/features/copilot/plans&quot; target=&quot;_blank&quot;&gt;GitHub Copilot&lt;/a&gt; 的优势从来不是最便宜，而是它太容易融进已有开发环境里了。&lt;/p&gt;&lt;p&gt;如果你本来就重度使用 GitHub、PR、Issues、VS Code 或 JetBrains，那 Copilot 的学习成本几乎为零。你不需要重新适应一套全新的开发方式，很多时候它就是自然地补进你现有流程里。&lt;/p&gt;&lt;p&gt;截至 &lt;strong&gt;2026 年 5 月 15 日&lt;/strong&gt;，GitHub 官方公开的 &lt;code&gt;Copilot Free&lt;/code&gt; 包含：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;每月 &lt;strong&gt;2000 次代码补全&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;每月 &lt;strong&gt;50 次 agent mode 或 chat 请求&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;可在支持的平台中直接使用&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这套免费额度说实话不算特别大方，但它有个优点：边界很清晰。你大致知道自己每个月能拿它完成什么，不太会出现“看起来免费，结果几分钟就见底”的心理落差。&lt;/p&gt;&lt;p&gt;我会把它推荐给这几类人：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;已经把 GitHub 当开发主场的人&lt;/li&gt;
+&lt;li&gt;不想折腾新编辑器，只想在熟悉环境里多一个 AI 助手&lt;/li&gt;
+&lt;li&gt;更在意生态整合，而不是单项能力拉满&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;它的缺点也很明显。免费版的 agent / chat 请求数不算多，如果你习惯把 AI 当成持续协作对象，而不是偶尔补全代码，那你很快就会碰到上限。&lt;/p&gt;&lt;p&gt;所以 Copilot Free 更像一把“顺手的默认工具”，而不是“火力全开的免费神器”。&lt;/p&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;3. Cursor：AI 原生编辑器里，依然很能打&lt;a href=&quot;#3-cursorai-原生编辑器里依然很能打&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你已经不满足于“IDE 里多一个聊天框”，而是更想体验“整个编辑器围着 AI 协作来设计”的感觉，那 &lt;a href=&quot;https://cursor.com/pricing&quot; target=&quot;_blank&quot;&gt;Cursor&lt;/a&gt; 还是绕不开。&lt;/p&gt;&lt;p&gt;它这两年最成功的地方，是把 AI 从一个插件，慢慢做成了编辑器核心交互的一部分。你会明显感觉到它不是在现有 IDE 上打补丁，而是在改“你和代码对话”的方式。&lt;/p&gt;&lt;p&gt;不过说回免费版，Cursor 现在的策略已经比早期收紧不少。官方定价页面显示，&lt;code&gt;Hobby Free&lt;/code&gt; 目前提供的是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;无需信用卡&lt;/li&gt;
+&lt;li&gt;有限的 Agent 请求&lt;/li&gt;
+&lt;li&gt;有限的 Tab 自动补全&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;也就是说，它依然值得装，但你最好不要再把它理解成一个无限白嫖的主力工具。免费版更像“体验 Cursor 工作方式”的入口，而不是长期高强度使用的终局方案。&lt;/p&gt;&lt;p&gt;它更适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;想试试 AI 原生 IDE 到底和传统编辑器有多大差别&lt;/li&gt;
+&lt;li&gt;更喜欢一体化交互，而不是到处装插件&lt;/li&gt;
+&lt;li&gt;愿意把 AI 当成核心工作流，而不是辅助功能&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果你只是偶尔写点代码，Cursor 免费版未必比 Copilot 或 Gemini 更合算；但如果你想体验当下最成熟的一批 AI 编辑器思路，它仍然很值得保留。&lt;/p&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;4. Cline：真正给你“自己选模型、自己控成本”的自由&lt;a href=&quot;#4-cline真正给你自己选模型自己控成本的自由&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://docs.cline.bot/introduction/overview&quot; target=&quot;_blank&quot;&gt;Cline&lt;/a&gt; 的定位和前面几位不太一样。&lt;/p&gt;&lt;p&gt;它不是那种“官方给你包好额度、包好模型、包好体验”的产品，而是一个开源 AI coding agent。它强调的是透明、可控和不锁模型生态。你可以自己选模型，自己接供应商，也可以自己决定成本和能力之间怎么取舍。&lt;/p&gt;&lt;p&gt;这条路线的好处，是自由度非常高。官方文档也明确提到它有几种免费路径：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;使用带 &lt;code&gt;FREE&lt;/code&gt; 标记的免费模型&lt;/li&gt;
+&lt;li&gt;使用部分服务商提供的免费额度&lt;/li&gt;
+&lt;li&gt;直接接入本地模型&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这也是为什么很多喜欢折腾工作流的人会偏爱 Cline。它不是让你接受一个现成套餐，而是把方向盘给你。&lt;/p&gt;&lt;p&gt;当然，自由的另一面就是更依赖你的动手能力。你要理解模型差异、供应商差异、上下文成本、任务耗费，才更容易把它调到顺手。&lt;/p&gt;&lt;p&gt;所以它更适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;已经理解 API / 模型 / token 成本这些概念的人&lt;/li&gt;
+&lt;li&gt;希望模型可替换、供应商可替换&lt;/li&gt;
+&lt;li&gt;不喜欢被某一个平台彻底锁死&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果你是新手，Cline 未必是最省心的第一站；但如果你已经开始在意“以后要不要把整个工作流绑在单一厂商上”，那它会越来越有吸引力。&lt;/p&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;5. Continue：更像一套可拼装的 AI 开发基础设施&lt;a href=&quot;#5-continue更像一套可拼装的-ai-开发基础设施&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://docs.continue.dev/index&quot; target=&quot;_blank&quot;&gt;Continue&lt;/a&gt; 和 Cline 一样，也是偏开放路线的工具，但它给人的感觉更像“基础设施”而不是“成品工具”。&lt;/p&gt;&lt;p&gt;它提供 IDE 扩展、CLI、规则配置、MCP 扩展能力，还能把 AI 检查带进 PR 工作流。换句话说，它不是只想帮你补全几行代码，而是想进入整个开发流程。&lt;/p&gt;&lt;p&gt;这类工具最吸引人的地方，是你可以按自己的习惯拼装：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;在 IDE 里做交互式改代码&lt;/li&gt;
+&lt;li&gt;在终端里跑 TUI 或自动化流程&lt;/li&gt;
+&lt;li&gt;在 CI / PR 阶段做检查&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;但它也有一个很现实的门槛：Continue 本身不是那种“官方塞给你一大把免费模型额度”的产品。它更像一个开放框架，是否免费、花多少，往往取决于你接的模型和部署方式。&lt;/p&gt;&lt;p&gt;所以我会把它推荐给：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;已经不满足于单点 AI 补全&lt;/li&gt;
+&lt;li&gt;想把 AI 融进终端、PR、检查流&lt;/li&gt;
+&lt;li&gt;乐于自己搭配置的人&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果你要的是“装完立刻用”，它不是最短路径；如果你要的是“把 AI 真正接进团队工程化流程”，Continue 的上限会很高。&lt;/p&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;6. Ollama：当你不想继续把代码上下文都交给云端&lt;a href=&quot;#6-ollama当你不想继续把代码上下文都交给云端&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你越来越在意隐私、成本，或者单纯想体验本地模型工作流，那 &lt;a href=&quot;https://ollama.com/&quot; target=&quot;_blank&quot;&gt;Ollama&lt;/a&gt; 现在已经是非常成熟的入口了。&lt;/p&gt;&lt;p&gt;它的价值不在于“单独拿来替代一切云端编程助手”，而在于它让你拥有了另一种选择：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;模型跑在自己机器上&lt;/li&gt;
+&lt;li&gt;数据留在本地&lt;/li&gt;
+&lt;li&gt;没有按次调用的焦虑&lt;/li&gt;
+&lt;li&gt;可以和别的工具组合使用&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Ollama 官方目前提供免费方案，支持本地运行开源模型，也提供 CLI、API 和桌面应用。对很多人来说，它不是第一个装的工具，却很可能是后面越来越离不开的那个底座。&lt;/p&gt;&lt;p&gt;尤其是当你把它和 Cline、Continue 这类开放工具组合起来之后，你会明显感受到一件事：AI 编程不一定非得建立在“每一步都把代码发到第三方云端”这条路上。&lt;/p&gt;&lt;p&gt;它适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;本地机器配置还不错&lt;/li&gt;
+&lt;li&gt;对隐私更敏感&lt;/li&gt;
+&lt;li&gt;希望把长期成本压低&lt;/li&gt;
+&lt;li&gt;想自己掌控模型选择&lt;/li&gt;
+&lt;/ul&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;7. 那 Codex 呢？&lt;a href=&quot;#7-那-codex-呢&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;很多人会把 &lt;a href=&quot;https://openai.com/codex/&quot; target=&quot;_blank&quot;&gt;Codex&lt;/a&gt; 也一起拉进比较里，这很正常，因为它在“像工程代理一样持续做事”这件事上，确实非常有代表性。&lt;/p&gt;&lt;p&gt;但如果我们把这篇文章限定为“免费 AI 编程工具盘点”，那我会把 Codex 放在一个比较特殊的位置。&lt;/p&gt;&lt;p&gt;原因很简单：它很强，但它并不属于那种最适合零门槛白嫖上手的选择。OpenAI 目前公开的文档重点更多放在不同 ChatGPT 方案下的 Codex 额度与计费方式上。也就是说，它更适合已经在用 ChatGPT 生态、并且愿意为更强代理能力付费的人，而不是单纯想找一个免费主力工具的新手。&lt;/p&gt;&lt;p&gt;所以如果你问我“Codex 强不强”，我的答案是强。&lt;/p&gt;&lt;p&gt;但如果你问我“2026 年 5 月，免费党应该先从哪一个开始”，我还是会把优先级放在 Gemini Code Assist、Copilot Free、Cursor Free，或者 Cline / Continue + Ollama 这一类更容易控制成本的组合上。&lt;/p&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;一张表看完&lt;a href=&quot;#一张表看完&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;工具&lt;/th&gt;&lt;th&gt;免费可用性&lt;/th&gt;&lt;th&gt;更适合谁&lt;/th&gt;&lt;th&gt;我对它的定位&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Gemini Code Assist&lt;/td&gt;&lt;td&gt;很强&lt;/td&gt;&lt;td&gt;个人开发者、学生、日常编码用户&lt;/td&gt;&lt;td&gt;免费主力首选&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;GitHub Copilot Free&lt;/td&gt;&lt;td&gt;中上&lt;/td&gt;&lt;td&gt;GitHub / VS Code 重度用户&lt;/td&gt;&lt;td&gt;最省心的默认选项&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Cursor Free&lt;/td&gt;&lt;td&gt;中&lt;/td&gt;&lt;td&gt;想体验 AI 原生 IDE 的人&lt;/td&gt;&lt;td&gt;最值得体验的编辑器路线&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Cline&lt;/td&gt;&lt;td&gt;取决于模型&lt;/td&gt;&lt;td&gt;想自由选模型的人&lt;/td&gt;&lt;td&gt;高可控开源 Agent&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Continue&lt;/td&gt;&lt;td&gt;取决于部署&lt;/td&gt;&lt;td&gt;想自己搭工作流的人&lt;/td&gt;&lt;td&gt;AI 工程化基础设施&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Ollama&lt;/td&gt;&lt;td&gt;很强&lt;/td&gt;&lt;td&gt;本地模型爱好者、隐私敏感用户&lt;/td&gt;&lt;td&gt;本地底座&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Codex&lt;/td&gt;&lt;td&gt;不适合按“免费主力”理解&lt;/td&gt;&lt;td&gt;已在 ChatGPT 生态里的用户&lt;/td&gt;&lt;td&gt;强，但不是免费榜首&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;我的建议&lt;a href=&quot;#我的建议&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你懒得对比太久，可以直接按下面这个顺序试：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;先装 &lt;code&gt;Gemini Code Assist&lt;/code&gt;，看你日常写代码到底会不会真的用 AI&lt;/li&gt;
+&lt;li&gt;如果你本来就深度用 GitHub，再补一个 &lt;code&gt;Copilot Free&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;想体验 AI 原生 IDE，再装 &lt;code&gt;Cursor&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;如果你开始在意隐私、成本和模型自由度，再去试 &lt;code&gt;Cline&lt;/code&gt;、&lt;code&gt;Continue&lt;/code&gt; 和 &lt;code&gt;Ollama&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;AI 编程工具到 2026 年，已经不是“谁最聪明”这么简单了。真正拉开体验差距的，往往是它和你当前工作流合不合拍。&lt;/p&gt;&lt;p&gt;你不一定需要最强的那个，但你很需要那个你愿意每天打开的工具。&lt;/p&gt;&lt;hr /&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;官方链接&lt;a href=&quot;#官方链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Gemini Code Assist: &lt;a href=&quot;https://developers.google.com/gemini-code-assist/docs/overview?hl=en&quot; target=&quot;_blank&quot;&gt;developers.google.com/gemini-code-assist&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;GitHub Copilot: &lt;a href=&quot;https://github.com/features/copilot/plans&quot; target=&quot;_blank&quot;&gt;github.com/features/copilot/plans&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Cursor: &lt;a href=&quot;https://cursor.com/pricing&quot; target=&quot;_blank&quot;&gt;cursor.com/pricing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Cline: &lt;a href=&quot;https://docs.cline.bot/introduction/overview&quot; target=&quot;_blank&quot;&gt;docs.cline.bot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Continue: &lt;a href=&quot;https://docs.continue.dev/index&quot; target=&quot;_blank&quot;&gt;docs.continue.dev&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ollama: &lt;a href=&quot;https://ollama.com/&quot; target=&quot;_blank&quot;&gt;ollama.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Codex: &lt;a href=&quot;https://openai.com/codex/&quot; target=&quot;_blank&quot;&gt;openai.com/codex&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;</content:encoded></item><item><title>StackPrism：比 Wappalyzer 更愿意深挖线索的栈探针</title><link>https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/stackprism%E6%AF%94-wappalyzer-%E6%9B%B4%E6%84%BF%E6%84%8F%E6%B7%B1%E6%8C%96%E7%BA%BF%E7%B4%A2%E7%9A%84%E6%A0%88%E6%8E%A2%E9%92%88/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/stackprism%E6%AF%94-wappalyzer-%E6%9B%B4%E6%84%BF%E6%84%8F%E6%B7%B1%E6%8C%96%E7%BA%BF%E7%B4%A2%E7%9A%84%E6%A0%88%E6%8E%A2%E9%92%88/</guid><description>一个开源的网页技术栈检测扩展，从 DOM、资源 URL、响应头到动态加载都不放过，适合前端、独立开发者和喜欢拆站的人。</description><pubDate>Tue, 12 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;如果你平时喜欢看别人网站怎么做的，那你大概率用过 Wappalyzer。它足够经典，也足够省事，但只要你认真拆过一些现代站点，就会很快发现一个问题：很多技术线索根本不在表面上，尤其是那些动态加载、按需注入、或者藏在源码快照和响应头里的东西。&lt;/p&gt;
 &lt;p&gt;所以我今天想记一下这个项目：&lt;a href=&quot;https://github.com/setube/stackprism&quot; target=&quot;_blank&quot;&gt;StackPrism&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;它给我的第一感觉不是“又一个技术栈识别插件”，而是“这作者是真的想把页面翻个底朝天”。按照仓库介绍，StackPrism 不只是扫一眼页面源码，它会从页面运行时、DOM、资源 URL、响应头、动态加载资源和源码快照里持续收集线索，然后再按分类展示结果。&lt;/p&gt;
 &lt;p&gt;这意味着什么？简单说，就是它不是只想告诉你“这个站像不像 React”，而是更想把整条痕迹链都找出来。仓库里列出的分类非常细，从前端框架、UI / CSS 框架、构建与运行时，到 CDN、Web 服务器、CMS、电商平台、统计分析、OAuth、支付、AI / 大模型，覆盖面明显比很多老牌检测器更激进。&lt;/p&gt;
