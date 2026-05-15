@@ -5,12 +5,9 @@ description: 如果你不想一上来就为 AI 编程工具付费，这篇文章
 tags:
   - AI
   - 编程工具
-  - Copilot
-  - Cursor
-  - Gemini
-  - 开源
 category: 技术教程
 draft: false
+image: https://cdn.jsdelivr.net/gh/mayuhaos/blog-images@notepix/assets/20260515T091415710Z.png
 ---
 
 | 工具 | 分类 | 描述 | 免费额度 | 评分 | 标签 | 备注 |
