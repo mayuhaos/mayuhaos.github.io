@@ -6,9 +6,6 @@ type SiteConfigWithWechatUnlock = SiteConfig & {
 		enabled: boolean;
 		name: string;
 		keyword: string;
-		apiBase: string;
-		codePagePath: string;
-		windowMinutes: number;
 		qrImage?: string;
 		qrLink?: string;
 	};
@@ -48,9 +45,6 @@ export const siteConfig: SiteConfigWithWechatUnlock = {
 		enabled: true,
 		name: "Mars 公众号",
 		keyword: "口令",
-		apiBase: "/data/wechat-unlock.json",
-		codePagePath: "/wechat-code/",
-		windowMinutes: 1440,
 		qrImage: "/assets/images/wechat/official-account-qr.jpeg",
 		qrLink: "",
 	},

@@ -11,8 +11,6 @@
     "astro": "astro",
     "type-check": "tsc --noEmit --isolatedDeclarations",
     "new-post": "node scripts/new-post.js",
-    "sync-protected-keys": "node scripts/sync-protected-keys.mjs",
-    "generate-wechat-unlock": "node scripts/generate-wechat-unlock.mjs",
     "replace": "node scripts/replace-image-prefix.mjs",
     "format": "biome format --write ./src",
     "lint": "biome check --write ./src",
