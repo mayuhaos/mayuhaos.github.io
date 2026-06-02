@@ -1,4 +1,268 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月2日 13:10:38</lastBuildDate><item><title>qunl-api Linux 服务器 Docker 部署保姆级教程</title><link>https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/qunl-api-linux-%E6%9C%8D%E5%8A%A1%E5%99%A8-docker-%E9%83%A8%E7%BD%B2%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/qunl-api-linux-%E6%9C%8D%E5%8A%A1%E5%99%A8-docker-%E9%83%A8%E7%BD%B2%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B/</guid><description>从零在阿里云 CentOS/Linux 服务器上使用 Docker 部署 qunl-api、PostgreSQL、Redis 与 Nginx 反向代理。</description><pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这篇文章记录一次在全新的阿里云 Linux/CentOS 服务器上，从零部署 &lt;code&gt;qunl-api&lt;/code&gt; 的完整流程。整体方案使用 Docker 管理基础中间件，包括 PostgreSQL 15、Redis 7 和 Nginx 反向代理，&lt;code&gt;qunl-api&lt;/code&gt; 主程序则通过二进制文件在宿主机后台运行。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月2日 17:56:52</lastBuildDate><item><title>Fiddler Everywhere 5.17+ 非官方补丁 Release 技术解读与风险复盘</title><link>https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/fiddler-everywhere-517-%E9%9D%9E%E5%AE%98%E6%96%B9%E8%A1%A5%E4%B8%81-release-%E6%8A%80%E6%9C%AF%E8%A7%A3%E8%AF%BB%E4%B8%8E%E9%A3%8E%E9%99%A9%E5%A4%8D%E7%9B%98/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/fiddler-everywhere-517-%E9%9D%9E%E5%AE%98%E6%96%B9%E8%A1%A5%E4%B8%81-release-%E6%8A%80%E6%9C%AF%E8%A7%A3%E8%AF%BB%E4%B8%8E%E9%A3%8E%E9%99%A9%E5%A4%8D%E7%9B%98/</guid><description>从 GitHub Release 元数据、Fiddler Everywhere 的代理信任边界、补丁类工具的供应链风险和合规替代方案，系统复盘一次非官方破解补丁为什么不应该被当成普通工具使用。</description><pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这篇文章聊一个比较敏感、但很值得技术复盘的话题：GitHub 上 &lt;code&gt;Eilte/Fiddler-Everywhere-Crack&lt;/code&gt; 仓库发布的 &lt;code&gt;5.17+&lt;/code&gt; Release。&lt;/p&gt;
+&lt;p&gt;先把态度说清楚：本文不是破解教程，也不会复述补丁执行流程。原因很简单，Fiddler Everywhere 不是普通桌面软件，它是会接管系统代理、安装调试证书、查看 HTTPS 流量的网络调试工具。对这类工具动刀，不只是“改一个授权状态”那么轻，真正危险的是你把自己的网络信任边界交给了一个无法验证的第三方二进制。&lt;/p&gt;
+&lt;p&gt;所以这篇会从工程视角做一次完整拆解：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这个 Release 到底公开声明了什么&lt;/li&gt;
+&lt;li&gt;Fiddler Everywhere 为什么天然属于高信任软件&lt;/li&gt;
+&lt;li&gt;这类 patcher 可能触碰哪些系统边界&lt;/li&gt;
+&lt;li&gt;使用非官方补丁的安全、合规和工程风险&lt;/li&gt;
+&lt;li&gt;如果只是想抓包调试，有哪些更稳的路线&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section&gt;&lt;h2&gt;Release 元数据速读&lt;a href=&quot;#release-元数据速读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;根据 GitHub Release 页面与 GitHub API 可见信息，这个 Release 的基本情况如下：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;项目&lt;/th&gt;&lt;th&gt;信息&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;仓库&lt;/td&gt;&lt;td&gt;&lt;code&gt;Eilte/Fiddler-Everywhere-Crack&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Release 名称&lt;/td&gt;&lt;td&gt;&lt;code&gt;5.17+&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;发布时间&lt;/td&gt;&lt;td&gt;2024-12-11&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;最后更新时间&lt;/td&gt;&lt;td&gt;2024-12-23&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;适配声明&lt;/td&gt;&lt;td&gt;Fiddler Everywhere 5.17 及以上&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Release 资产&lt;/td&gt;&lt;td&gt;Windows x64 与 Linux x64 两个压缩包&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Windows 资产下载量&lt;/td&gt;&lt;td&gt;约 5948 次&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Linux 资产下载量&lt;/td&gt;&lt;td&gt;约 624 次&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Release 文案来源声明&lt;/td&gt;&lt;td&gt;声称补丁来自 52pojie 论坛&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;额外提示&lt;/td&gt;&lt;td&gt;提到可使用 PowerShell 脚本禁用更新&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这里最关键的不是“下载量挺高”，而是三个信号：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;它不是 Progress Telerik 官方发布。&lt;/li&gt;
+&lt;li&gt;它发布的是二进制 patcher，而不是透明的源码补丁。&lt;/li&gt;
+&lt;li&gt;它还提到了禁用更新，这意味着它可能影响软件后续安全修复链路。&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;单看这三点，风险等级就已经不低了。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;先理解 Fiddler Everywhere 的位置&lt;a href=&quot;#先理解-fiddler-everywhere-的位置&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Fiddler Everywhere 的官方定位是跨平台 Web 调试代理，用来捕获、检查、修改、重放网络请求。它支持 Windows、macOS、Linux，并且能处理 HTTPS、HTTP/2、WebSocket、gRPC 等现代协议。&lt;/p&gt;&lt;p&gt;换成人话说，它不是“看一下网络日志”的小工具，而是一个被你主动放进网络链路中间的调试代理。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+    A[&quot;浏览器 / App / CLI&quot;] --&amp;gt; B[&quot;系统代理配置&quot;]
+    B --&amp;gt; C[&quot;Fiddler Everywhere&quot;]
+    C --&amp;gt; D[&quot;证书信任链 / HTTPS 解密&quot;]
+    C --&amp;gt; E[&quot;会话存储 / 导出 / 重放&quot;]
+    C --&amp;gt; F[&quot;规则、过滤、修改响应&quot;]
+    C --&amp;gt; G[&quot;互联网服务&quot;]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这张图里每一层都是敏感点。&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;系统代理：决定流量先经过谁。&lt;/li&gt;
+&lt;li&gt;证书信任链：决定谁可以解密 HTTPS。&lt;/li&gt;
+&lt;li&gt;会话存储：可能包含 Cookie、Token、接口返回、用户数据。&lt;/li&gt;
+&lt;li&gt;请求修改：可以改变前后端交互结果。&lt;/li&gt;
+&lt;li&gt;自动更新：决定软件能不能及时拿到安全修复。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果一个非官方补丁修改了这类软件，那么你要问的就不只是“能不能用”，而是：&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;我是否愿意让一个未知 patcher 间接触碰我的代理、证书、流量和更新机制？&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;这才是问题的核心。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;官方版本线索：5.17 并不是当前新版本&lt;a href=&quot;#官方版本线索517-并不是当前新版本&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;官方 Release History 显示，Fiddler Everywhere &lt;code&gt;v5.17.0&lt;/code&gt; 发布于 2024-09-12。这个版本的更新内容包括复制 Timings timeline 信息的提示、若干 gRPC / Overview 时间显示问题修复，以及更新第三方依赖以缓解安全问题。&lt;/p&gt;&lt;p&gt;截至 2026-06-02，官方 Release History 已经进入 7.x 系列，页面可见最新版本为 &lt;code&gt;v7.7.3&lt;/code&gt;，发布日期是 2026-04-14。&lt;/p&gt;&lt;p&gt;这意味着 &lt;code&gt;5.17+&lt;/code&gt; 这个标签覆盖的是一段已经过去很久的版本区间。对安全软件或代理工具来说，旧版本本身就会带来额外问题：你不知道后续版本修了哪些依赖漏洞、证书处理问题、协议兼容问题或更新机制问题。&lt;/p&gt;&lt;p&gt;如果再叠加“禁用更新”，风险会进一步放大。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;非官方 patcher 通常会动哪里&lt;a href=&quot;#非官方-patcher-通常会动哪里&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这里不讨论这个具体补丁的执行方式，只讲这类工具在工程上常见的修改面。商业桌面软件的授权逻辑一般会分布在几个地方：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;本地二进制文件&lt;/li&gt;
+&lt;li&gt;应用资源文件&lt;/li&gt;
+&lt;li&gt;授权状态缓存&lt;/li&gt;
+&lt;li&gt;登录与订阅校验逻辑&lt;/li&gt;
+&lt;li&gt;自动更新模块&lt;/li&gt;
+&lt;li&gt;运行时配置&lt;/li&gt;
+&lt;li&gt;与云端服务交互的请求逻辑&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;一个 patcher 如果想改变授权行为，常见思路通常离不开下面几类高层动作：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;修改面&lt;/th&gt;&lt;th&gt;可能影响&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;修改可执行文件或动态库&lt;/td&gt;&lt;td&gt;破坏原始签名与完整性校验&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;修改授权判断逻辑&lt;/td&gt;&lt;td&gt;让应用状态偏离官方预期&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;修改配置文件&lt;/td&gt;&lt;td&gt;改变启动、更新、登录或网络行为&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;禁用更新组件&lt;/td&gt;&lt;td&gt;阻断官方安全修复&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;写入额外文件&lt;/td&gt;&lt;td&gt;增加持久化或后门风险&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;调整代理 / 证书相关逻辑&lt;/td&gt;&lt;td&gt;影响系统网络信任边界&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;对普通软件来说，修改二进制已经足够危险；对抓包代理来说，危险点还会继续扩大，因为它运行时本来就拥有很强的流量可见性。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;真正的风险不是“破解失败”，而是信任链断裂&lt;a href=&quot;#真正的风险不是破解失败而是信任链断裂&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;很多人看这类 Release，只会关心一句话：能不能用？&lt;/p&gt;&lt;p&gt;但从安全工程角度，应该先问另外五个问题：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;这个 patcher 的源码可审计吗？&lt;/li&gt;
+&lt;li&gt;Release 资产有可验证的哈希、签名或可复现构建吗？&lt;/li&gt;
+&lt;li&gt;它会不会改系统代理、证书存储、hosts、防火墙或启动项？&lt;/li&gt;
+&lt;li&gt;它会不会禁用更新，导致后续漏洞无法修复？&lt;/li&gt;
+&lt;li&gt;它会不会读取、导出或转发 Fiddler 捕获到的敏感会话？&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这几个问题如果答不上来，就不应该在主力机器、办公机器、开发机器上运行。&lt;/p&gt;&lt;p&gt;尤其是第 5 点。Fiddler Everywhere 捕获到的内容，经常不是“无害日志”，而是非常实在的敏感信息：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;登录态 Cookie&lt;/li&gt;
+&lt;li&gt;Bearer Token&lt;/li&gt;
+&lt;li&gt;API Key&lt;/li&gt;
+&lt;li&gt;内部接口返回&lt;/li&gt;
+&lt;li&gt;用户手机号、邮箱、订单、地址&lt;/li&gt;
+&lt;li&gt;OAuth 回调参数&lt;/li&gt;
+&lt;li&gt;企业内网请求&lt;/li&gt;
+&lt;li&gt;测试环境账号密码&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;抓包工具一旦被污染，后果不是“软件坏了”，而是整条调试链路都不可信了。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;风险矩阵&lt;a href=&quot;#风险矩阵&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;下面这张表可以作为判断这类补丁的通用框架。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;风险类型&lt;/th&gt;&lt;th&gt;严重程度&lt;/th&gt;&lt;th&gt;触发原因&lt;/th&gt;&lt;th&gt;可能后果&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;二进制完整性风险&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;patcher 修改应用文件&lt;/td&gt;&lt;td&gt;官方签名失效、行为不可预测&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;供应链风险&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;Release 资产来源不透明&lt;/td&gt;&lt;td&gt;后门、植入、投毒、二次打包&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;网络流量风险&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;工具本身处理 HTTPS 与代理&lt;/td&gt;&lt;td&gt;Token、Cookie、业务数据泄露&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;更新链路风险&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;禁用或绕过更新&lt;/td&gt;&lt;td&gt;长期停留在存在漏洞的版本&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;合规风险&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;绕过商业授权&lt;/td&gt;&lt;td&gt;违反许可协议、审计不通过&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;稳定性风险&lt;/td&gt;&lt;td&gt;中&lt;/td&gt;&lt;td&gt;应用状态偏离官方设计&lt;/td&gt;&lt;td&gt;崩溃、抓包异常、证书错误&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;团队扩散风险&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;非官方工具被内部传播&lt;/td&gt;&lt;td&gt;开发环境批量污染&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;一句话：这不是“装不装一个工具”的问题，而是你愿不愿意把调试环境的信任根交出去。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;为什么“禁用更新”是一个危险信号&lt;a href=&quot;#为什么禁用更新是一个危险信号&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;很多破解补丁都会建议禁用更新，原因并不复杂：官方更新可能覆盖被修改的文件，也可能修复或改变授权逻辑。&lt;/p&gt;&lt;p&gt;但从防御视角看，自动更新是软件供应链安全里非常关键的一环。它至少承担三件事：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;修复第三方依赖漏洞&lt;/li&gt;
+&lt;li&gt;修复协议处理与证书逻辑问题&lt;/li&gt;
+&lt;li&gt;修复应用自身的安全缺陷&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Fiddler Everywhere &lt;code&gt;v5.17.0&lt;/code&gt; 的官方更新说明里就明确提到过更新第三方依赖以缓解安全问题。也就是说，这类软件的版本更新并不只是“加功能”，还包含安全修复。&lt;/p&gt;&lt;p&gt;当一个补丁建议你停掉更新时，它实际上是在说：&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;为了维持非官方状态，请放弃官方安全修复链路。&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;这对代理工具尤其不划算。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;如果你是安全研究员，应该怎么分析它&lt;a href=&quot;#如果你是安全研究员应该怎么分析它&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你只是普通开发者，不建议运行这类补丁。如果你是安全研究员，确实需要做样本分析，也应该把它当成未知二进制处理，而不是当成普通安装包。&lt;/p&gt;&lt;p&gt;一个相对稳妥的分析框架如下：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;阶段&lt;/th&gt;&lt;th&gt;关注点&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;静态元数据&lt;/td&gt;&lt;td&gt;文件大小、编译时间、PE/ELF 结构、签名、哈希&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;静态行为&lt;/td&gt;&lt;td&gt;字符串、URL、注册表路径、文件路径、进程名&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;沙箱运行&lt;/td&gt;&lt;td&gt;进程树、文件写入、网络连接、DNS 查询&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;系统改动&lt;/td&gt;&lt;td&gt;代理设置、证书存储、hosts、启动项、计划任务&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;应用改动&lt;/td&gt;&lt;td&gt;被替换文件、配置变更、更新模块状态&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;网络侧&lt;/td&gt;&lt;td&gt;是否有异常出站连接、是否上传本地信息&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这里有个原则：只在隔离环境里观察，不在真实工作机上验证。虚拟机快照、无敏感账号、独立网络、运行前后 diff，这些都应该是基本动作。&lt;/p&gt;&lt;p&gt;不要因为它来自 GitHub，就默认它可信。GitHub 是托管平台，不是安全背书。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;对个人开发者的建议&lt;a href=&quot;#对个人开发者的建议&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你的目标只是抓包调试，优先考虑这几条路线：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;使用 Fiddler Everywhere 官方试用或正式授权。&lt;/li&gt;
+&lt;li&gt;如果你在 Windows 上，按官方许可选择 Fiddler Classic 等工具。&lt;/li&gt;
+&lt;li&gt;前端页面请求优先用浏览器 DevTools。&lt;/li&gt;
+&lt;li&gt;API 调试可以用 Postman、Insomnia、Bruno 等工具。&lt;/li&gt;
+&lt;li&gt;需要代理式抓包可以看 mitmproxy、HTTP Toolkit、Requestly、Charles Proxy、Wireshark 等。&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这些工具能力边界不同，不存在一个绝对替代品。但只要你不把“绕授权”作为第一目标，就会发现可选方案其实不少。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;对团队和公司的建议&lt;a href=&quot;#对团队和公司的建议&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;团队环境里，这类补丁不应该进入开发机基线，更不应该出现在共享网盘、内部 Wiki、装机脚本或 onboarding 文档里。&lt;/p&gt;&lt;p&gt;更稳的做法是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;明确网络调试工具白名单。&lt;/li&gt;
+&lt;li&gt;统一购买或申请合法授权。&lt;/li&gt;
+&lt;li&gt;禁止使用来源不明的 patcher、loader、keygen。&lt;/li&gt;
+&lt;li&gt;对抓包工具的证书安装和代理配置建立操作规范。&lt;/li&gt;
+&lt;li&gt;定期检查开发机代理设置、根证书列表和启动项。&lt;/li&gt;
+&lt;li&gt;对导出的 SAZ、HAR、日志文件做敏感信息处理。&lt;/li&gt;
+&lt;li&gt;在安全培训里强调“抓包工具比普通工具更敏感”。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果公司已经有人运行过类似补丁，建议按安全事件的方式做一次轻量排查：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;检查系统代理和证书存储是否异常。&lt;/li&gt;
+&lt;li&gt;检查 Fiddler 安装目录是否被非官方文件覆盖。&lt;/li&gt;
+&lt;li&gt;检查是否存在未知启动项或计划任务。&lt;/li&gt;
+&lt;li&gt;检查近期是否有异常出站连接。&lt;/li&gt;
+&lt;li&gt;轮换在该机器上出现过的关键 Token、API Key 和测试账号密码。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这听起来可能有点严肃，但对代理工具来说并不过分。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;技术人的底线：能逆向，不等于该绕过&lt;a href=&quot;#技术人的底线能逆向不等于该绕过&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;逆向工程本身不是原罪。安全研究、兼容性分析、漏洞挖掘、恶意样本分析，都离不开逆向能力。&lt;/p&gt;&lt;p&gt;但绕过商业授权是另一件事。它的问题不只是法律和版权，也包括工程伦理：你把一个本该可信的软件运行链路改成了不可验证状态，又把它用于处理敏感流量。&lt;/p&gt;&lt;p&gt;这就是为什么我不建议把这类 Release 当成“福利工具”传播。它更适合作为一个反面案例，用来提醒我们：越接近网络、证书、身份和数据的工具，越不能随便交给未知补丁。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;结论&lt;a href=&quot;#结论&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Fiddler-Everywhere-Crack&lt;/code&gt; 的 &lt;code&gt;5.17+&lt;/code&gt; Release，表面上是一个适配 Fiddler Everywhere 5.17 及以上版本的非官方补丁发布；从工程安全角度看，它更像是一次典型的桌面软件供应链风险样本。&lt;/p&gt;&lt;p&gt;它触碰的不是普通功能开关，而是代理工具的高信任运行环境。尤其是当 Release 文案同时出现二进制 patcher、第三方来源、禁用更新这些信号时，风险已经非常明确。&lt;/p&gt;&lt;p&gt;我的建议很简单：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;不要在主力机或办公机运行。&lt;/li&gt;
+&lt;li&gt;不要把它写成可执行教程传播。&lt;/li&gt;
+&lt;li&gt;不要在团队环境里扩散。&lt;/li&gt;
+&lt;li&gt;真需要抓包，选官方授权或可信替代工具。&lt;/li&gt;
+&lt;li&gt;真要研究，也把它当未知样本隔离分析。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;网络调试工具越强，越应该从可信来源安装。因为它看到的不是软件界面，而是你机器上最真实的一部分流量。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;GitHub Release: &lt;a href=&quot;https://github.com/Eilte/Fiddler-Everywhere-Crack/releases/tag/5.17%2B&quot; target=&quot;_blank&quot;&gt;Eilte/Fiddler-Everywhere-Crack 5.17+&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fiddler Everywhere 官方介绍: &lt;a href=&quot;https://docs.telerik.com/fiddler-everywhere/introduction&quot; target=&quot;_blank&quot;&gt;docs.telerik.com/fiddler-everywhere/introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fiddler Everywhere Release History: &lt;a href=&quot;https://www.telerik.com/support/whats-new/fiddler-everywhere/release-history&quot; target=&quot;_blank&quot;&gt;telerik.com/support/whats-new/fiddler-everywhere/release-history&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fiddler Everywhere v5.17.0 Release Notes: &lt;a href=&quot;https://www.telerik.com/support/whats-new/fiddler-everywhere/release-history/fiddler-everywhere-v5.17.0&quot; target=&quot;_blank&quot;&gt;telerik.com/support/whats-new/fiddler-everywhere/release-history/fiddler-everywhere-v5.17.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;</content:encoded></item><item><title>qunl-api Linux 服务器 Docker 部署保姆级教程</title><link>https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/qunl-api-linux-%E6%9C%8D%E5%8A%A1%E5%99%A8-docker-%E9%83%A8%E7%BD%B2%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/qunl-api-linux-%E6%9C%8D%E5%8A%A1%E5%99%A8-docker-%E9%83%A8%E7%BD%B2%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B/</guid><description>从零在阿里云 CentOS/Linux 服务器上使用 Docker 部署 qunl-api、PostgreSQL、Redis 与 Nginx 反向代理。</description><pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这篇文章记录一次在全新的阿里云 Linux/CentOS 服务器上，从零部署 &lt;code&gt;qunl-api&lt;/code&gt; 的完整流程。整体方案使用 Docker 管理基础中间件，包括 PostgreSQL 15、Redis 7 和 Nginx 反向代理，&lt;code&gt;qunl-api&lt;/code&gt; 主程序则通过二进制文件在宿主机后台运行。&lt;/p&gt;
 &lt;blockquote&gt;&lt;p&gt;说明：本文保留原部署笔记中的密码，方便一键复制复现。正式生产环境建议在部署前改成自己的强密码，并同步更新 &lt;code&gt;.env&lt;/code&gt; 配置。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;section&gt;&lt;h2&gt;部署目标&lt;a href=&quot;#部署目标&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;完成后服务器上会运行以下服务：&lt;/p&gt;&lt;ul&gt;
 &lt;li&gt;PostgreSQL 15：保存 &lt;code&gt;qunl-api&lt;/code&gt; 主数据库与日志数据库。&lt;/li&gt;
@@ -32,7 +296,21 @@
 &lt;li&gt;&lt;code&gt;qunl_api&lt;/code&gt;：主业务数据库。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;qunl_api-logs&lt;/code&gt;：日志数据库。&lt;/li&gt;
 &lt;/ul&gt;&lt;p&gt;如果重复执行并提示数据库已存在，说明之前已经创建过，可以继续后续步骤。&lt;/p&gt;&lt;/section&gt;
-&lt;section&gt;&lt;h2&gt;四、配置 qunl-api 主程序&lt;a href=&quot;#四配置-qunl-api-主程序&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;进入 &lt;code&gt;qunl-api&lt;/code&gt; 二进制文件所在目录后，执行下面的命令，重写本地 &lt;code&gt;.env&lt;/code&gt; 配置文件。&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;cat&lt;/span&gt;&lt;span&gt; &amp;lt;&amp;lt; &lt;/span&gt;&lt;span&gt;&apos;EOF&apos;&lt;/span&gt;&lt;span&gt; &amp;gt; &lt;/span&gt;&lt;span&gt;.env&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;SQL_DSN=postgres://root:BbAxy_110goodpg@127.0.0.1:5432/qunl_api?sslmode=disable&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;LOG_SQL_DSN=postgres://root:BbAxy_110goodpg@127.0.0.1:5432/qunl_api-logs?sslmode=disable&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;REDIS_CONN_STRING=redis://:BbAxy_110goodredis@127.0.0.1:6379/0&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;LOG_REQUEST_RESPONSE_ENABLED=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;EOF&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;因为这里使用的是下划线密码，所以连接字符串里不需要额外加双引号，也不需要做 URL 转义。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;四、配置 qunl-api 主程序&lt;a href=&quot;#四配置-qunl-api-主程序&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;进入 &lt;code&gt;qunl-api&lt;/code&gt; 二进制文件所在目录后，执行下面的命令，重写本地 &lt;code&gt;.env&lt;/code&gt; 配置文件。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;span&gt;展开&lt;/span&gt;&lt;span&gt;收起&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;cat&lt;/span&gt;&lt;span&gt; &amp;lt;&amp;lt; &lt;/span&gt;&lt;span&gt;&apos;EOF&apos;&lt;/span&gt;&lt;span&gt; &amp;gt; &lt;/span&gt;&lt;span&gt;.env&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 端口号&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;PORT=3000&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 前端基础URL（留空则使用本机嵌入的 WEB 页面；设为其他域名则访问本机时会被重定向到该地址，易导致白屏）&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# FRONTEND_BASE_URL=&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;FRONTEND_BASE_URL=&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;REGISTER_DEFAULT_GROUP=default&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;8&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 调试相关配置&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;9&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 启用pprof&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;10&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# ENABLE_PPROF=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;11&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 启用调试模式&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;12&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;DEBUG=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;13&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;14&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 数据库相关配置&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;15&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;SQL_DSN=postgres://root:BbAxy_110goodpg@127.0.0.1:5432/qunl_api?sslmode=disable&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;16&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;LOG_SQL_DSN=postgres://root:BbAxy_110goodpg@127.0.0.1:5432/qunl_api-logs?sslmode=disable&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;17&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;REDIS_CONN_STRING=redis://:BbAxy_110goodredis@127.0.0.1:6379/0&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;18&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;LOG_REQUEST_RESPONSE_ENABLED=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;19&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;20&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;21&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;22&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# PostgreSQL 格式：postgresql://user:password@host:port/dbname（密码含 @ 等需 URL 编码，如 @ → %40）&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;23&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# MySQL 格式：user:password@tcp(host:port)/dbname?parseTime=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;24&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;#SQL_DSN=postgresql://root:new_API%402025@data.qunl.com:14421/new-api&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;25&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 日志数据库&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;26&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;#LOG_SQL_DSN=postgresql://root:new_API%402025@data.qunl.com:14421/new-api-logs&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;27&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# SQLite数据库路径&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;28&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# SQLITE_PATH=/path/to/sqlite.db&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;29&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 数据库最大空闲连接数&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;30&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# SQL_MAX_IDLE_CONNS=100&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;31&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 数据库最大打开连接数&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;32&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# SQL_MAX_OPEN_CONNS=1000&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;33&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 数据库连接最大生命周期（秒）&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;34&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# SQL_MAX_LIFETIME=60&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;35&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;36&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;37&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 缓存相关配置&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;38&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# Redis连接字符串&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;39&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# REDIS_CONN_STRING=redis://user:password@localhost:6379/0&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;40&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 同步频率（单位：秒）&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;41&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# SYNC_FREQUENCY=60&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;42&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 内存缓存启用&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;43&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# MEMORY_CACHE_ENABLED=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;44&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 渠道更新频率（单位：秒）&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;45&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# CHANNEL_UPDATE_FREQUENCY=30&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;46&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 批量更新启用&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;47&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# BATCH_UPDATE_ENABLED=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;48&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 批量更新间隔（单位：秒）&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;49&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# BATCH_UPDATE_INTERVAL=5&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;50&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;51&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 任务和功能配置&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;52&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 更新任务启用&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;53&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# UPDATE_TASK=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;54&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;55&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 对话超时设置&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;56&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 所有请求超时时间，单位秒，默认为0，表示不限制&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;57&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# RELAY_TIMEOUT=0&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;58&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 流模式无响应超时时间，单位秒，如果出现空补全可以尝试改为更大值&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;59&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# STREAMING_TIMEOUT=300&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;60&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;61&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# Gemini 识别图片 最大图片数量&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;62&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# GEMINI_VISION_MAX_IMAGE_NUM=16&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;63&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;64&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 会话密钥&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;65&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# SESSION_SECRET=random_string&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;66&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;67&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 其他配置&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;68&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 生成默认token&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;69&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# GENERATE_DEFAULT_TOKEN=false&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;70&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# Cohere 安全设置&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;71&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# COHERE_SAFETY_SETTING=NONE&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;72&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 是否统计图片token&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;73&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# GET_MEDIA_TOKEN=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;74&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 是否在非流（stream=false）情况下统计图片token&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;75&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# GET_MEDIA_TOKEN_NOT_STREAM=false&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;76&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 设置 Dify 渠道是否输出工作流和节点信息到客户端&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;77&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# DIFY_DEBUG=true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;78&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;79&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# LinuxDo相关配置&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;80&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;LINUX_DO_TOKEN_ENDPOINT=https://connect.linux.do/oauth2/token&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;81&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;LINUX_DO_USER_ENDPOINT=https://connect.linux.do/api/user&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;82&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;83&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 节点类型&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;84&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 如果是主节点则为master&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;85&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# NODE_TYPE=master&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;86&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;87&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;EOF&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;span&gt;展开&lt;/span&gt;&lt;span&gt;收起&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;因为这里使用的是下划线密码，所以连接字符串里不需要额外加双引号，也不需要做 URL 转义。&lt;/p&gt;&lt;/section&gt;
 &lt;section&gt;&lt;h2&gt;五、后台启动 qunl-api&lt;a href=&quot;#五后台启动-qunl-api&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;为了避免当前终端中残留的全局环境变量影响程序读取 &lt;code&gt;.env&lt;/code&gt;，先清理可能存在的变量，再用 &lt;code&gt;nohup&lt;/code&gt; 后台启动主程序。&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 清理全局缓存&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;unset&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;SQL_DSN&lt;/span&gt;&lt;span&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span&gt;unset&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;LOG_SQL_DSN&lt;/span&gt;&lt;span&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span&gt;unset&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;REDIS_CONN_STRING&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
 &lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;# 后台挂起程序，监听 6000 端口&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;nohup&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;./qunl-api&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;--port&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;6000&lt;/span&gt;&lt;span&gt; &amp;gt; &lt;/span&gt;&lt;span&gt;output.log&lt;/span&gt;&lt;span&gt; 2&amp;gt;&amp;amp;1 &amp;amp;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;启动后查看日志：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;tail&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;-f&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;output.log&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;如果看到类似下面的日志，就说明 &lt;code&gt;qunl-api&lt;/code&gt; 已经启动成功：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;HTTP&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;server&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;started&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;on&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;port&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;:6000&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;此时访问服务器公网 IP，Nginx 会把 &lt;code&gt;80&lt;/code&gt; 端口请求转发到本机 &lt;code&gt;6000&lt;/code&gt; 端口的 &lt;code&gt;qunl-api&lt;/code&gt; 服务。&lt;/p&gt;&lt;/section&gt;
 &lt;section&gt;&lt;h2&gt;常见问题&lt;a href=&quot;#常见问题&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. &lt;code&gt;docker stop&lt;/code&gt; 提示容器不存在怎么办？&lt;a href=&quot;#1-docker-stop-提示容器不存在怎么办&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果是新服务器，旧容器本来就不存在，这是正常情况。可以继续执行后面的启动命令。&lt;/p&gt;&lt;p&gt;如果想让清理脚本在容器不存在时也不影响继续执行，可以改成：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;docker&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;stop&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;pg15&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;redis7&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;nginx-proxy&lt;/span&gt;&lt;span&gt; 2&amp;gt;&lt;/span&gt;&lt;span&gt;/dev/null&lt;/span&gt;&lt;span&gt; || &lt;/span&gt;&lt;span&gt;true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;docker&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;rm&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;pg15&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;redis7&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;nginx-proxy&lt;/span&gt;&lt;span&gt; 2&amp;gt;&lt;/span&gt;&lt;span&gt;/dev/null&lt;/span&gt;&lt;span&gt; || &lt;/span&gt;&lt;span&gt;true&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. PostgreSQL 或 Redis 连接不上怎么办？&lt;a href=&quot;#2-postgresql-或-redis-连接不上怎么办&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;优先检查容器是否运行：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;docker&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;ps&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;再检查端口是否已经监听：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;docker&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;logs&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;pg15&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;docker&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;logs&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;redis7&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;如果日志里出现权限、端口占用或密码错误，就根据日志提示处理。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Nginx 能打开，但 qunl-api 无响应怎么办？&lt;a href=&quot;#3-nginx-能打开但-qunl-api-无响应怎么办&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;先确认 &lt;code&gt;qunl-api&lt;/code&gt; 是否真的在监听 &lt;code&gt;6000&lt;/code&gt; 端口：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;tail&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;-f&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;output.log&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;再确认 Nginx 容器是否启动成功：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;docker&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;logs&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;nginx-proxy&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;本文的 Nginx 配置通过 &lt;code&gt;host.docker.internal&lt;/code&gt; 访问宿主机，并在启动容器时加了：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;--add-host&lt;/span&gt;&lt;span&gt;=&lt;/span&gt;&lt;span&gt;host.docker.internal:host-gateway&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;如果 Docker 版本较旧，不支持 &lt;code&gt;host-gateway&lt;/code&gt;，需要升级 Docker，或者改用宿主机网关 IP。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 修改 &lt;code&gt;.env&lt;/code&gt; 后没有生效怎么办？&lt;a href=&quot;#4-修改-env-后没有生效怎么办&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;.env&lt;/code&gt; 修改后需要重启 &lt;code&gt;qunl-api&lt;/code&gt; 进程。可以先找到旧进程，再重新执行 &lt;code&gt;nohup&lt;/code&gt; 启动命令。&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;ps&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;-ef&lt;/span&gt;&lt;span&gt; | &lt;/span&gt;&lt;span&gt;grep&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;qunl-api&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;确认进程号后结束旧进程：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;kill&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;&amp;lt;进程号&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;然后重新启动：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;nohup&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;./qunl-api&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;--port&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;6000&lt;/span&gt;&lt;span&gt; &amp;gt; &lt;/span&gt;&lt;span&gt;output.log&lt;/span&gt;&lt;span&gt; 2&amp;gt;&amp;amp;1 &amp;amp;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;/section&gt;
