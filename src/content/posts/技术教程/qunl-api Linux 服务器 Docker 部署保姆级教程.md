@@ -158,10 +158,91 @@ docker exec -it pg15 psql -U root -c "CREATE DATABASE \"qunl_api-logs\";"
 
 ```bash
 cat << 'EOF' > .env
+# 端口号
+PORT=3000
+# 前端基础URL（留空则使用本机嵌入的 WEB 页面；设为其他域名则访问本机时会被重定向到该地址，易导致白屏）
+# FRONTEND_BASE_URL=
+FRONTEND_BASE_URL=
+REGISTER_DEFAULT_GROUP=default
+# 调试相关配置
+# 启用pprof
+# ENABLE_PPROF=true
+# 启用调试模式
+DEBUG=true
+
+# 数据库相关配置
 SQL_DSN=postgres://root:BbAxy_110goodpg@127.0.0.1:5432/qunl_api?sslmode=disable
 LOG_SQL_DSN=postgres://root:BbAxy_110goodpg@127.0.0.1:5432/qunl_api-logs?sslmode=disable
 REDIS_CONN_STRING=redis://:BbAxy_110goodredis@127.0.0.1:6379/0
 LOG_REQUEST_RESPONSE_ENABLED=true
+
+
+
+# PostgreSQL 格式：postgresql://user:password@host:port/dbname（密码含 @ 等需 URL 编码，如 @ → %40）
+# MySQL 格式：user:password@tcp(host:port)/dbname?parseTime=true
+#SQL_DSN=postgresql://root:new_API%402025@data.qunl.com:14421/new-api
+# 日志数据库
+#LOG_SQL_DSN=postgresql://root:new_API%402025@data.qunl.com:14421/new-api-logs
+# SQLite数据库路径
+# SQLITE_PATH=/path/to/sqlite.db
+# 数据库最大空闲连接数
+# SQL_MAX_IDLE_CONNS=100
+# 数据库最大打开连接数
+# SQL_MAX_OPEN_CONNS=1000
+# 数据库连接最大生命周期（秒）
+# SQL_MAX_LIFETIME=60
+
+
+# 缓存相关配置
+# Redis连接字符串
+# REDIS_CONN_STRING=redis://user:password@localhost:6379/0
+# 同步频率（单位：秒）
+# SYNC_FREQUENCY=60
+# 内存缓存启用
+# MEMORY_CACHE_ENABLED=true
+# 渠道更新频率（单位：秒）
+# CHANNEL_UPDATE_FREQUENCY=30
+# 批量更新启用
+# BATCH_UPDATE_ENABLED=true
+# 批量更新间隔（单位：秒）
+# BATCH_UPDATE_INTERVAL=5
+
+# 任务和功能配置
+# 更新任务启用
+# UPDATE_TASK=true
+
+# 对话超时设置
+# 所有请求超时时间，单位秒，默认为0，表示不限制
+# RELAY_TIMEOUT=0
+# 流模式无响应超时时间，单位秒，如果出现空补全可以尝试改为更大值
+# STREAMING_TIMEOUT=300
+
+# Gemini 识别图片 最大图片数量
+# GEMINI_VISION_MAX_IMAGE_NUM=16
+
+# 会话密钥
+# SESSION_SECRET=random_string
+
+# 其他配置
+# 生成默认token
+# GENERATE_DEFAULT_TOKEN=false
+# Cohere 安全设置
+# COHERE_SAFETY_SETTING=NONE
+# 是否统计图片token
+# GET_MEDIA_TOKEN=true
+# 是否在非流（stream=false）情况下统计图片token
+# GET_MEDIA_TOKEN_NOT_STREAM=false
+# 设置 Dify 渠道是否输出工作流和节点信息到客户端
+# DIFY_DEBUG=true
+
+# LinuxDo相关配置
+LINUX_DO_TOKEN_ENDPOINT=https://connect.linux.do/oauth2/token
+LINUX_DO_USER_ENDPOINT=https://connect.linux.do/api/user
+
+# 节点类型
+# 如果是主节点则为master
+# NODE_TYPE=master
+
 EOF
 ```
 
