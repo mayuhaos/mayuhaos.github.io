@@ -1,4 +1,406 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月8日 09:45:43</lastBuildDate><item><title>Fiddler Everywhere 5.17+ 非官方补丁 Release 技术解读与风险复盘</title><link>https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/fiddler-everywhere-517-%E9%9D%9E%E5%AE%98%E6%96%B9%E8%A1%A5%E4%B8%81-release-%E6%8A%80%E6%9C%AF%E8%A7%A3%E8%AF%BB%E4%B8%8E%E9%A3%8E%E9%99%A9%E5%A4%8D%E7%9B%98/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/fiddler-everywhere-517-%E9%9D%9E%E5%AE%98%E6%96%B9%E8%A1%A5%E4%B8%81-release-%E6%8A%80%E6%9C%AF%E8%A7%A3%E8%AF%BB%E4%B8%8E%E9%A3%8E%E9%99%A9%E5%A4%8D%E7%9B%98/</guid><description>从 GitHub Release 元数据、Fiddler Everywhere 的代理信任边界、补丁类工具的供应链风险和合规替代方案，系统复盘一次非官方破解补丁为什么不应该被当成普通工具使用。</description><pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这篇文章聊一个比较敏感、但很值得技术复盘的话题：GitHub 上 &lt;code&gt;Eilte/Fiddler-Everywhere-Crack&lt;/code&gt; 仓库发布的 &lt;code&gt;5.17+&lt;/code&gt; Release。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月8日 11:15:07</lastBuildDate><item><title>OSINT Explorer：1300+ 免费开源情报工具导航与合规使用指南</title><link>https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/osint-explorer1300-%E5%85%8D%E8%B4%B9%E5%BC%80%E6%BA%90%E6%83%85%E6%8A%A5%E5%B7%A5%E5%85%B7%E5%AF%BC%E8%88%AA%E4%B8%8E%E5%90%88%E8%A7%84%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/osint-explorer1300-%E5%85%8D%E8%B4%B9%E5%BC%80%E6%BA%90%E6%83%85%E6%8A%A5%E5%B7%A5%E5%85%B7%E5%AF%BC%E8%88%AA%E4%B8%8E%E5%90%88%E8%A7%84%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid><description>OSINT Explorer / OSINT Brasil 收录 1300+ 个免费 OSINT 工具，适合安全研究、新闻调查、企业资产盘点和公开信息核验。本文从工具定位、分类方法、工作流设计和合规边界完整拆解它的价值。</description><pubDate>Mon, 08 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;如果你做过安全研究、舆情分析、威胁情报、品牌风控，或者只是想把一个公开线索查清楚，应该很快会遇到一个问题：OSINT 工具太多了。&lt;/p&gt;
+&lt;p&gt;邮箱查询、用户名枚举、域名解析、证书透明度、社交媒体搜索、图片反查、泄露数据核验、地图与地理位置、公司注册信息、区块链浏览器、暗网索引、元数据分析……每个方向都有一堆工具，每个工具又有自己的适用范围、免费额度、地区限制和数据源偏差。&lt;/p&gt;
+&lt;p&gt;所以我今天想记一下这个工具导航：&lt;a href=&quot;https://osint.juanmathewsrebellosantos.com/&quot; target=&quot;_blank&quot;&gt;OSINT Explorer&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;它在站点元数据里的名称是 &lt;strong&gt;OSINT Brasil&lt;/strong&gt;，作者标注为 &lt;strong&gt;Juan Mathews Rebello Santos&lt;/strong&gt;。站点对自己的定位很直接：一个免费的 OSINT 工具目录，收录 1300+ 个开源情报工具，支持 30+ 种语言，并且强调工具数据会自动从 GitHub 上的 awesome-osint 资源更新。&lt;/p&gt;
+&lt;p&gt;这类导航真正的价值，不是“帮你点开一个工具”，而是把混乱的开源情报工具生态整理成一个可检索、可筛选、可复用的入口。对初学者来说，它降低了入门门槛；对熟手来说，它更像一个调查前的工具箱索引。&lt;/p&gt;
+&lt;section&gt;&lt;h2&gt;什么是 OSINT&lt;a href=&quot;#什么是-osint&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OSINT 是 Open Source Intelligence 的缩写，中文通常叫“开源情报”或“公开来源情报”。&lt;/p&gt;&lt;p&gt;这里的 “Open Source” 不是单指开源软件，而是指公开、可自由访问、无需未授权入侵即可获取的信息来源。常见来源包括：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;搜索引擎结果&lt;/li&gt;
+&lt;li&gt;新闻报道和公开文章&lt;/li&gt;
+&lt;li&gt;社交媒体公开内容&lt;/li&gt;
+&lt;li&gt;政府、法院、工商、招投标等公开数据库&lt;/li&gt;
+&lt;li&gt;域名 WHOIS、DNS、证书透明度日志&lt;/li&gt;
+&lt;li&gt;GitHub 等代码托管平台公开仓库&lt;/li&gt;
+&lt;li&gt;公司官网、招聘页面、帮助文档、状态页&lt;/li&gt;
+&lt;li&gt;图片、视频、地图、卫星影像等公开资料&lt;/li&gt;
+&lt;li&gt;安全公告、漏洞库、恶意样本情报平台&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;OSINT 的核心不是“偷偷拿数据”，而是把公开数据变成可验证、可解释、可交叉印证的分析结论。真正专业的 OSINT 工作，更像情报分析和证据整理，而不是到处乱搜。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+  A[&quot;公开来源&quot;] --&amp;gt; B[&quot;检索与采集&quot;]
+  B --&amp;gt; C[&quot;清洗与去重&quot;]
+  C --&amp;gt; D[&quot;交叉验证&quot;]
+  D --&amp;gt; E[&quot;时间线与关系图谱&quot;]
+  E --&amp;gt; F[&quot;结论与风险判断&quot;]
+  F --&amp;gt; G[&quot;合规留痕&quot;]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这也是为什么一个好的 OSINT 导航站很重要：它不是替你做判断，而是让你更快找到“下一步应该用什么工具验证”。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;OSINT Explorer 到底解决了什么问题&lt;a href=&quot;#osint-explorer-到底解决了什么问题&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;很多人第一次接触 OSINT，会直接去搜“邮箱查询工具”“手机号查询工具”“域名反查工具”。这种方式短期有效，但长期会非常低效，因为你很难知道：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具是否还活着&lt;/li&gt;
+&lt;li&gt;工具是免费还是付费&lt;/li&gt;
+&lt;li&gt;工具偏向哪个国家和地区&lt;/li&gt;
+&lt;li&gt;工具查的是实时数据还是历史快照&lt;/li&gt;
+&lt;li&gt;工具结果是否能导出、复查、引用&lt;/li&gt;
+&lt;li&gt;工具是否需要注册账号或提交敏感查询&lt;/li&gt;
+&lt;li&gt;工具背后是否会记录你的查询目标&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;OSINT Explorer 的价值就在这里。它把大量工具集中在一个目录里，通过搜索、分类、语言和收藏等能力，把“找工具”这件事从搜索引擎随机碰运气，变成一个更像工程化索引的动作。&lt;/p&gt;&lt;p&gt;根据站点公开元数据，它有几个明显特征：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;维度&lt;/th&gt;&lt;th&gt;说明&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;工具数量&lt;/td&gt;&lt;td&gt;收录 1300+ 个 OSINT 工具&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;访问方式&lt;/td&gt;&lt;td&gt;Web 页面，可直接在线浏览&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;数据来源&lt;/td&gt;&lt;td&gt;站点描述称会从 GitHub 的 awesome-osint 资源自动更新&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;语言支持&lt;/td&gt;&lt;td&gt;支持 30+ 种语言&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;使用成本&lt;/td&gt;&lt;td&gt;站点本身免费，不要求用户先注册&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;目标用户&lt;/td&gt;&lt;td&gt;调查人员、记者、安全分析师、研究人员、网络安全从业者&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;辅助能力&lt;/td&gt;&lt;td&gt;搜索、过滤、收藏、明暗主题等&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这类站点最适合放在浏览器收藏夹里，不一定每天打开，但一旦你要做公开信息核验、资产摸底、线索归类，它会很省时间。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;工具分类应该怎么理解&lt;a href=&quot;#工具分类应该怎么理解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OSINT 工具导航最容易让人眼花，因为分类太多。我的建议是不要按“工具名”记，而是按“线索类型”记。&lt;/p&gt;&lt;p&gt;一个公开情报任务，通常会围绕几个实体展开：人、组织、域名、IP、账号、邮箱、手机号、图片、地点、文件、代码仓库、钱包地址、事件时间线。你手里有什么线索，就从对应实体切入。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. 社交媒体与用户名&lt;a href=&quot;#1-社交媒体与用户名&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;社交媒体 OSINT 主要关注公开账号、用户名复用、头像复用、公开发帖、关注关系、简介字段、历史昵称和外链。&lt;/p&gt;&lt;p&gt;这类工具适合做品牌冒用排查、虚假账号识别、公开舆情研究、新闻事实核验。真正有价值的不是“找到一个账号”，而是判断多个账号之间是否存在可解释的关联。&lt;/p&gt;&lt;p&gt;专业做法通常会注意三件事：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;用户名相同不等于同一个人&lt;/li&gt;
+&lt;li&gt;头像相同可能来自模板、盗图或转载&lt;/li&gt;
+&lt;li&gt;平台时间线、语言习惯、外链、互动关系需要互相印证&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 邮箱与账号暴露&lt;a href=&quot;#2-邮箱与账号暴露&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;邮箱是很常见的 OSINT 入口。它可能出现在公开代码提交、论坛资料、公司页面、数据泄露通知、邮件安全配置、Gravatar 头像或注册状态检查里。&lt;/p&gt;&lt;p&gt;对个人来说，邮箱 OSINT 更适合用于自查：看看自己的邮箱有没有出现在公开泄露事件、是否被写进了公开仓库、是否暴露在不该暴露的页面里。&lt;/p&gt;&lt;p&gt;对企业来说，它适合做攻击面管理：识别哪些员工邮箱暴露在公开页面、哪些域名没有配置好 SPF / DKIM / DMARC、哪些历史邮箱可能仍被钓鱼利用。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 手机号与通信线索&lt;a href=&quot;#3-手机号与通信线索&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;手机号相关 OSINT 很敏感，因为它直接触及个人隐私。合法场景通常是本人自查、企业客户资料合规核验、反欺诈、账号安全排查，或者经过授权的调查工作。&lt;/p&gt;&lt;p&gt;技术上，手机号可能关联到地区号段、公开页面、社交应用注册状态、历史黄页信息、泄露数据痕迹等。但在实际使用里，最重要的是边界：不要把工具用于骚扰、跟踪、肉搜或未经授权的身份定位。&lt;/p&gt;&lt;p&gt;一个成熟的 OSINT 使用者，应该把手机号视为高敏标识符。能不用就不用，必须用时要有授权、有目的、有留痕。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 域名、DNS 与证书&lt;a href=&quot;#4-域名dns-与证书&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;域名方向是安全研究里最常见、也最工程化的一类 OSINT。&lt;/p&gt;&lt;p&gt;从一个域名出发，可以扩展到：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;子域名&lt;/li&gt;
+&lt;li&gt;DNS 解析记录&lt;/li&gt;
+&lt;li&gt;历史解析&lt;/li&gt;
+&lt;li&gt;WHOIS 与注册商信息&lt;/li&gt;
+&lt;li&gt;证书透明度日志&lt;/li&gt;
+&lt;li&gt;CDN 与云服务供应商&lt;/li&gt;
+&lt;li&gt;开放端口和服务指纹&lt;/li&gt;
+&lt;li&gt;关联域名、跳转链、同备案主体或同组织资产&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这类信息常用于企业资产盘点、供应链风险分析、钓鱼域名识别、攻防演练前期授权范围确认。它的技术含量不一定最高，但最容易影响真实安全结果，因为很多风险并不在主站，而在没人记得的测试域名、旧后台、临时对象存储桶和历史服务上。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;5. IP、网络与基础设施&lt;a href=&quot;#5-ip网络与基础设施&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IP 相关工具通常用于判断一个地址属于谁、暴露了什么服务、是否出现在威胁情报记录里、是否被滥用为垃圾邮件或恶意流量节点。&lt;/p&gt;&lt;p&gt;这里要特别注意：公开查询和未授权扫描不是一回事。查公开数据库、威胁情报、历史记录属于典型 OSINT；主动对目标发起大规模探测、爆破、绕过访问控制，就已经越过了公开情报的边界。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;6. 图片、视频与地理位置&lt;a href=&quot;#6-图片视频与地理位置&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;图片和视频 OSINT 是最容易被低估的一类。公开图片里可能有 EXIF 元数据、拍摄时间、地标、车牌、路牌、天气、影子方向、建筑风格、语言文字、店铺招牌等线索。&lt;/p&gt;&lt;p&gt;它适合新闻核验、反诈骗、地理定位、品牌侵权识别、灾害现场信息验证等场景。真正专业的做法不是“看起来像哪里”，而是把多个公开证据放在一起：地图街景、建筑轮廓、历史天气、太阳方位、上传时间、原始出处、二次传播链。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;7. 文件、代码与元数据&lt;a href=&quot;#7-文件代码与元数据&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;公开文档和代码仓库经常泄露不该暴露的信息，比如内部路径、用户名、邮箱、API 地址、测试域名、版本号、调试日志、访问密钥、对象存储链接。&lt;/p&gt;&lt;p&gt;对企业安全来说，这类 OSINT 的价值非常高。因为它不需要触碰目标系统，只要检查公开仓库、公开附件、公开文档，就可能发现真实的资产暴露和流程缺陷。&lt;/p&gt;&lt;p&gt;但同样要注意：发现疑似密钥或敏感数据时，正确动作是停止扩散、保存必要证据、按负责任披露流程联系所有者，而不是尝试使用它。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;推荐的 OSINT 工作流&lt;a href=&quot;#推荐的-osint-工作流&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我更建议把 OSINT Explorer 当成“工作流入口”，而不是单纯的工具列表。&lt;/p&gt;&lt;p&gt;一个可靠的 OSINT 调查，通常可以拆成下面几步：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+  A[&quot;定义问题&quot;] --&amp;gt; B[&quot;列出已知线索&quot;]
+  B --&amp;gt; C[&quot;选择工具类别&quot;]
+  C --&amp;gt; D[&quot;查询公开来源&quot;]
+  D --&amp;gt; E[&quot;记录来源与时间&quot;]
+  E --&amp;gt; F[&quot;交叉验证&quot;]
+  F --&amp;gt; G{&quot;证据是否足够&quot;}
+  G -- &quot;不足&quot; --&amp;gt; C
+  G -- &quot;足够&quot; --&amp;gt; H[&quot;形成结论&quot;]
+  H --&amp;gt; I[&quot;标注置信度与限制&quot;]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这个流程看起来慢，但它能避免两个常见坑：一是把工具结果当事实，二是把巧合当证据。&lt;/p&gt;&lt;p&gt;比如一个用户名同时出现在两个平台上，只能说明“可能有关联”；如果头像、简介链接、时间线、语言习惯、注册邮箱哈希、公开项目提交记录都互相支持，置信度才会上升。OSINT 的本质不是找到单点证据，而是构建证据链。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;为什么说它适合安全团队&lt;a href=&quot;#为什么说它适合安全团队&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;对安全团队来说，OSINT Explorer 最有价值的场景不是“查别人”，而是查自己。&lt;/p&gt;&lt;p&gt;企业最应该定期做的 OSINT 自查包括：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;公司域名和子域名是否完整纳管&lt;/li&gt;
+&lt;li&gt;历史测试环境是否仍然暴露&lt;/li&gt;
+&lt;li&gt;GitHub、GitLab、Gitee 等平台是否有敏感信息&lt;/li&gt;
+&lt;li&gt;员工邮箱是否出现在公开泄露数据中&lt;/li&gt;
+&lt;li&gt;招聘 JD 是否暴露内部技术栈和安全边界&lt;/li&gt;
+&lt;li&gt;帮助文档、状态页、API 文档是否泄露内部路径&lt;/li&gt;
+&lt;li&gt;证书透明度日志里是否出现未知域名&lt;/li&gt;
+&lt;li&gt;品牌、商标、客服账号是否被仿冒&lt;/li&gt;
+&lt;li&gt;云对象存储、CDN、旧后台是否可被公开索引&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些工作不一定需要高深漏洞利用能力，但非常考验耐心和方法。OSINT Explorer 的价值，是让安全团队少花时间找入口，多花时间做判断。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;为什么说它也适合普通开发者&lt;a href=&quot;#为什么说它也适合普通开发者&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;普通开发者使用 OSINT 工具，最现实的收益是“减少自己的公开暴露面”。&lt;/p&gt;&lt;p&gt;你可以从几个问题开始：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;我的常用邮箱是否出现在公开泄露事件里？&lt;/li&gt;
+&lt;li&gt;我的 Git 提交邮箱是否暴露了私人邮箱？&lt;/li&gt;
+&lt;li&gt;我的旧博客、旧域名、旧项目是否还挂着敏感信息？&lt;/li&gt;
+&lt;li&gt;我的简历、作品集、文档里是否暴露了不必要的内部系统地址？&lt;/li&gt;
+&lt;li&gt;我的域名 DNS、证书、对象存储配置是否留下历史痕迹？&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;很多人以为隐私泄露来自黑客入侵，但现实里，大量暴露来自“我以前自己发出去过，只是忘了”。OSINT 自查的意义，就是把这些散落在公开互联网里的碎片重新捡回来。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;合规边界：会用工具不等于可以乱用工具&lt;a href=&quot;#合规边界会用工具不等于可以乱用工具&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OSINT 最容易被误解的一点，是“公开可见”不等于“可以任意使用”。&lt;/p&gt;&lt;p&gt;公开来源情报仍然要遵守法律、平台条款、隐私边界和职业伦理。尤其是涉及个人身份、手机号、家庭住址、行踪轨迹、社交关系、未成年人信息、医疗金融信息时，更要谨慎。&lt;/p&gt;&lt;p&gt;我建议给自己设几条硬规则：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;不做未经授权的个人跟踪和骚扰&lt;/li&gt;
+&lt;li&gt;不把手机号、住址、身份证明等敏感标识用于公开传播&lt;/li&gt;
+&lt;li&gt;不绕过登录、权限、付费墙或访问控制&lt;/li&gt;
+&lt;li&gt;不使用泄露凭据登录任何系统&lt;/li&gt;
+&lt;li&gt;不把单一工具结果当成确定事实&lt;/li&gt;
+&lt;li&gt;不采集与目标无关的个人信息&lt;/li&gt;
+&lt;li&gt;不保存超出任务所需的敏感数据&lt;/li&gt;
+&lt;li&gt;不在没有公共利益或授权的情况下发布个人画像&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;对团队来说，还应该把 OSINT 纳入制度：明确授权范围、数据保留时间、证据记录方式、报告脱敏规则和披露流程。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;结果可信度怎么判断&lt;a href=&quot;#结果可信度怎么判断&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OSINT 工具给出的结果，天然存在误差。公开数据库可能过期，搜索引擎可能缓存旧页面，社交平台可能存在同名账号，域名记录可能经过隐私保护，泄露数据可能被污染或伪造。&lt;/p&gt;&lt;p&gt;一个结果能不能用，至少要看四个维度：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;维度&lt;/th&gt;&lt;th&gt;要问的问题&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;来源&lt;/td&gt;&lt;td&gt;数据来自官方、平台、第三方聚合，还是未知来源&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;时间&lt;/td&gt;&lt;td&gt;信息是什么时候产生、抓取、更新的&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;关联&lt;/td&gt;&lt;td&gt;是否有其他独立来源能够支持同一结论&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;解释&lt;/td&gt;&lt;td&gt;是否存在更普通、更无害的解释&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这就是为什么 OSINT 报告里最好写置信度。比如“高置信度关联”“中等置信度疑似关联”“低置信度线索待验证”，比一句“查到了就是他”专业得多，也安全得多。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;和传统搜索引擎的区别&lt;a href=&quot;#和传统搜索引擎的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;很多人会问：既然都是公开信息，为什么不用 Google、Bing、百度直接搜？&lt;/p&gt;&lt;p&gt;搜索引擎当然重要，但它只解决了一部分问题。OSINT 工具导航解决的是“垂直数据源”和“专用查询方法”。&lt;/p&gt;&lt;p&gt;搜索引擎擅长全文索引，但不一定擅长：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;查历史 DNS&lt;/li&gt;
+&lt;li&gt;查证书透明度&lt;/li&gt;
+&lt;li&gt;查泄露事件聚合&lt;/li&gt;
+&lt;li&gt;查社交平台用户名占用&lt;/li&gt;
+&lt;li&gt;查代码提交历史&lt;/li&gt;
+&lt;li&gt;查图片元数据&lt;/li&gt;
+&lt;li&gt;查恶意 IP 信誉&lt;/li&gt;
+&lt;li&gt;查区块链地址流转&lt;/li&gt;
+&lt;li&gt;查地图与地理线索&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以正确姿势不是二选一，而是组合使用：搜索引擎做广域发现，专用 OSINT 工具做垂直验证。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;我会怎么使用 OSINT Explorer&lt;a href=&quot;#我会怎么使用-osint-explorer&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果是我自己用，我不会上来就挨个点工具，而是先把任务拆成实体。&lt;/p&gt;&lt;p&gt;比如做企业外部暴露面自查，我会按这个顺序走：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;先列出根域名、品牌名、公司名、常见缩写。&lt;/li&gt;
+&lt;li&gt;用域名、DNS、证书、历史解析类工具扩展资产。&lt;/li&gt;
+&lt;li&gt;用搜索引擎和代码平台工具查公开泄露线索。&lt;/li&gt;
+&lt;li&gt;用威胁情报工具看 IP、域名、样本、钓鱼记录。&lt;/li&gt;
+&lt;li&gt;用社交媒体和品牌监测工具检查仿冒账号。&lt;/li&gt;
+&lt;li&gt;把所有发现按“可验证风险”和“待确认线索”分开。&lt;/li&gt;
+&lt;li&gt;对每个风险记录来源、时间、截图、影响和修复建议。&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;如果是个人隐私自查，我会反过来收缩范围：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;只查自己的邮箱、用户名、域名、公开主页。&lt;/li&gt;
+&lt;li&gt;不扩大到无关联系人和社交关系。&lt;/li&gt;
+&lt;li&gt;重点清理旧账号、旧项目、旧域名、公开仓库。&lt;/li&gt;
+&lt;li&gt;对无法删除的公开信息，至少降低关联性和可检索性。&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这两种工作流的区别很重要：企业安全更关注资产和风险闭环，个人自查更关注最小化暴露。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;它的局限性&lt;a href=&quot;#它的局限性&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OSINT Explorer 这种导航站很有用，但它不是魔法。&lt;/p&gt;&lt;p&gt;它不能替你判断工具结果是否真实，也不能保证每个第三方工具都安全、稳定、合法、隐私友好。你点开的每个外部工具，都可能有自己的日志策略、查询限制、商业模型和合规风险。&lt;/p&gt;&lt;p&gt;使用时要特别注意：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;不要把敏感目标随便丢进陌生网站查询&lt;/li&gt;
+&lt;li&gt;不要默认免费工具没有数据收集&lt;/li&gt;
+&lt;li&gt;不要在没有隔离环境时上传敏感文件&lt;/li&gt;
+&lt;li&gt;不要把导航站收录等同于官方背书&lt;/li&gt;
+&lt;li&gt;不要依赖单一工具做最终结论&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;换句话说，OSINT Explorer 是地图，不是目的地；是入口，不是证据本身。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;总结&lt;a href=&quot;#总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OSINT Explorer / OSINT Brasil 最值得关注的地方，是它把 1300+ 个 OSINT 工具整理成了一个免费、可搜索、可持续更新的入口。对于安全研究、新闻核验、企业资产盘点、品牌保护和个人隐私自查来说，这类导航能明显降低工具发现成本。&lt;/p&gt;&lt;p&gt;但 OSINT 的专业性不在于你会点多少工具，而在于你能不能守住边界、记录来源、交叉验证、标注置信度，并把公开信息整理成负责任的结论。&lt;/p&gt;&lt;p&gt;如果你只把它当成“人肉搜索工具箱”，那就完全走偏了。真正有价值的 OSINT，是用公开信息降低不确定性，而不是制造伤害。&lt;/p&gt;&lt;p&gt;参考链接：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;OSINT Explorer / OSINT Brasil: &lt;a href=&quot;https://osint.juanmathewsrebellosantos.com/&quot; target=&quot;_blank&quot;&gt;https://osint.juanmathewsrebellosantos.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Awesome OSINT: &lt;a href=&quot;https://github.com/jivoi/awesome-osint&quot; target=&quot;_blank&quot;&gt;https://github.com/jivoi/awesome-osint&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;</content:encoded></item><item><title>我自己收集的 PPT 设计技巧资源：从杂志风到 Open Design</title><link>https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/%E6%88%91%E8%87%AA%E5%B7%B1%E6%94%B6%E9%9B%86%E7%9A%84-ppt-%E8%AE%BE%E8%AE%A1%E6%8A%80%E5%B7%A7%E8%B5%84%E6%BA%90%E4%BB%8E%E6%9D%82%E5%BF%97%E9%A3%8E%E5%88%B0-open-design/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/%E6%88%91%E8%87%AA%E5%B7%B1%E6%94%B6%E9%9B%86%E7%9A%84-ppt-%E8%AE%BE%E8%AE%A1%E6%8A%80%E5%B7%A7%E8%B5%84%E6%BA%90%E4%BB%8E%E6%9D%82%E5%BF%97%E9%A3%8E%E5%88%B0-open-design/</guid><description>这是一份面向 AI Agent 时代的 PPT 设计技巧资源整理，覆盖杂志风简报、设计动画、七种风格化 PPT Skill，以及本地优先的 Open Design 开源设计工作台。</description><pubDate>Mon, 08 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;最近我一直在收集一类很有意思的资源：它们不是传统意义上的 PPT 模板，也不是单纯的配色参考，而是给 AI Agent 使用的 &lt;strong&gt;PPT 设计 Skill / 设计工作流 / 开源设计系统&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;这类资源的价值在于，它们把“审美规则”写成了可复用的工程资产。以前做 PPT，很多时间会消耗在反复试字号、调间距、找版式、做封面、补动效上；现在这些经验可以被整理成 &lt;code&gt;SKILL.md&lt;/code&gt;、设计规范、检查清单、导出流程和可执行的 Agent 指令，让 Claude Code、Codex、Cursor 这类工具按照稳定的视觉语言产出简报。&lt;/p&gt;
+&lt;p&gt;这篇文章整理 4 个我认为值得收藏的项目：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/op7418/guizang-ppt-skill&quot; target=&quot;_blank&quot;&gt;guizang-ppt-skill&lt;/a&gt;：杂志风格 PPT 设计 Skill&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/alchaincyf/huashu-design&quot; target=&quot;_blank&quot;&gt;huashu-design&lt;/a&gt;：带设计动画、原型和评审能力的 HTML 原生设计 Skill&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/software-ai-life/Awesome-PPT-Design-Skills&quot; target=&quot;_blank&quot;&gt;Awesome-PPT-Design-Skills&lt;/a&gt;：7 种不同风格的 PPT Design Skills&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/nexu-io/open-design&quot; target=&quot;_blank&quot;&gt;open-design&lt;/a&gt;：复刻 Claude Design 思路的本地优先开源替代品&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;&lt;p&gt;注：本文记录的是 2026-06-08 查询到的公开信息。GitHub Stars、内置 Skill 数量、设计系统数量这类数据会持续变化，建议以仓库 README 和 Release 页为准。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;section&gt;&lt;h2&gt;为什么这类资源值得单独收藏&lt;a href=&quot;#为什么这类资源值得单独收藏&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;传统 PPT 模板解决的是“页面长什么样”的问题，但 AI Agent 时代真正缺的不是模板，而是 &lt;strong&gt;可执行的设计判断&lt;/strong&gt;。&lt;/p&gt;&lt;p&gt;一个可用的 PPT 设计 Skill，通常不只是给几张示例图，它会把下面这些内容固化下来：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;适用场景：演讲、产品发布、研究报告、品牌提案、技术分享、社媒封面&lt;/li&gt;
+&lt;li&gt;视觉系统：字体、字号层级、主色、辅助色、留白、网格、边框、图片比例&lt;/li&gt;
+&lt;li&gt;版式模块：封面、章节页、数据页、对比页、流程页、结尾页、索引页&lt;/li&gt;
+&lt;li&gt;生成流程：从资料理解、内容重组、页面规划、视觉落地到导出文件&lt;/li&gt;
+&lt;li&gt;QA 清单：检查对齐、字号、信息密度、图片裁切、色彩一致性和可读性&lt;/li&gt;
+&lt;li&gt;交付格式：HTML、SVG、PPTX、PDF、MP4、GIF 或社媒封面图&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;也就是说，它们不是“素材包”，而更像一套可被 Agent 调用的设计方法论。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+  A[&quot;原始内容&quot;] --&amp;gt; B[&quot;Agent 理解与重组&quot;]
+  B --&amp;gt; C[&quot;选择设计 Skill&quot;]
+  C --&amp;gt; D[&quot;生成版式与视觉系统&quot;]
+  D --&amp;gt; E[&quot;视觉 QA 与人工调整&quot;]
+  E --&amp;gt; F[&quot;导出 PPTX / HTML / PDF / MP4&quot;]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;如果你经常要做技术分享、产品路演、课程材料、公众号封面、内部汇报，这类资源非常值得放进自己的工具箱。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;资源总览&lt;a href=&quot;#资源总览&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;项目&lt;/th&gt;&lt;th&gt;核心定位&lt;/th&gt;&lt;th&gt;更适合的场景&lt;/th&gt;&lt;th&gt;许可证 / 状态&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;guizang-ppt-skill&lt;/td&gt;&lt;td&gt;杂志风、瑞士风网页 PPT Skill&lt;/td&gt;&lt;td&gt;观点分享、方法论、产品分析、个人风格表达&lt;/td&gt;&lt;td&gt;AGPL-3.0，GitHub 高活跃&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;huashu-design&lt;/td&gt;&lt;td&gt;HTML 原生设计 Skill，支持 PPT、原型、动画和评审&lt;/td&gt;&lt;td&gt;产品发布动画、交互原型、高保真简报、设计评审&lt;/td&gt;&lt;td&gt;MIT，支持商用&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Awesome-PPT-Design-Skills&lt;/td&gt;&lt;td&gt;多风格 PPT Skill 集合&lt;/td&gt;&lt;td&gt;同一内容切换不同视觉气质&lt;/td&gt;&lt;td&gt;多 Skill 集合，适合学习拆解&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;open-design&lt;/td&gt;&lt;td&gt;本地优先的开源设计工作台&lt;/td&gt;&lt;td&gt;多 Agent、多设计系统、多格式导出&lt;/td&gt;&lt;td&gt;Apache-2.0，桌面应用方向&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;下面逐个拆开看。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;1. guizang-ppt-skill：杂志风 PPT 的工程化表达&lt;a href=&quot;#1-guizang-ppt-skill杂志风-ppt-的工程化表达&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;仓库地址：&lt;a href=&quot;https://github.com/op7418/guizang-ppt-skill&quot; target=&quot;_blank&quot;&gt;https://github.com/op7418/guizang-ppt-skill&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;code&gt;guizang-ppt-skill&lt;/code&gt; 是一个适配 Claude Code / Codex 等 Agent 环境的网页 PPT Skill，主要用于生成单文件 HTML 横向翻页 PPT、PPT 配图和多平台封面。&lt;/p&gt;&lt;p&gt;它最吸引人的地方，是把“杂志感”和“演讲型 PPT”结合得比较好。很多 AI 生成的简报容易出现两个极端：要么像普通办公模板，信息规整但没有气质；要么像海报堆叠，视觉很花但不适合讲述。&lt;code&gt;guizang-ppt-skill&lt;/code&gt; 的优势在于，它更强调叙事、版面节奏和展示场景。&lt;/p&gt;&lt;p&gt;根据 README，项目内置两套视觉系统：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Style A：电子杂志 × 电子墨水&lt;/strong&gt;&lt;br /&gt;
+适合叙事、观点表达、个人分享、公众号风格内容、专题型演讲。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Style B：瑞士国际主义&lt;/strong&gt;&lt;br /&gt;
+强调网格、直角、发丝线、高饱和锚点色和强字号对比，适合产品分析、事实表达、方法论、商业汇报。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这两个方向很实用：一个负责“好看且有故事感”，一个负责“冷静、专业、结构强”。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;它适合做什么&lt;a href=&quot;#它适合做什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;我会把它放在下面这些场景里：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;把一篇长文改成 6-10 页演讲 PPT&lt;/li&gt;
+&lt;li&gt;做一份有个人表达感的分享材料&lt;/li&gt;
+&lt;li&gt;给技术文章、产品分析、行业观察做封面&lt;/li&gt;
+&lt;li&gt;为公众号、小红书、视频号生成不同尺寸的封面图&lt;/li&gt;
+&lt;li&gt;把产品截图或系统图重新设计成更适合展示的页面&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;它不太像传统 PPT 模板，而更像一个“讲稿到演示文稿”的转换器。你给它内容，它会尝试帮你建立节奏：封面先立主题，中间做观点递进，关键页用大字号或图文混排强化记忆点，最后用收束页完成表达。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;适合直接使用的 Prompt&lt;a href=&quot;#适合直接使用的-prompt&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请使用 guizang-ppt-skill，把这篇文章整理成一份 8 页左右的杂志风演讲 PPT。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;要求：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 封面有强标题和副标题&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 每页只讲一个核心观点&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 保留关键数据，但不要堆满文字&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 需要 2-3 张适合 PPT 的配图&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;5. 最后输出可预览的 HTML Deck&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;如果是更偏商业、产品、技术复盘的内容，可以这样写：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请使用 guizang-ppt-skill 的瑞士风视觉系统，把这份产品分析整理成 7 页 PPT。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;风格要求：白底、强网格、少装饰、信息密度适中，重点页用大号数字和对比模块。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;我的评价&lt;a href=&quot;#我的评价&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;guizang-ppt-skill&lt;/code&gt; 的核心价值，不是“它能生成 PPT”，而是它已经把一套审美稳定、场景清晰的网页 PPT 方法沉淀下来了。对于经常做内容表达的人来说，它特别适合作为一个默认起点：先用它把结构和版式跑出来，再人工精修关键页。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;2. huashu-design：从 PPT 扩展到动画、原型和设计评审&lt;a href=&quot;#2-huashu-design从-ppt-扩展到动画原型和设计评审&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;仓库地址：&lt;a href=&quot;https://github.com/alchaincyf/huashu-design&quot; target=&quot;_blank&quot;&gt;https://github.com/alchaincyf/huashu-design&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;code&gt;huashu-design&lt;/code&gt; 的定位更宽。它不是只做 PPT，而是一个 HTML 原生的设计 Skill，目标是让 Agent 通过一句话生成高保真原型、幻灯片、产品发布动画、信息图，并支持 MP4 / GIF 这类媒体导出。&lt;/p&gt;&lt;p&gt;它的 README 里有一句很直接的表达：在你的 Agent 里打一句话，拿回一份能交付的设计。这个方向和传统“PPT 模板”已经不是一个层级了，它更接近“把设计流程交给 Agent 编排”。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;它的几个关键词&lt;a href=&quot;#它的几个关键词&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;HTML-native&lt;/strong&gt;：以 HTML / CSS / JS 作为主要设计载体，而不是先套 PPT 模板&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Agent-agnostic&lt;/strong&gt;：不绑定单一 Agent，README 明确提到可用于 Claude Code、Cursor、Codex、OpenClaw、Hermes 等环境&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;设计哲学库&lt;/strong&gt;：仓库描述提到 20 设计哲学，用来指导不同气质的输出&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;5 维评审&lt;/strong&gt;：可以对设计结果进行结构化评审，而不只是生成页面&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;动画与导出&lt;/strong&gt;：支持产品发布动画、MP4、GIF 等更接近传播物料的产出&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MIT License&lt;/strong&gt;：README 标注 2026-05-14 起改为 MIT 协议，个人和商用都免费&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;它适合做什么&lt;a href=&quot;#它适合做什么-1&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果说 &lt;code&gt;guizang-ppt-skill&lt;/code&gt; 更像“把内容做成好看的演讲 PPT”，那 &lt;code&gt;huashu-design&lt;/code&gt; 更像“把一个想法做成完整视觉交付物”。&lt;/p&gt;&lt;p&gt;它适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;产品发布动画&lt;/li&gt;
+&lt;li&gt;可点击 App / Web 原型&lt;/li&gt;
+&lt;li&gt;高保真产品演示页&lt;/li&gt;
+&lt;li&gt;可编辑 PPT&lt;/li&gt;
+&lt;li&gt;信息图&lt;/li&gt;
+&lt;li&gt;设计方案评审&lt;/li&gt;
+&lt;li&gt;品牌资产输入后的风格化输出&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;尤其是做“产品发布”或“功能演示”时，它比普通 PPT Skill 更有优势。因为发布材料通常不只是几页静态幻灯片，还会需要动效、节奏、展示画面、社媒传播物料，甚至视频导出。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;适合直接使用的 Prompt&lt;a href=&quot;#适合直接使用的-prompt-1&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请使用 huashu-design，基于下面这段产品说明做一份 60 秒产品发布动画。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;要求：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 先给我 3 个视觉方向&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 选择最适合 SaaS 工具发布的方向&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 输出 HTML 动画预览&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 最后导出 MP4 和 GIF&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;做 PPT 可以这样：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请使用 huashu-design，把这份技术方案做成一套能交付的演示 PPT。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;要求：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 先做信息架构重组&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 给出 3 个风格方向&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 采用克制、专业、适合企业汇报的视觉语言&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 完成后做一次 5 维设计评审，并根据评审结果修一轮&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;我的评价&lt;a href=&quot;#我的评价-1&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;huashu-design&lt;/code&gt; 更适合有“交付物意识”的场景。它不是只问“这页好不好看”，而是把一个设计需求拆成方向选择、视觉落地、动画表达、导出和评审。对个人创作者来说，它可以降低动效和高保真原型的门槛；对团队来说，它更像一个可复用的轻量设计流水线。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;3. Awesome-PPT-Design-Skills：7 种风格的 PPT Skill 集合&lt;a href=&quot;#3-awesome-ppt-design-skills7-种风格的-ppt-skill-集合&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;仓库地址：&lt;a href=&quot;https://github.com/software-ai-life/Awesome-PPT-Design-Skills&quot; target=&quot;_blank&quot;&gt;https://github.com/software-ai-life/Awesome-PPT-Design-Skills&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;code&gt;Awesome-PPT-Design-Skills&lt;/code&gt; 是一个 PPT Design Skills 集合。它的价值不在于某一种风格特别强，而在于它把多种视觉气质拆成了独立 Skill，适合学习“风格如何被工程化”。&lt;/p&gt;&lt;p&gt;README 里列出的风格包括：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;japanese-style-ppt-skill&lt;/code&gt;：日本生活方式编辑风 / 和纸柔光风&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;soft-3d-clay-ppt-skill&lt;/code&gt;：柔和 3D / Claymorphism 风格&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;futuristic-tech-editorial-ppt-skill&lt;/code&gt;：未来科技编辑风&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;minimalist-luxury-branding-ppt-skill&lt;/code&gt;：极简奢华品牌风&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;modern-illustration-editorial-ppt-skill&lt;/code&gt;：现代插画编辑风&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;japanese-hand-drawn-editorial-ppt-skill&lt;/code&gt;：日式手绘编辑风&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;README 标题里写的是 7 种不同风格，因为 &lt;code&gt;japanese-style-ppt-skill&lt;/code&gt; 内部又包含两个 house style：&lt;code&gt;Washi Paper &amp;amp; Soft Glow&lt;/code&gt; 和 &lt;code&gt;Japanese Lifestyle Editorial&lt;/code&gt;。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;这类集合最值得学什么&lt;a href=&quot;#这类集合最值得学什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;我认为这个仓库最适合当“拆解教材”。&lt;/p&gt;&lt;p&gt;你可以观察每个 Skill 如何定义：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;这个风格适合什么内容&lt;/li&gt;
+&lt;li&gt;背景色、主色、辅助色如何选&lt;/li&gt;
+&lt;li&gt;字号和层级如何约束&lt;/li&gt;
+&lt;li&gt;图片用写实、插画、3D 还是纯图表&lt;/li&gt;
+&lt;li&gt;图表是强调数据，还是强调故事&lt;/li&gt;
+&lt;li&gt;页面留白和信息密度如何控制&lt;/li&gt;
+&lt;li&gt;如何避免 Agent 生成“看起来像 AI 模板”的页面&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;举个例子：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;做 AI、工程、平台、数据主题，可以优先试 &lt;code&gt;futuristic-tech-editorial-ppt-skill&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;做品牌提案、公司简介、创始人路演，可以试 &lt;code&gt;minimalist-luxury-branding-ppt-skill&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;做生活方式、消费品牌、人文内容，可以试 &lt;code&gt;japanese-style-ppt-skill&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;做轻产品介绍、教育内容、友好型功能说明，可以试 &lt;code&gt;soft-3d-clay-ppt-skill&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;适合直接使用的 Prompt&lt;a href=&quot;#适合直接使用的-prompt-2&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请从 Awesome-PPT-Design-Skills 里选择一个最适合这份内容的 PPT Skill。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;内容主题是：AI 产品商业化复盘。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;要求：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 先说明为什么选择该风格&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 输出 6 页 PPT 的页面规划&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 每页给出标题、核心信息、视觉处理方式&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 再开始生成 PPT&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;如果你想学习不同风格的差异，也可以让 Agent 做风格对照：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请分别用 futuristic-tech-editorial-ppt-skill 和 minimalist-luxury-branding-ppt-skill，&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;为同一段内容各生成一页封面，并解释两种风格在配色、排版、信息密度上的差异。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;我的评价&lt;a href=&quot;#我的评价-2&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这个仓库非常适合作为“风格库”。当你不确定一份内容应该用什么视觉语言时，可以先用它做风格探索。它也适合给自己的 Skill 写法打样：如果以后想沉淀公司内部的 PPT 设计规范，可以参考它如何把风格拆成可执行规则。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;4. open-design：本地优先的开源 Claude Design 替代品&lt;a href=&quot;#4-open-design本地优先的开源-claude-design-替代品&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;仓库地址：&lt;a href=&quot;https://github.com/nexu-io/open-design&quot; target=&quot;_blank&quot;&gt;https://github.com/nexu-io/open-design&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;code&gt;open-design&lt;/code&gt; 的野心更大。它不是一个单独的 PPT Skill，而是一个本地优先、开源的设计工作台，定位是 Claude Design 的开源替代品。&lt;/p&gt;&lt;p&gt;根据仓库 README，它是一个桌面应用，支持 macOS 和 Windows，强调：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;local-first，本地优先&lt;/li&gt;
+&lt;li&gt;open-source，开源&lt;/li&gt;
+&lt;li&gt;可接入 Claude Code、Codex、Cursor、OpenCode、Qwen、Copilot、Kimi 等多种 Agent / CLI&lt;/li&gt;
+&lt;li&gt;支持 Web、桌面、移动原型、slides、images、videos 等多种产物&lt;/li&gt;
+&lt;li&gt;支持 HTML / PDF / PPTX / MP4 导出&lt;/li&gt;
+&lt;li&gt;提供沙箱 iframe 预览&lt;/li&gt;
+&lt;li&gt;通过 Skills、Design Systems、Plugins 组织设计能力&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;用户最初给到的信息里提到它有 19 项技能、71 个品牌级设计系统、4k+ Stars；我在 2026-06-08 查询 GitHub API 和 README 时，看到的数据已经显著增长：仓库描述中写到了 259+ Skills、142+ Design Systems，README 里则出现 100+ skills、150 brand-grade design systems、261 plugins 等表述，Stars 也已经远超 4k。这个增长速度说明它处在非常活跃的阶段。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;它和前面三个项目有什么不同&lt;a href=&quot;#它和前面三个项目有什么不同&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;前面三个更像“Skill 资源”，而 &lt;code&gt;open-design&lt;/code&gt; 更像一个“设计操作系统”。&lt;/p&gt;&lt;p&gt;可以这样理解：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TB
+  A[&quot;PPT Skill&quot;] --&amp;gt; B[&quot;单一风格或单一工作流&quot;]
+  C[&quot;Skill 集合&quot;] --&amp;gt; D[&quot;多种 PPT 风格选择&quot;]
+  E[&quot;Open Design&quot;] --&amp;gt; F[&quot;桌面应用 + Skills + Design Systems + Plugins&quot;]
+  F --&amp;gt; G[&quot;HTML / PDF / PPTX / MP4 导出&quot;]
+  F --&amp;gt; H[&quot;多 Agent / 多模型接入&quot;]
+  F --&amp;gt; I[&quot;原型 / 简报 / 图片 / 视频&quot;]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;如果你只是偶尔做一份好看的 PPT，前面几个仓库已经够用。如果你想把 Agent 设计变成长期工作台，比如沉淀品牌规范、反复生成原型、管理不同设计系统、对接多个 Agent，那 &lt;code&gt;open-design&lt;/code&gt; 更值得重点研究。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;它适合谁&lt;a href=&quot;#它适合谁&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;我觉得它适合三类人：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;个人创作者&lt;/strong&gt;：想用本地工具完成封面、海报、PPT、视频和网页原型&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;产品 / 运营团队&lt;/strong&gt;：需要快速把需求、活动、发布信息变成可展示物料&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;技术团队&lt;/strong&gt;：希望把设计系统、导出流程、Agent 能力放进可控的本地环境&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;尤其是“本地优先”这个点很重要。很多团队对设计资产、品牌规范、产品原型、内部文档都有隐私和权限要求，把设计工作流放在本地或可控环境里，比完全依赖云端服务更容易治理。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;我的评价&lt;a href=&quot;#我的评价-3&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;open-design&lt;/code&gt; 代表的是另一个方向：把设计能力从单个提示词，升级成可安装、可扩展、可导出、可接入多 Agent 的本地工作台。它不只是为了做 PPT，而是想把 Agent 时代的“设计生产链路”重新组织起来。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;怎么选择：一张速查表&lt;a href=&quot;#怎么选择一张速查表&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;你的需求&lt;/th&gt;&lt;th&gt;推荐优先级&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;把文章快速做成有风格的演讲 PPT&lt;/td&gt;&lt;td&gt;guizang-ppt-skill&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;想做杂志风、瑞士风、公众号封面&lt;/td&gt;&lt;td&gt;guizang-ppt-skill&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;想做产品发布动画、可点击原型、MP4 / GIF&lt;/td&gt;&lt;td&gt;huashu-design&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;想让 Agent 先给视觉方向，再做设计评审&lt;/td&gt;&lt;td&gt;huashu-design&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;想尝试多种 PPT 风格&lt;/td&gt;&lt;td&gt;Awesome-PPT-Design-Skills&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;想学习 PPT Skill 的写法&lt;/td&gt;&lt;td&gt;Awesome-PPT-Design-Skills&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;想搭一个长期使用的本地设计工作台&lt;/td&gt;&lt;td&gt;open-design&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;想管理 Skills、Design Systems、Plugins&lt;/td&gt;&lt;td&gt;open-design&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;我的建议是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;新手先用 &lt;code&gt;guizang-ppt-skill&lt;/code&gt;，因为它最容易看到 PPT 效果&lt;/li&gt;
+&lt;li&gt;想做更复杂视觉交付，再试 &lt;code&gt;huashu-design&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;想学习风格化 Prompt 和 Skill 写法，看 &lt;code&gt;Awesome-PPT-Design-Skills&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;想把整套设计生产链路搬到本地，再研究 &lt;code&gt;open-design&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;一套更实用的组合工作流&lt;a href=&quot;#一套更实用的组合工作流&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果不是单独体验，而是真要把这些资源用起来，我会这样组合：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+  A[&quot;内容资料&quot;] --&amp;gt; B[&quot;整理成 Markdown 大纲&quot;]
+  B --&amp;gt; C[&quot;选择 PPT Skill&quot;]
+  C --&amp;gt; D[&quot;生成 6-10 页初稿&quot;]
+  D --&amp;gt; E[&quot;用 huashu-design 做视觉评审&quot;]
+  E --&amp;gt; F[&quot;补封面 / 动画 / 社媒图&quot;]
+  F --&amp;gt; G[&quot;导出 PPTX / HTML / PDF&quot;]
+  G --&amp;gt; H[&quot;沉淀为自己的 Skill 或设计规范&quot;]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;具体步骤：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;先把内容整理成 Markdown&lt;br /&gt;
+不要一上来就让 Agent 做 PPT。先让它帮你提炼主题、受众、核心观点、页面数量和讲述顺序。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;选一个主风格&lt;br /&gt;
+观点分享选杂志风，技术分析选瑞士风或未来科技风，品牌提案选极简奢华风，生活方式内容选日式编辑风。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;生成初稿后做 QA&lt;br /&gt;
+检查是否每页只有一个重点，图文是否抢信息，字号是否过小，页面是否存在“堆字”问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;再补传播物料&lt;br /&gt;
+一份 PPT 经常还需要公众号头图、社媒封面、活动海报、短视频封面，这时可以用 &lt;code&gt;guizang-ppt-skill&lt;/code&gt; 或 &lt;code&gt;huashu-design&lt;/code&gt; 扩展。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;最后沉淀自己的规则&lt;br /&gt;
+如果你总是做同一类内容，比如技术教程、项目复盘、产品发布，就应该把常用版式、色彩、页面结构沉淀成自己的 Skill。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;如何写一个更容易出好 PPT 的需求&lt;a href=&quot;#如何写一个更容易出好-ppt-的需求&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;不要只写：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;帮我做一份高级 PPT。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这种提示词太空，Agent 很容易生成一份“看起来努力了，但哪里都不准”的东西。&lt;/p&gt;&lt;p&gt;更好的写法是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请把下面这份内容整理成 8 页 PPT，用于 20 分钟技术分享。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;受众是有开发经验但不了解该项目的人。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;风格：克制、清晰、有技术质感，不要营销风。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;每页要求：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 一个主标题&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 一个核心观点&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 最多 3 个要点&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;8&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 需要图表时优先用结构图、流程图或对比表&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;9&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;5. 不要使用大段正文&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;10&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;最后请先输出页面大纲，确认逻辑后再生成。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;如果你已经选定了 Skill，可以继续补充：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请使用 guizang-ppt-skill 的瑞士风视觉系统。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;页面比例 16:10。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;希望整体像专业技术大会的分享，而不是公司年会模板。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;这类工具的局限&lt;a href=&quot;#这类工具的局限&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;虽然这些资源很强，但不要把它们理解成“自动变设计大佬”。&lt;/p&gt;&lt;p&gt;它们依然有几个限制：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;内容质量决定上限。原始材料混乱，生成结果也会混乱&lt;/li&gt;
+&lt;li&gt;Agent 容易过度装饰，需要明确限制信息密度和视觉风格&lt;/li&gt;
+&lt;li&gt;PPTX 导出后的可编辑性、字体兼容、动画还原度需要实际检查&lt;/li&gt;
+&lt;li&gt;复杂图表、数据关系、品牌规范仍然需要人工判断&lt;/li&gt;
+&lt;li&gt;对正式商业交付，最好保留一轮人工设计 QA&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;我更愿意把它们看成“设计能力放大器”。你越清楚受众、内容重点和视觉目标，它们越能帮你节省时间；你越依赖一句模糊指令，它们越容易跑偏。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;结语&lt;a href=&quot;#结语&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这 4 个项目放在一起看，其实能看到一个很明显的趋势：PPT 设计正在从“模板选择”变成“Agent 可执行的设计系统”。&lt;/p&gt;&lt;p&gt;&lt;code&gt;guizang-ppt-skill&lt;/code&gt; 解决的是风格稳定的网页 PPT；&lt;code&gt;huashu-design&lt;/code&gt; 把范围扩展到动画、原型和设计评审；&lt;code&gt;Awesome-PPT-Design-Skills&lt;/code&gt; 提供了多种可学习、可拆解的风格样本；&lt;code&gt;open-design&lt;/code&gt; 则试图把这些能力收束到一个本地优先的开源设计工作台里。&lt;/p&gt;&lt;p&gt;如果你经常做分享、写教程、做产品发布、整理项目复盘，建议把这几个仓库都收藏起来。它们不是简单的“PPT 美化工具”，而是 AI Agent 时代非常值得研究的设计基础设施。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/op7418/guizang-ppt-skill&quot; target=&quot;_blank&quot;&gt;guizang-ppt-skill：杂志风格 PPT 设计&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/alchaincyf/huashu-design&quot; target=&quot;_blank&quot;&gt;huashu-design：带设计动画的 PPT 技巧&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/software-ai-life/Awesome-PPT-Design-Skills&quot; target=&quot;_blank&quot;&gt;Awesome-PPT-Design-Skills：7 种不同风格的 PPT 设计&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/nexu-io/open-design&quot; target=&quot;_blank&quot;&gt;open-design：本地优先的开源 Claude Design 替代品&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;</content:encoded></item><item><title>Fiddler Everywhere 5.17+ 非官方补丁 Release 技术解读与风险复盘</title><link>https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/fiddler-everywhere-517-%E9%9D%9E%E5%AE%98%E6%96%B9%E8%A1%A5%E4%B8%81-release-%E6%8A%80%E6%9C%AF%E8%A7%A3%E8%AF%BB%E4%B8%8E%E9%A3%8E%E9%99%A9%E5%A4%8D%E7%9B%98/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/fiddler-everywhere-517-%E9%9D%9E%E5%AE%98%E6%96%B9%E8%A1%A5%E4%B8%81-release-%E6%8A%80%E6%9C%AF%E8%A7%A3%E8%AF%BB%E4%B8%8E%E9%A3%8E%E9%99%A9%E5%A4%8D%E7%9B%98/</guid><description>从 GitHub Release 元数据、Fiddler Everywhere 的代理信任边界、补丁类工具的供应链风险和合规替代方案，系统复盘一次非官方破解补丁为什么不应该被当成普通工具使用。</description><pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这篇文章聊一个比较敏感、但很值得技术复盘的话题：GitHub 上 &lt;code&gt;Eilte/Fiddler-Everywhere-Crack&lt;/code&gt; 仓库发布的 &lt;code&gt;5.17+&lt;/code&gt; Release。&lt;/p&gt;
 &lt;p&gt;先把态度说清楚：本文不是破解教程，也不会复述补丁执行流程。原因很简单，Fiddler Everywhere 不是普通桌面软件，它是会接管系统代理、安装调试证书、查看 HTTPS 流量的网络调试工具。对这类工具动刀，不只是“改一个授权状态”那么轻，真正危险的是你把自己的网络信任边界交给了一个无法验证的第三方二进制。&lt;/p&gt;
 &lt;p&gt;所以这篇会从工程视角做一次完整拆解：&lt;/p&gt;
 &lt;ul&gt;
