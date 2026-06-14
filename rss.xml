@@ -1,4 +1,232 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月14日 16:39:05</lastBuildDate><item><title>Building Effective Agents 解读：别急着上 Agent，先从简单模式开始</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/building-effective-agents/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/building-effective-agents/</guid><description>Anthropic《Building effective agents》文章解读，梳理 workflow 与 agent 的区别、增强型 LLM、提示链、路由、并行化、编排者-工作者、评估者-优化者等常见模式，以及什么时候该增加系统复杂度。</description><pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Building Effective Agents 总结&lt;a href=&quot;#building-effective-agents-总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://www.anthropic.com/engineering/building-effective-agents&quot; target=&quot;_blank&quot;&gt;https://www.anthropic.com/engineering/building-effective-agents&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这篇文章不是在鼓励“凡事都上 Agent”，而是在讲：构建有效 AI Agent 的关键，是从最简单、可评估、可调试的模式开始，只有当任务确实需要更高自主性时，才逐步增加复杂度。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;文章主要讲了什么&lt;a href=&quot;#文章主要讲了什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 把 agentic systems 分成两类：&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月14日 16:53:15</lastBuildDate><item><title>OpenAI《A Practical Guide to Building Agents》解读：从场景选择到安全落地</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/a-practical-guide-to-building-ai-agents/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/a-practical-guide-to-building-ai-agents/</guid><description>OpenAI《A Practical Guide to Building Agents》文章解读，梳理什么任务适合构建 Agent、Agent 系统的模型、工具、指令与编排结构，以及如何通过多 Agent、护栏和人工交接把 Agent 安全部署到真实业务中。</description><pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;OpenAI《A Practical Guide to Building Agents》详细总结&lt;a href=&quot;#openaia-practical-guide-to-building-agents详细总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/&quot; target=&quot;_blank&quot;&gt;https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;PDF：&lt;a href=&quot;https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf&quot; target=&quot;_blank&quot;&gt;https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 这篇文章是一份面向产品和工程团队的 Agent 落地指南。它重点不是讨论 Agent 的概念有多新，而是回答三个实践问题：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;什么样的任务值得做成 Agent？&lt;/li&gt;
+&lt;li&gt;一个 Agent 系统应该由哪些基础组件组成？&lt;/li&gt;
+&lt;li&gt;如何通过编排、多 Agent 和护栏，把 Agent 安全地部署到真实业务里？&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果说 Anthropic 的《Building effective agents》更强调“不要过度设计，先从简单 workflow 开始”，那 OpenAI 这篇更像一份企业落地手册：从选场景、搭结构、选模型、设计工具、写指令、做编排，到最后加 guardrails。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;文章讲了什么&lt;a href=&quot;#文章讲了什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 对 Agent 的定义很直接：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Agent 是能够代表用户独立完成任务的系统。&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;它和普通 LLM 应用的区别在于，Agent 不只是回答问题，而是可以控制一个 workflow 的执行过程。比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;判断下一步要做什么；&lt;/li&gt;
+&lt;li&gt;选择要调用哪个工具；&lt;/li&gt;
+&lt;li&gt;查询外部系统或数据库；&lt;/li&gt;
+&lt;li&gt;执行动作，比如更新记录、发送消息、发起退款；&lt;/li&gt;
+&lt;li&gt;根据结果继续下一步；&lt;/li&gt;
+&lt;li&gt;判断任务是否完成；&lt;/li&gt;
+&lt;li&gt;失败时停止并交还给人类。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以，简单聊天机器人、单轮文本生成、情感分类器，都不算严格意义上的 Agent。Agent 的关键是：&lt;strong&gt;模型参与了流程执行和决策&lt;/strong&gt;。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;什么时候应该构建 Agent&lt;a href=&quot;#什么时候应该构建-agent&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;文章没有鼓励所有业务都做 Agent，而是给了三个适合 Agent 的场景。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. 复杂决策&lt;a href=&quot;#1-复杂决策&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;当任务需要上下文判断、例外处理、灰度决策时，Agent 会比传统规则系统更适合。&lt;/p&gt;&lt;p&gt;例子：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;判断用户退款请求是否应该批准；&lt;/li&gt;
+&lt;li&gt;分析一笔交易是否可能存在欺诈；&lt;/li&gt;
+&lt;li&gt;处理需要结合用户历史、政策条款、当前上下文的客服问题。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;传统规则系统像 checklist，只能按照预设条件判断；Agent 更像一个有经验的工作人员，可以结合上下文处理模糊情况。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 规则系统已经难以维护&lt;a href=&quot;#2-规则系统已经难以维护&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;有些业务一开始可以用规则自动化，但规则越来越多之后，会变得难改、难测、容易互相冲突。&lt;/p&gt;&lt;p&gt;例子：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;供应商安全审查；&lt;/li&gt;
+&lt;li&gt;企业内部合规流程；&lt;/li&gt;
+&lt;li&gt;多条件审批流程；&lt;/li&gt;
+&lt;li&gt;大量 if-then-else 堆出来的客服或运营规则。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果团队每次改规则都很痛苦，Agent 可能有价值。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 高度依赖非结构化数据&lt;a href=&quot;#3-高度依赖非结构化数据&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 适合处理自然语言、文档、邮件、对话、PDF、网页等非结构化输入。&lt;/p&gt;&lt;p&gt;例子：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;处理保险理赔材料；&lt;/li&gt;
+&lt;li&gt;从文档里抽取关键信息；&lt;/li&gt;
+&lt;li&gt;读用户邮件并决定下一步；&lt;/li&gt;
+&lt;li&gt;和用户持续对话，补齐缺失信息。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这类任务很难完全用传统代码写死，因为输入格式和表达方式变化太大。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;不适合 Agent 的情况&lt;a href=&quot;#不适合-agent-的情况&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果一个任务满足以下特征，可能不需要 Agent：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;流程固定；&lt;/li&gt;
+&lt;li&gt;输入输出结构稳定；&lt;/li&gt;
+&lt;li&gt;规则清楚；&lt;/li&gt;
+&lt;li&gt;不需要多轮决策；&lt;/li&gt;
+&lt;li&gt;不需要调用多个工具；&lt;/li&gt;
+&lt;li&gt;出错成本很高但没有可靠护栏；&lt;/li&gt;
+&lt;li&gt;用传统程序或简单 LLM 调用就能稳定解决。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;文章的隐含态度是：Agent 应该解决传统自动化不擅长的问题，而不是替代所有自动化。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Agent 的三个基础组件&lt;a href=&quot;#agent-的三个基础组件&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 把 Agent 的基础拆成三件事：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Agent = Model + Tools + Instructions&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;section&gt;&lt;h3&gt;1. Model：模型&lt;a href=&quot;#1-model模型&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;模型负责推理、判断和决策。&lt;/p&gt;&lt;p&gt;文章建议：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;原型阶段先用最强模型建立质量基线；&lt;/li&gt;
+&lt;li&gt;不要一开始就为了省钱选小模型；&lt;/li&gt;
+&lt;li&gt;等系统跑通、有 eval 之后，再逐步替换成更小、更快、更便宜的模型；&lt;/li&gt;
+&lt;li&gt;不同步骤可以使用不同模型。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;它的模型选择逻辑是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;先保证准确率 -&amp;gt; 再优化成本和延迟&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;也就是说，先证明 Agent 能把事做好，再考虑怎么把它做便宜。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Tools：工具&lt;a href=&quot;#2-tools工具&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;工具让 Agent 不只是“说”，还可以“做”。&lt;/p&gt;&lt;p&gt;文章把工具分成三类：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;工具类型&lt;/th&gt;&lt;th&gt;作用&lt;/th&gt;&lt;th&gt;例子&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Data tools&lt;/td&gt;&lt;td&gt;获取上下文和信息&lt;/td&gt;&lt;td&gt;查 CRM、查数据库、读 PDF、搜索网页&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Action tools&lt;/td&gt;&lt;td&gt;对外部系统执行动作&lt;/td&gt;&lt;td&gt;发邮件、更新记录、发起退款、转人工&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Orchestration tools&lt;/td&gt;&lt;td&gt;把其他 Agent 当工具使用&lt;/td&gt;&lt;td&gt;研究 Agent、写作 Agent、退款 Agent&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;工具设计非常关键。好的工具应该：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;定义标准化；&lt;/li&gt;
+&lt;li&gt;描述清楚；&lt;/li&gt;
+&lt;li&gt;参数明确；&lt;/li&gt;
+&lt;li&gt;可复用；&lt;/li&gt;
+&lt;li&gt;可测试；&lt;/li&gt;
+&lt;li&gt;便于版本管理；&lt;/li&gt;
+&lt;li&gt;避免多个工具功能重叠导致模型选错。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;文章还提到，对于没有 API 的旧系统，可以让 Agent 通过 computer use 模型像人一样操作网页或应用界面。但这种方式更需要安全边界和审计。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Instructions：指令&lt;a href=&quot;#3-instructions指令&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;指令决定 Agent 的行为边界和执行方式。&lt;/p&gt;&lt;p&gt;文章强调，高质量 instructions 对 Agent 尤其重要，因为 Agent 会多轮行动、调用工具、处理分支，一旦指令模糊，错误会被放大。&lt;/p&gt;&lt;p&gt;好的指令应该：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;使用现有业务文档、SOP、客服脚本、政策文档作为来源；&lt;/li&gt;
+&lt;li&gt;把复杂文档改写成模型容易执行的步骤；&lt;/li&gt;
+&lt;li&gt;每一步都对应明确动作或输出；&lt;/li&gt;
+&lt;li&gt;明确什么时候问用户、什么时候查系统、什么时候调用 API；&lt;/li&gt;
+&lt;li&gt;覆盖常见边界情况；&lt;/li&gt;
+&lt;li&gt;对缺失信息、异常输入、用户跑题等情况有处理方式。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;文章还建议可以用更强的模型，把现有帮助中心文档或政策文档转换成 Agent 指令。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;编排方式：单 Agent 还是多 Agent&lt;a href=&quot;#编排方式单-agent-还是多-agent&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 把 Agent 编排分成两类：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;单 Agent 系统；&lt;/li&gt;
+&lt;li&gt;多 Agent 系统。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;它的总体建议很清楚：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;先尽量把单 Agent 做好，只有当单 Agent 扛不住复杂度时，再拆成多 Agent。&lt;/strong&gt;&lt;/p&gt;&lt;section&gt;&lt;h3&gt;单 Agent 系统&lt;a href=&quot;#单-agent-系统&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;单 Agent 是最推荐的起点。&lt;/p&gt;&lt;p&gt;一个 Agent 配上合适的工具和清晰指令，就可以处理很多任务。随着能力需求增加，可以逐步给它加工具，而不是一开始就设计复杂的多 Agent 架构。&lt;/p&gt;&lt;p&gt;单 Agent 的核心运行方式是一个循环：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;接收输入 -&amp;gt; 模型判断 -&amp;gt; 调用工具或直接回答 -&amp;gt; 观察结果 -&amp;gt; 继续下一步 -&amp;gt; 直到满足退出条件&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;常见退出条件包括：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;模型给出最终答案；&lt;/li&gt;
+&lt;li&gt;调用了最终输出工具；&lt;/li&gt;
+&lt;li&gt;发生错误；&lt;/li&gt;
+&lt;li&gt;达到最大轮数；&lt;/li&gt;
+&lt;li&gt;命中人工介入条件。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;文章特别强调：Agent 的核心不是一次模型调用，而是一个可以持续执行直到任务结束的 run loop。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;用 prompt template 管理复杂度&lt;a href=&quot;#用-prompt-template-管理复杂度&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在还没有必要拆多 Agent 之前，可以先用 prompt template 管理复杂度。&lt;/p&gt;&lt;p&gt;比如客服 Agent 不需要为每个用户写一份 prompt，而是用一个基础模板，再填入变量：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;用户姓名；&lt;/li&gt;
+&lt;li&gt;用户年限；&lt;/li&gt;
+&lt;li&gt;常见投诉类型；&lt;/li&gt;
+&lt;li&gt;当前政策；&lt;/li&gt;
+&lt;li&gt;业务场景。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这样可以降低维护成本，也方便评估。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;什么时候拆成多 Agent&lt;a href=&quot;#什么时候拆成多-agent&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;文章给了两个判断标准。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. 逻辑太复杂&lt;a href=&quot;#1-逻辑太复杂&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果一个 Agent 的 prompt 里充满大量条件分支，比如很多 if-then-else，说明它可能已经太复杂了。&lt;/p&gt;&lt;p&gt;这时可以把不同逻辑段拆给不同 Agent。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 工具过载&lt;a href=&quot;#2-工具过载&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;不是工具数量多就一定要拆，而是工具之间相似、重叠、容易混淆时，模型更容易选错。&lt;/p&gt;&lt;p&gt;文章提到，有些系统可以管理超过 15 个定义清晰、差异明显的工具；但有些系统即使不到 10 个工具，只要工具功能重叠，也会出问题。&lt;/p&gt;&lt;p&gt;所以判断重点不是“有几个工具”，而是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具是否清楚；&lt;/li&gt;
+&lt;li&gt;功能是否重叠；&lt;/li&gt;
+&lt;li&gt;参数是否容易混；&lt;/li&gt;
+&lt;li&gt;模型是否经常选错工具；&lt;/li&gt;
+&lt;li&gt;改善工具命名和描述后是否仍然失败。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果工具设计已经优化过，Agent 还是经常选错，就可以考虑拆多 Agent。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;多 Agent 的两种模式&lt;a href=&quot;#多-agent-的两种模式&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 总结了两种常见多 Agent 架构。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. Manager Pattern：管理者模式&lt;a href=&quot;#1-manager-pattern管理者模式&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;一个中心 Agent 作为 manager，负责协调多个专业 Agent。&lt;/p&gt;&lt;p&gt;结构大概是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;用户 -&amp;gt; Manager Agent -&amp;gt; 专业 Agent A / B / C -&amp;gt; Manager 汇总 -&amp;gt; 用户&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;希望只有一个 Agent 面向用户；&lt;/li&gt;
+&lt;li&gt;希望中心 Agent 保持流程控制权；&lt;/li&gt;
+&lt;li&gt;需要把多个专业能力整合成统一体验。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;例子：&lt;/p&gt;&lt;p&gt;用户要求把一句话翻译成西班牙语、法语、意大利语。Manager Agent 可以分别调用三个翻译 Agent，再把结果汇总给用户。&lt;/p&gt;&lt;p&gt;这个模式的好处是用户体验统一，控制权集中；缺点是 manager 的设计质量很重要。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Decentralized Pattern：去中心化交接模式&lt;a href=&quot;#2-decentralized-pattern去中心化交接模式&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;多个 Agent 是平级的，一个 Agent 可以把任务 handoff 给另一个 Agent。被交接的 Agent 接管后，可以继续和用户交互。&lt;/p&gt;&lt;p&gt;结构大概是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;用户 -&amp;gt; Triage Agent -&amp;gt; 订单 Agent / 销售 Agent / 技术支持 Agent&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;对话分流；&lt;/li&gt;
+&lt;li&gt;客服场景；&lt;/li&gt;
+&lt;li&gt;某个专业 Agent 接手后不需要原 Agent 继续参与；&lt;/li&gt;
+&lt;li&gt;不需要一个中心 Agent 始终掌控全局。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;例子：&lt;/p&gt;&lt;p&gt;用户问“我的订单什么时候送达？”Triage Agent 判断这是订单问题，于是把对话交给 Order Management Agent。&lt;/p&gt;&lt;p&gt;这个模式的好处是职责清晰、专业 Agent 可以完整接管；缺点是要设计好交接规则，避免来回踢皮球。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;关于图式编排和代码式编排&lt;a href=&quot;#关于图式编排和代码式编排&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;文章还提到，有些框架要求开发者提前定义完整图结构：节点、边、分支、循环、条件。&lt;/p&gt;&lt;p&gt;这种方式可视化清楚，但当流程越来越动态时，维护会变复杂。&lt;/p&gt;&lt;p&gt;OpenAI 倾向强调代码优先的灵活编排：开发者可以用熟悉的程序结构表达逻辑，不一定要提前把所有图结构写死。&lt;/p&gt;&lt;p&gt;这个观点和整篇文章一致：Agent 系统需要灵活，但不能失控。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Guardrails：护栏&lt;a href=&quot;#guardrails护栏&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 这篇文章很重视护栏，因为 Agent 不只是输出文本，还可能调用工具、写入系统、执行真实动作。&lt;/p&gt;&lt;p&gt;护栏的作用是降低：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;数据隐私风险；&lt;/li&gt;
+&lt;li&gt;提示词泄露风险；&lt;/li&gt;
+&lt;li&gt;越权操作风险；&lt;/li&gt;
+&lt;li&gt;品牌声誉风险；&lt;/li&gt;
+&lt;li&gt;安全与合规风险；&lt;/li&gt;
+&lt;li&gt;高风险工具误用风险。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;文章强调：护栏不是单一机制，而是多层防御。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;常见护栏类型&lt;a href=&quot;#常见护栏类型&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;类型&lt;/th&gt;&lt;th&gt;作用&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Relevance classifier&lt;/td&gt;&lt;td&gt;判断用户请求是否在 Agent 范围内&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Safety classifier&lt;/td&gt;&lt;td&gt;检测 jailbreak、prompt injection 等攻击&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PII filter&lt;/td&gt;&lt;td&gt;防止输出不必要的个人敏感信息&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Moderation&lt;/td&gt;&lt;td&gt;过滤仇恨、骚扰、暴力等不安全内容&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Tool safeguards&lt;/td&gt;&lt;td&gt;按工具风险等级控制调用权限&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Rules-based protections&lt;/td&gt;&lt;td&gt;用黑名单、长度限制、正则等处理已知风险&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Output validation&lt;/td&gt;&lt;td&gt;检查输出是否符合品牌、安全和格式要求&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;工具风险分级&lt;a href=&quot;#工具风险分级&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;文章特别值得注意的一点是：工具应该按风险分级。&lt;/p&gt;&lt;p&gt;可以考虑这些因素：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;只读还是写入；&lt;/li&gt;
+&lt;li&gt;是否可逆；&lt;/li&gt;
+&lt;li&gt;是否需要账户权限；&lt;/li&gt;
+&lt;li&gt;是否涉及财务影响；&lt;/li&gt;
+&lt;li&gt;是否会影响真实用户；&lt;/li&gt;
+&lt;li&gt;是否可能造成不可恢复后果。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;查询订单：低风险；&lt;/li&gt;
+&lt;li&gt;更新 CRM 字段：中风险；&lt;/li&gt;
+&lt;li&gt;发起大额退款：高风险；&lt;/li&gt;
+&lt;li&gt;付款、取消订单、删除数据：高风险。&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;高风险工具不应该随便让 Agent 自动执行，应该触发额外检查或人工审批。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;人工介入&lt;a href=&quot;#人工介入&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;文章明确说，人类介入是关键安全机制，尤其是在早期部署阶段。&lt;/p&gt;&lt;p&gt;两类情况特别需要人工介入：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;超过失败阈值&lt;br /&gt;
+比如 Agent 多次无法理解用户意图、连续调用工具失败、反复给出不确定答案。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;高风险动作&lt;br /&gt;
+比如取消订单、批准大额退款、执行付款、修改敏感数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这点非常现实：Agent 不是必须全自动。生产环境里，很多时候最好的形态是“自动处理大部分低风险任务，把不确定和高风险任务交给人”。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;文章的落地路线&lt;a href=&quot;#文章的落地路线&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;可以把 OpenAI 的实践路径整理成这样：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;选择合适场景&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 用强模型做原型&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 定义工具&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 编写清晰 instructions&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 先做单 Agent&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 建立 eval&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 优化模型成本和延迟&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;8&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 必要时拆多 Agent&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;9&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 增加多层 guardrails&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;10&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 小范围上线并持续迭代&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这条路线的关键是：不要从架构开始，而是从业务问题和评估开始。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;这篇文章的重点&lt;a href=&quot;#这篇文章的重点&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;重点一：Agent 是 workflow 的执行者&lt;a href=&quot;#重点一agent-是-workflow-的执行者&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 不只是聊天界面，而是可以推动业务流程向前走的系统。&lt;/p&gt;&lt;p&gt;它的核心能力是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;判断；&lt;/li&gt;
+&lt;li&gt;调用工具；&lt;/li&gt;
+&lt;li&gt;执行动作；&lt;/li&gt;
+&lt;li&gt;根据反馈继续；&lt;/li&gt;
+&lt;li&gt;完成整个流程。&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;重点二：Agent 的价值在模糊和复杂场景&lt;a href=&quot;#重点二agent-的价值在模糊和复杂场景&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果任务很规则、很稳定、很确定，用传统自动化就可以。Agent 的价值主要在：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;模糊判断；&lt;/li&gt;
+&lt;li&gt;复杂上下文；&lt;/li&gt;
+&lt;li&gt;非结构化数据；&lt;/li&gt;
+&lt;li&gt;规则系统难维护；&lt;/li&gt;
+&lt;li&gt;需要多轮工具调用。&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;重点三：先单 Agent，再多 Agent&lt;a href=&quot;#重点三先单-agent再多-agent&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;多 Agent 听起来高级，但会增加复杂度。&lt;/p&gt;&lt;p&gt;OpenAI 的建议是先最大化单 Agent 能力，只有当指令太复杂、工具太混乱、模型经常选错工具时，再拆分。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;重点四：工具和指令是 Agent 的产品设计&lt;a href=&quot;#重点四工具和指令是-agent-的产品设计&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;工具不是技术细节，而是 Agent 能力边界。&lt;/p&gt;&lt;p&gt;指令也不是随便写一段 prompt，而是把业务 SOP 转换成模型可执行流程。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;重点五：护栏是生产 Agent 的必需品&lt;a href=&quot;#重点五护栏是生产-agent-的必需品&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 越能“行动”，越需要控制。&lt;/p&gt;&lt;p&gt;尤其是涉及写入、付款、退款、删除、修改用户数据时，必须有风险分级、审批机制和人工介入。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;需要注意什么&lt;a href=&quot;#需要注意什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;不要把所有 LLM 应用都叫 Agent。&lt;/li&gt;
+&lt;li&gt;不要为了追热点而把简单任务复杂化。&lt;/li&gt;
+&lt;li&gt;不要跳过 eval，直接谈成本优化。&lt;/li&gt;
+&lt;li&gt;不要一开始就用小模型做原型，容易误判系统上限。&lt;/li&gt;
+&lt;li&gt;不要让工具命名、参数和描述含糊不清。&lt;/li&gt;
+&lt;li&gt;不要给单个 Agent 塞太多相似工具。&lt;/li&gt;
+&lt;li&gt;不要让 prompt 变成无法维护的超长规则堆。&lt;/li&gt;
+&lt;li&gt;不要一开始就设计复杂多 Agent 架构。&lt;/li&gt;
+&lt;li&gt;不要让高风险工具自动执行。&lt;/li&gt;
+&lt;li&gt;不要把 guardrails 当成一次性配置，要随着真实失败案例持续补充。&lt;/li&gt;
+&lt;li&gt;不要认为人工介入是失败，它其实是生产系统可靠性的一部分。&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;知识博主角度&lt;a href=&quot;#知识博主角度&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这篇文章可以这样讲：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;OpenAI 给 Agent 下了一个很务实的定义：Agent 不是会聊天的模型，而是能代表用户跑完整业务流程的系统。&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;然后展开三个问题：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;什么任务值得做 Agent？&lt;br /&gt;
+复杂决策、规则难维护、非结构化数据多。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Agent 怎么搭？&lt;br /&gt;
+三件套：模型、工具、指令。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;怎么从 demo 走向生产？&lt;br /&gt;
+先单 Agent，必要时多 Agent，再加多层 guardrails 和人工介入。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;最后可以用一句话收尾：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Agent 的真正难点不是让模型调用工具，而是让它在真实业务里可控、可评估、可交接、可追责。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;和 Anthropic 那篇的区别&lt;a href=&quot;#和-anthropic-那篇的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;两篇文章都反对盲目复杂化，但侧重点不同。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;文章&lt;/th&gt;&lt;th&gt;重点&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Anthropic《Building effective agents》&lt;/td&gt;&lt;td&gt;强调先简单后复杂，介绍多种 agentic workflow 模式&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OpenAI《A Practical Guide to Building Agents》&lt;/td&gt;&lt;td&gt;强调企业落地，从选场景、三件套、编排到护栏&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Anthropic 那篇作为“Agent 架构思想”，把 OpenAI 这篇作为“Agent 落地手册”。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>Building Effective Agents 解读：别急着上 Agent，先从简单模式开始</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/building-effective-agents/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/building-effective-agents/</guid><description>Anthropic《Building effective agents》文章解读，梳理 workflow 与 agent 的区别、增强型 LLM、提示链、路由、并行化、编排者-工作者、评估者-优化者等常见模式，以及什么时候该增加系统复杂度。</description><pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Building Effective Agents 总结&lt;a href=&quot;#building-effective-agents-总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://www.anthropic.com/engineering/building-effective-agents&quot; target=&quot;_blank&quot;&gt;https://www.anthropic.com/engineering/building-effective-agents&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这篇文章不是在鼓励“凡事都上 Agent”，而是在讲：构建有效 AI Agent 的关键，是从最简单、可评估、可调试的模式开始，只有当任务确实需要更高自主性时，才逐步增加复杂度。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;文章主要讲了什么&lt;a href=&quot;#文章主要讲了什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 把 agentic systems 分成两类：&lt;/p&gt;
 
 
 
