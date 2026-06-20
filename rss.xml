@@ -1,4 +1,321 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月18日 17:39:31</lastBuildDate><item><title>OpenAI《A Practical Guide to Building Agents》解读：从场景选择到安全落地</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/a-practical-guide-to-building-ai-agents/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/a-practical-guide-to-building-ai-agents/</guid><description>OpenAI《A Practical Guide to Building Agents》文章解读，梳理什么任务适合构建 Agent、Agent 系统的模型、工具、指令与编排结构，以及如何通过多 Agent、护栏和人工交接把 Agent 安全部署到真实业务中。</description><pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;OpenAI《A Practical Guide to Building Agents》详细总结&lt;a href=&quot;#openaia-practical-guide-to-building-agents详细总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/&quot; target=&quot;_blank&quot;&gt;https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;PDF：&lt;a href=&quot;https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf&quot; target=&quot;_blank&quot;&gt;https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 这篇文章是一份面向产品和工程团队的 Agent 落地指南。它重点不是讨论 Agent 的概念有多新，而是回答三个实践问题：&lt;/p&gt;&lt;ul&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月20日 17:30:46</lastBuildDate><item><title>Claude Tool Use 官方文档中文解读：客户端工具、服务端工具与 Agentic Loop</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</guid><description>基于 Anthropic Claude 官方 Tool Use 文档的中文深度解读，重点拆解 client tools 与 server tools 的执行边界、tool_use/tool_result 循环、tool_choice、strict tool use 以及生产环境成本与风险控制。</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Claude Tool Use 官方文档中文解读&lt;a href=&quot;#claude-tool-use-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&quot; target=&quot;_blank&quot;&gt;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Claude 这篇文档最有价值的地方，不只是解释“工具怎么调”，而是把&lt;strong&gt;工具到底在哪里执行&lt;/strong&gt;这件事说得非常清楚。Anthropic 基本是在告诉开发者：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;工具调用不是一个抽象概念，真正重要的是执行边界、回传协议和 agentic loop。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Claude 的 tool use 是什么&lt;a href=&quot;#claude-的-tool-use-是什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 对 tool use 的定义很直接：Claude 可以调用你定义的工具，也可以调用 Anthropic 提供的工具。然后根据工具类型不同，执行位置也不同。&lt;/p&gt;&lt;p&gt;这里立刻就引出这篇文档最核心的区别：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;client tools&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;server tools&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这也是 Claude 文档和很多“只讲 function schema”的文档相比，最值得读的一点。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Client tools 与 server tools 的区别&lt;a href=&quot;#client-tools-与-server-tools-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. Client tools&lt;a href=&quot;#1-client-tools&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这类工具运行在&lt;strong&gt;你的应用侧&lt;/strong&gt;。Claude 只负责返回一个结构化调用请求，真正执行的是你的代码。&lt;/p&gt;&lt;p&gt;典型流程是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Claude 返回 &lt;code&gt;stop_reason: &quot;tool_use&quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;响应里带一个或多个 &lt;code&gt;tool_use&lt;/code&gt; block&lt;/li&gt;
+&lt;li&gt;你的程序执行工具&lt;/li&gt;
+&lt;li&gt;你再把 &lt;code&gt;tool_result&lt;/code&gt; 发回 Claude&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Server tools&lt;a href=&quot;#2-server-tools&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这类工具运行在 &lt;strong&gt;Anthropic 的基础设施侧&lt;/strong&gt;。例如文档里提到的：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;web_search&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;code_execution&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;web_fetch&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tool_search&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这种情况下，你不需要自己执行工具逻辑，Claude 会直接给你结果。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Claude 文档最值得记住的图景&lt;a href=&quot;#claude-文档最值得记住的图景&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果把 Anthropic 的工具系统用一张图讲清楚，大概就是这样：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[用户请求] --&amp;gt; B[Claude]
+    B --&amp;gt; C{使用哪类工具}
+    C --&amp;gt;|Client tool| D[Claude 返回 tool_use]
+    D --&amp;gt; E[你的应用执行工具]
+    E --&amp;gt; F[把 tool_result 发回 Claude]
+    F --&amp;gt; G[Claude 继续推理并回答]
+    C --&amp;gt;|Server tool| H[Anthropic 侧执行工具]
+    H --&amp;gt; G&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这一层边界特别重要，因为它直接决定了：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;谁掌握执行权限&lt;/li&gt;
+&lt;li&gt;谁承担安全责任&lt;/li&gt;
+&lt;li&gt;谁负责日志和审计&lt;/li&gt;
+&lt;li&gt;谁承担额外成本&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Claude 的 agentic loop 怎么理解&lt;a href=&quot;#claude-的-agentic-loop-怎么理解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 文档把工具调用视为一个 agentic loop，而不是一次性调用。&lt;/p&gt;&lt;p&gt;对 client tools 来说，完整循环通常是：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;你把用户请求和工具定义发给 Claude&lt;/li&gt;
+&lt;li&gt;Claude 判断是否需要工具&lt;/li&gt;
+&lt;li&gt;如果需要，就返回 &lt;code&gt;tool_use&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;你的程序执行工具&lt;/li&gt;
+&lt;li&gt;你把 &lt;code&gt;tool_result&lt;/code&gt; 发回去&lt;/li&gt;
+&lt;li&gt;Claude 再继续输出，或者继续请求更多工具&lt;/li&gt;
+&lt;/ol&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+    A[发送 messages + tools] --&amp;gt; B[Claude 判断]
+    B --&amp;gt; C{是否 tool_use}
+    C -- 否 --&amp;gt; D[直接文本回答]
+    C -- 是 --&amp;gt; E[返回 tool_use blocks]
+    E --&amp;gt; F[应用执行工具]
+    F --&amp;gt; G[发送 tool_result]
+    G --&amp;gt; B&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这个循环和 OpenAI 的闭环有相似之处，但 Claude 文档更强调“这是 agentic loop 的基础单元”，而不是只把它看成函数调用补丁。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;&lt;code&gt;tool_choice&lt;/code&gt; 是 Claude 的硬开关&lt;a href=&quot;#tool_choice-是-claude-的硬开关&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Claude 默认的 &lt;code&gt;tool_choice&lt;/code&gt; 是 &lt;code&gt;{&quot;type&quot;: &quot;auto&quot;}&lt;/code&gt;。也就是说，Claude 会自己判断：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;该不该用工具&lt;/li&gt;
+&lt;li&gt;还是直接回答&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;文档还专门解释了 Claude 什么时候更倾向于用工具：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;用户请求和工具描述高度匹配&lt;/li&gt;
+&lt;li&gt;所需信息不在当前上下文里&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;而以下情况更容易直接回答：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;稳定知识&lt;/li&gt;
+&lt;li&gt;创意写作&lt;/li&gt;
+&lt;li&gt;普通对话&lt;/li&gt;
+&lt;/ul&gt;&lt;section&gt;&lt;h3&gt;系统提示可以影响这个边界&lt;a href=&quot;#系统提示可以影响这个边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Anthropic 给了很明确的经验：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;“Use the tools to investigate before responding.” 会提高工具触发率&lt;/li&gt;
+&lt;li&gt;“Always call a tool first before responding.” 会更强地推动工具优先&lt;/li&gt;
+&lt;li&gt;“Use your judgment…” 会让行为更保守&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;但它也提醒了一件很关键的事：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;提示词只是引导，不是保证。&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;如果你要硬性保证，就用 &lt;code&gt;tool_choice&lt;/code&gt;。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Strict tool use 的价值&lt;a href=&quot;#strict-tool-use-的价值&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Claude 也支持 &lt;code&gt;strict: true&lt;/code&gt;，目的是保证工具调用严格遵守 schema。&lt;/p&gt;&lt;p&gt;这和 OpenAI 的 strict mode 在精神上是类似的：让模型不要“尽量符合”，而是“必须符合”。&lt;/p&gt;&lt;p&gt;对工程落地来说，strict 的意义非常直接：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;减少参数结构歪掉&lt;/li&gt;
+&lt;li&gt;减少后端解析分支&lt;/li&gt;
+&lt;li&gt;降低工具选错后补救成本&lt;/li&gt;
+&lt;li&gt;让回归测试更稳定&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以只要你的工具是结构化参数输入，Claude 的 strict tool use 基本也应该优先考虑开启。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Claude 这篇文档的隐藏重点：不是所有工具都该你自己托管&lt;a href=&quot;#claude-这篇文档的隐藏重点不是所有工具都该你自己托管&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 把 server tools 摆到文档核心位置，实际上是在提供一个很现实的架构选择：&lt;/p&gt;&lt;section&gt;&lt;h3&gt;什么时候更适合 client tools&lt;a href=&quot;#什么时候更适合-client-tools&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;你有自己的内部系统&lt;/li&gt;
+&lt;li&gt;你要接企业 API、数据库、业务后端&lt;/li&gt;
+&lt;li&gt;你要自己掌控权限、审计和执行流程&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;什么时候更适合 server tools&lt;a href=&quot;#什么时候更适合-server-tools&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;你希望快速获得搜索、抓取、执行能力&lt;/li&gt;
+&lt;li&gt;你不想自己维护某些通用工具运行环境&lt;/li&gt;
+&lt;li&gt;你接受 Anthropic 托管执行带来的边界和费用&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这意味着 Claude 的工具体系不是单一范式，而是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;一部分能力可以自己托管&lt;/li&gt;
+&lt;li&gt;一部分能力可以直接借 Anthropic 的运行基础设施&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;文档对“何时该调用工具”的解释很实用&lt;a href=&quot;#文档对何时该调用工具的解释很实用&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Claude 文档对工具触发边界讲得非常像产品经理视角，而不只是 API 视角。&lt;/p&gt;&lt;p&gt;它的隐含逻辑是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;如果 Claude 仅凭上下文就能稳定回答，就不一定要调工具&lt;/li&gt;
+&lt;li&gt;如果请求明显映射到某个工具能力，并且需要外部信息或外部动作，就更应该调工具&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这会带来一个很重要的设计启发：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;工具描述其实不是写给程序员看的，而是写给模型做路由判断用的。&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;也就是说，工具定义本身就是 prompt engineering 的一部分。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;成本是 Claude 文档明确拿出来讲的重点&lt;a href=&quot;#成本是-claude-文档明确拿出来讲的重点&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 在这篇文档里专门列了 pricing，这很有意思。它是在提醒你：工具调用不是免费魔法。&lt;/p&gt;&lt;p&gt;文档指出，tool use 的成本来源至少包括：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;输入 token，包括 &lt;code&gt;tools&lt;/code&gt; 参数本身&lt;/li&gt;
+&lt;li&gt;输出 token&lt;/li&gt;
+&lt;li&gt;服务端工具自己的额外用量费用&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;此外，&lt;code&gt;tool_use&lt;/code&gt; 和 &lt;code&gt;tool_result&lt;/code&gt; 这些内容块也会增加 token 消耗。&lt;/p&gt;&lt;p&gt;这说明一个非常现实的问题：&lt;/p&gt;&lt;p&gt;工具越多、schema 越长、循环越深，成本就越高。&lt;/p&gt;&lt;p&gt;所以设计工具系统时，不只是要考虑“功能够不够”，还要考虑：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具定义是否太臃肿&lt;/li&gt;
+&lt;li&gt;是否每轮都需要全部工具&lt;/li&gt;
+&lt;li&gt;是否能分层暴露工具&lt;/li&gt;
+&lt;li&gt;是否要对高成本 server tools 做限流&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;从工程角度看 Claude 文档，最该带走什么&lt;a href=&quot;#从工程角度看-claude-文档最该带走什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 先搞清楚执行边界&lt;a href=&quot;#1-先搞清楚执行边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在 Claude 体系里，client tool 和 server tool 不是名字差异，而是系统边界差异。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. &lt;code&gt;tool_use&lt;/code&gt; / &lt;code&gt;tool_result&lt;/code&gt; 是协议，不是实现细节&lt;a href=&quot;#2-tool_use--tool_result-是协议不是实现细节&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你把它当成“模型偶尔会吐出的一段 JSON”，后面就很容易在循环、错误处理和状态管理上踩坑。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. &lt;code&gt;tool_choice&lt;/code&gt; 比提示词更可靠&lt;a href=&quot;#3-tool_choice-比提示词更可靠&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;提示词可以引导，&lt;code&gt;tool_choice&lt;/code&gt; 才能真正收紧行为。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 成本与风险必须一起看&lt;a href=&quot;#4-成本与风险必须一起看&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;尤其是服务端工具，除了 token，还有额外使用费用；而客户端工具虽然更可控，但你要自己负责执行安全。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;如果把 Claude 这篇文章翻译成更直白的系统设计语言&lt;a href=&quot;#如果把-claude-这篇文章翻译成更直白的系统设计语言&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;它其实是在说：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;不要只关心“模型能不能调用工具”&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;更要关心“工具由谁执行、结果如何回流、什么时候必须调工具、成本和权限怎么控”&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这也是 Claude 文档比很多只展示代码样例的文章更成熟的地方。它已经不只是教你写 demo，而是在教你设计一个真正能跑的 agentic loop。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;最后做一个自己的总结&lt;a href=&quot;#最后做一个自己的总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我会把 Claude 这篇文档概括成三句话：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;Claude 的工具系统首先是执行边界设计，其次才是 schema 设计&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tool_use -&amp;gt; tool_result -&amp;gt; 再推理&lt;/code&gt; 是 agentic loop 的最小闭环&lt;/li&gt;
+&lt;li&gt;client tools 和 server tools 的选择，本质上是在做控制权、成本和开发效率之间的权衡&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Claude 官方文档：&lt;a href=&quot;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&quot; target=&quot;_blank&quot;&gt;Tool use with Claude&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>Gemini Function Calling 官方文档中文解读：并行调用、组合调用与模式控制</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/gemini-function-calling-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%B9%B6%E8%A1%8C%E8%B0%83%E7%94%A8%E7%BB%84%E5%90%88%E8%B0%83%E7%94%A8%E4%B8%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/gemini-function-calling-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%B9%B6%E8%A1%8C%E8%B0%83%E7%94%A8%E7%BB%84%E5%90%88%E8%B0%83%E7%94%A8%E4%B8%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6/</guid><description>基于 Google Gemini API 官方 function calling 文档的中文详细解读，重点说明函数声明、唯一 id 回传、thinking 模型中的 thought signature、并行调用、组合调用和 VALIDATED/AUTO/ANY/NONE 模式。</description><pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Gemini Function Calling 官方文档中文解读&lt;a href=&quot;#gemini-function-calling-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://ai.google.dev/gemini-api/docs/function-calling?hl=zh-cn&quot; target=&quot;_blank&quot;&gt;https://ai.google.dev/gemini-api/docs/function-calling?hl=zh-cn&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 这篇文档最值得记住的不是“怎么声明函数”，而是它把工具调用扩展成了一个更完整的执行体系：&lt;strong&gt;支持并行调用、支持顺序组合调用、支持模式强控，还特别强调每次函数调用的 &lt;code&gt;id&lt;/code&gt; 映射&lt;/strong&gt;。&lt;/p&gt;&lt;p&gt;如果说 OpenAI 那篇更像是在讲“受控工具闭环”，Gemini 这篇则更像是在讲“如何把工具系统跑成编排引擎”。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Gemini 对 function calling 的定义&lt;a href=&quot;#gemini-对-function-calling-的定义&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Google 的原文很直接：function calling 是把模型和外部工具、API 连接起来，让模型不只是输出文本，而是能判断什么时候该调用函数，并给出执行所需参数。&lt;/p&gt;&lt;p&gt;它明确列出三个主要用途：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;Take Actions&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Augment Knowledge&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Extend Capabilities&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;翻成更接地气的话就是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;去做事：发邮件、建会议、控设备&lt;/li&gt;
+&lt;li&gt;去拿外部信息：查数据库、查接口、查知识库&lt;/li&gt;
+&lt;li&gt;去补模型短板：计算、画图、跨系统联动&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Gemini 的工作流为什么值得单独看&lt;a href=&quot;#gemini-的工作流为什么值得单独看&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 文档里最关键的部分是“How function calling works”。它特别强调：&lt;strong&gt;模型不会替你执行函数，执行责任在应用侧&lt;/strong&gt;。&lt;/p&gt;&lt;p&gt;流程可以整理成这样：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[定义 function declarations] --&amp;gt; B[发送 prompt + tools]
+    B --&amp;gt; C[模型返回 functionCall&amp;lt;br/&amp;gt;name + args + id]
+    C --&amp;gt; D[应用侧执行真实函数]
+    D --&amp;gt; E[把 functionResponse 连同同一个 id 回传]
+    E --&amp;gt; F[模型生成最终自然语言结果]
+    F --&amp;gt; G{任务是否结束}
+    G -- 否 --&amp;gt; B
+    G -- 是 --&amp;gt; H[返回给用户]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这里 Gemini 特别重视 &lt;code&gt;id&lt;/code&gt;，这是它和很多人熟悉的老式函数调用示例之间最大的区别之一。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;为什么 Gemini 反复强调 &lt;code&gt;id&lt;/code&gt;&lt;a href=&quot;#为什么-gemini-反复强调-id&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;文档开头就写得很明白：Gemini 3 系列现在会为每一个 function call 生成唯一 &lt;code&gt;id&lt;/code&gt;。&lt;/p&gt;&lt;p&gt;如果你是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;手动维护对话历史&lt;/li&gt;
+&lt;li&gt;直接走 REST API&lt;/li&gt;
+&lt;li&gt;自己拼装多轮 function response&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;那你在回传函数执行结果时，最好把&lt;strong&gt;同一个 &lt;code&gt;id&lt;/code&gt;&lt;/strong&gt; 带回去。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;这个 &lt;code&gt;id&lt;/code&gt; 的作用是什么&lt;a href=&quot;#这个-id-的作用是什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;它的作用是让模型知道：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;这条工具结果对应哪一次函数调用&lt;/li&gt;
+&lt;li&gt;并行执行后每个结果该映射回哪个请求&lt;/li&gt;
+&lt;li&gt;多轮调用里上下文关系没有串线&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以 Gemini 的思路不是“按顺序猜你回的是哪个调用结果”，而是“靠显式 id 精准对齐”。&lt;/p&gt;&lt;p&gt;这对复杂系统非常重要。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Gemini 的函数声明长什么样&lt;a href=&quot;#gemini-的函数声明长什么样&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 的 function declaration 也是 JSON 结构，并且文档明确说，它使用的是 &lt;strong&gt;OpenAPI schema 的一个子集&lt;/strong&gt;。&lt;/p&gt;&lt;p&gt;常见字段包括：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;description&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;parameters&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;properties&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;required&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;enum&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;和 OpenAI 很像，但 Gemini 文档对 description 的强调尤其明显。它反复提醒你：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;名称要清楚&lt;/li&gt;
+&lt;li&gt;描述要详细&lt;/li&gt;
+&lt;li&gt;参数要写格式和限制&lt;/li&gt;
+&lt;li&gt;固定选项尽量用 &lt;code&gt;enum&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这其实是在告诉你：&lt;strong&gt;模型是否会正确挑工具，本质上取决于你有没有把工具说明写成模型能理解的产品文档&lt;/strong&gt;。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Gemini 最强的一块：并行 function calling&lt;a href=&quot;#gemini-最强的一块并行-function-calling&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这篇文档里最亮眼的部分之一，就是对 parallel function calling 的支持说明。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;并行调用适合什么场景&lt;a href=&quot;#并行调用适合什么场景&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Google 给的例子很典型：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;从多个独立数据库取数&lt;/li&gt;
+&lt;li&gt;查询多个仓库库存&lt;/li&gt;
+&lt;li&gt;同时执行多个彼此无依赖的动作&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;核心判断标准很简单：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;这些函数之间是否互不依赖。&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;如果互不依赖，就可以并行。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;并行返回时顺序不必一致&lt;a href=&quot;#并行返回时顺序不必一致&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这是 Gemini 文档里一个特别实用的工程细节：&lt;/p&gt;&lt;p&gt;当模型在单轮里发起多个函数调用时，你&lt;strong&gt;不需要&lt;/strong&gt;按收到调用的原始顺序返回 &lt;code&gt;function_result&lt;/code&gt;。因为 API 会用每个调用的 &lt;code&gt;id&lt;/code&gt; 来做映射。&lt;/p&gt;&lt;p&gt;这意味着你可以：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;异步执行函数&lt;/li&gt;
+&lt;li&gt;谁先完成先回谁&lt;/li&gt;
+&lt;li&gt;不必人为重新排序&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这个设计对高吞吐工具系统非常友好。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+    A[模型返回 3 个 functionCall] --&amp;gt; B1[函数 A 异步执行]
+    A --&amp;gt; B2[函数 B 异步执行]
+    A --&amp;gt; B3[函数 C 异步执行]
+    B2 --&amp;gt; C[按各自 id 回传结果]
+    B3 --&amp;gt; C
+    B1 --&amp;gt; C
+    C --&amp;gt; D[模型汇总生成最终回答]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Gemini 还支持组合式调用&lt;a href=&quot;#gemini-还支持组合式调用&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;除了并行，Gemini 还强调 &lt;code&gt;Compositional function calling&lt;/code&gt;，也就是顺序组合调用。&lt;/p&gt;&lt;p&gt;它的意思是：一个复杂任务可能不是一次函数调用能做完，而是模型先调一个函数拿中间结果，再基于这个结果调下一个函数。&lt;/p&gt;&lt;p&gt;文档里举的思路很典型：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;先 get_current_location() -&amp;gt; 再 get_weather(location)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这非常像真正的 agentic workflow，而不是单次工具补充。&lt;/p&gt;&lt;p&gt;所以 Gemini 的 function calling 不是只有两种状态：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;调函数&lt;/li&gt;
+&lt;li&gt;不调函数&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;而是至少有三种执行结构：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;单次调用&lt;/li&gt;
+&lt;li&gt;并行多次调用&lt;/li&gt;
+&lt;li&gt;顺序组合调用&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Thinking models 和 thought signature 是这篇文档的高级重点&lt;a href=&quot;#thinking-models-和-thought-signature-是这篇文档的高级重点&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 在 function calling 文档里专门插了一大段讲 thinking models，这很值得注意。&lt;/p&gt;&lt;p&gt;文档说明：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Gemini 3 和 2.5 系列带有内部 thinking 过程&lt;/li&gt;
+&lt;li&gt;这能提升函数调用判断和参数选择能力&lt;/li&gt;
+&lt;li&gt;但因为 Gemini API 是 stateless 的，多轮上下文要靠 &lt;code&gt;thought signature&lt;/code&gt; 保持&lt;/li&gt;
+&lt;/ul&gt;&lt;section&gt;&lt;h3&gt;什么时候你需要在意 thought signature&lt;a href=&quot;#什么时候你需要在意-thought-signature&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你用官方 Python / Node SDK，通常 SDK 会帮你处理。&lt;/p&gt;&lt;p&gt;你真正需要自己处理的情况是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;你手动维护历史&lt;/li&gt;
+&lt;li&gt;你裁剪或重写了对话内容&lt;/li&gt;
+&lt;li&gt;你直接按 REST 方式自己构造请求&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;文档给出的规则非常明确&lt;a href=&quot;#文档给出的规则非常明确&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;要把 &lt;code&gt;thought_signature&lt;/code&gt; 按原来的位置传回去&lt;/li&gt;
+&lt;li&gt;要把 &lt;code&gt;function_call&lt;/code&gt; 的原始 &lt;code&gt;id&lt;/code&gt; 带进 &lt;code&gt;function_response&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;不要随便合并带 signature 和不带 signature 的 parts&lt;/li&gt;
+&lt;li&gt;也不要把两个都带 signature 的 parts 硬合并&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这背后反映的是 Gemini 的一个工程现实：&lt;strong&gt;当模型具备内部推理过程时，多轮工具调用的上下文对齐就不再只是“消息列表”那么简单了。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;四种 function calling mode 是 Gemini 文档的另一个重点&lt;a href=&quot;#四种-function-calling-mode-是-gemini-文档的另一个重点&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 提供了非常明确的模式控制，这让工具调用行为比很多默认自动模式更可控。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;&lt;code&gt;AUTO&lt;/code&gt;&lt;a href=&quot;#auto&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;默认自动模式。模型自己决定：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;直接回答&lt;/li&gt;
+&lt;li&gt;还是发起函数调用&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;适合通用对话和大部分默认场景。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;&lt;code&gt;VALIDATED&lt;/code&gt;&lt;a href=&quot;#validated&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这是文档里强调的一个关键模式。它会约束模型输出自然语言或函数调用，并确保函数 schema 遵守度更高。&lt;/p&gt;&lt;p&gt;适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;你希望保留模型自主判断&lt;/li&gt;
+&lt;li&gt;但又想降低 malformed function call&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;&lt;code&gt;ANY&lt;/code&gt;&lt;a href=&quot;#any&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;强制模型一定走函数调用。&lt;/p&gt;&lt;p&gt;适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;明确要求每次都调用工具&lt;/li&gt;
+&lt;li&gt;你不希望模型直接闲聊&lt;/li&gt;
+&lt;li&gt;你在做受控工作流入口&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;&lt;code&gt;NONE&lt;/code&gt;&lt;a href=&quot;#none&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;临时彻底禁用函数调用。&lt;/p&gt;&lt;p&gt;适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;调试&lt;/li&gt;
+&lt;li&gt;灰度切换&lt;/li&gt;
+&lt;li&gt;某些回退路径&lt;/li&gt;
+&lt;/ul&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[收到用户请求] --&amp;gt; B{mode}
+    B --&amp;gt;|AUTO| C[模型自行判断 回答或调函数]
+    B --&amp;gt;|VALIDATED| D[更严格地在回答/函数间选择 并遵守 schema]
+    B --&amp;gt;|ANY| E[必须输出函数调用]
+    B --&amp;gt;|NONE| F[禁止函数调用 只输出文本]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Python SDK 的自动函数调用&lt;a href=&quot;#python-sdk-的自动函数调用&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 文档里还有一个对 Python 开发者很友好的能力：&lt;code&gt;Automatic function calling&lt;/code&gt;。&lt;/p&gt;&lt;p&gt;它能自动做四件事：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;识别模型返回的函数调用&lt;/li&gt;
+&lt;li&gt;在你的代码里执行对应 Python 函数&lt;/li&gt;
+&lt;li&gt;把函数结果回送给模型&lt;/li&gt;
+&lt;li&gt;返回最终文本结果&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这很适合原型阶段和 demo 阶段，因为你可以先把复杂循环交给 SDK。&lt;/p&gt;&lt;p&gt;但文档也明确写了一个边界：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当前自动函数调用是 Python SDK 特性&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果你用 JavaScript、REST 或自定义运行时，就还是得自己处理完整循环。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Gemini 这篇文档最值得带走的实战启发&lt;a href=&quot;#gemini-这篇文档最值得带走的实战启发&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 不要再把函数结果回传理解成“按顺序塞回去”&lt;a href=&quot;#1-不要再把函数结果回传理解成按顺序塞回去&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在 Gemini 里，更安全的思路是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;每个调用都有唯一 &lt;code&gt;id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;每个结果都明确绑定 &lt;code&gt;id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;并行执行天然成立&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 复杂任务不一定靠一个大函数解决&lt;a href=&quot;#2-复杂任务不一定靠一个大函数解决&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Gemini 明确支持组合式调用，这鼓励你把工具设计成：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;小而清晰&lt;/li&gt;
+&lt;li&gt;可串联&lt;/li&gt;
+&lt;li&gt;可并行&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;而不是把所有逻辑揉成一个超级函数。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 模式控制很适合生产环境&lt;a href=&quot;#3-模式控制很适合生产环境&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;很多团队的问题不是“模型不会调用工具”，而是“模型有时调、有时不调，行为太飘”。&lt;/p&gt;&lt;p&gt;Gemini 给了一个很实用的答案：用 mode 去管。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 如果你手动拼历史，一定要尊重 thought signature&lt;a href=&quot;#4-如果你手动拼历史一定要尊重-thought-signature&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这是最容易踩坑、又最不像普通 prompt 工程的问题。thinking 模型的多轮 function calling，并不是只存一份聊天记录那么简单。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;如果把这篇文档总结成一句工程判断&lt;a href=&quot;#如果把这篇文档总结成一句工程判断&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 的 function calling 已经不是“给模型一个函数列表看看它会不会用”，而是更接近：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;给模型一个可编排的工具系统，再通过 id、mode、thought signature 和 SDK 机制把多轮工具执行变成稳定工作流。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Gemini 官方文档：&lt;a href=&quot;https://ai.google.dev/gemini-api/docs/function-calling?hl=zh-cn&quot; target=&quot;_blank&quot;&gt;Function calling with the Gemini API&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>OpenAI Function Calling 官方文档中文解读：从 JSON Schema 到 Strict Mode</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/openai-function-calling-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E4%BB%8E-json-schema-%E5%88%B0-strict-mode/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/openai-function-calling-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E4%BB%8E-json-schema-%E5%88%B0-strict-mode/</guid><description>基于 OpenAI 官方 Function Calling 指南的中文深度解读，系统梳理工具定义、五步调用流程、parallel_tool_calls、strict mode、custom tools 与 tool search 的关键差异与实战要点。</description><pubDate>Thu, 18 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;OpenAI Function Calling 官方文档中文解读&lt;a href=&quot;#openai-function-calling-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://developers.openai.com/api/docs/guides/function-calling&quot; target=&quot;_blank&quot;&gt;https://developers.openai.com/api/docs/guides/function-calling&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 这篇文档讲的不是“模型会不会调函数”这么简单，而是：&lt;strong&gt;如何把模型、工具定义、应用侧执行逻辑和结构化返回结果接成一个可靠闭环&lt;/strong&gt;。其中最关键的三个词是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;tools&lt;/code&gt;：你交给模型的能力边界&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;strict: true&lt;/code&gt;：你要求模型严格遵守 schema&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tool output&lt;/code&gt;：你的系统执行完工具后，重新喂给模型的真实世界结果&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;这篇文档到底在讲什么&lt;a href=&quot;#这篇文档到底在讲什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 把 function calling 也叫 tool calling。它的核心不是让模型“直接执行代码”，而是让模型：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;看懂用户需求&lt;/li&gt;
+&lt;li&gt;判断是否需要某个工具&lt;/li&gt;
+&lt;li&gt;产出结构化工具调用参数&lt;/li&gt;
+&lt;li&gt;由你的应用真正执行工具&lt;/li&gt;
+&lt;li&gt;再把执行结果交还给模型生成最终回答&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这意味着 OpenAI 的 function calling 本质上是一个&lt;strong&gt;应用控制、模型决策、工具执行、人类可审计&lt;/strong&gt;的中间层。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;OpenAI 的工具调用心智模型&lt;a href=&quot;#openai-的工具调用心智模型&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;文档里把几个概念分得很清楚，这里用中文重新串一下：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Tool&lt;/code&gt;：你声明给模型的能力，比如 &lt;code&gt;get_weather&lt;/code&gt;、&lt;code&gt;query_order&lt;/code&gt;、&lt;code&gt;issue_refund&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Tool call&lt;/code&gt;：模型决定“我现在需要调用哪个工具，并给出哪些参数”&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Tool call output&lt;/code&gt;：你的程序真正执行工具后返回的结果，再交还给模型&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;换句话说，OpenAI 并不是让模型自己去碰数据库、调用支付接口、改订单，而是让模型先提交一份“操作申请单”，真正干活的是你的应用。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[用户问题] --&amp;gt; B[向模型发送 prompt + tools]
+    B --&amp;gt; C{模型是否需要工具}
+    C -- 否 --&amp;gt; D[直接生成文本回答]
+    C -- 是 --&amp;gt; E[返回 tool call&amp;lt;br/&amp;gt;包含函数名和参数]
+    E --&amp;gt; F[应用侧执行真实工具]
+    F --&amp;gt; G[生成 tool output]
+    G --&amp;gt; H[再次发给模型]
+    H --&amp;gt; I[模型结合结果输出最终答案]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;OpenAI 官方给出的五步流程&lt;a href=&quot;#openai-官方给出的五步流程&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;文档明确把 tool calling 拆成五步，这个拆法很适合工程实现：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;向模型发请求，并带上它可调用的工具&lt;/li&gt;
+&lt;li&gt;接收模型返回的工具调用&lt;/li&gt;
+&lt;li&gt;在应用侧执行工具代码&lt;/li&gt;
+&lt;li&gt;把工具执行结果作为新的上下文发回模型&lt;/li&gt;
+&lt;li&gt;得到最终文本响应，或者继续触发更多工具调用&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这里最容易被初学者忽略的是第 4 步。很多人以为模型一旦返回函数名和参数，事情就结束了。其实那只是“中场休息”。真正的闭环是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;模型提议调用 -&amp;gt; 你的系统执行 -&amp;gt; 结果回流模型 -&amp;gt; 模型再组织成用户可读答案&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这也是为什么 function calling 不是“会不会写 schema”的问题，而是“会不会设计回路”的问题。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Function tools 和 custom tools 的区别&lt;a href=&quot;#function-tools-和-custom-tools-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 这篇文档有一个很重要但很容易被略过的点：&lt;strong&gt;工具不只有 function tools 一种&lt;/strong&gt;。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. Function tools&lt;a href=&quot;#1-function-tools&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这是最常见的形式。你要给模型一个 JSON Schema，让模型按字段生成参数。&lt;/p&gt;&lt;p&gt;适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;参数结构明确的调用&lt;/li&gt;
+&lt;li&gt;后端接口调用&lt;/li&gt;
+&lt;li&gt;数据查询&lt;/li&gt;
+&lt;li&gt;风险较高、需要严格校验的动作&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;例如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;查天气&lt;/li&gt;
+&lt;li&gt;查订单&lt;/li&gt;
+&lt;li&gt;提交退款申请&lt;/li&gt;
+&lt;li&gt;创建工单&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Custom tools&lt;a href=&quot;#2-custom-tools&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;OpenAI 还支持 custom tools，输入输出可以是自由文本，不一定强制是 JSON 结构。&lt;/p&gt;&lt;p&gt;它更适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;结构不固定的长文本工具&lt;/li&gt;
+&lt;li&gt;某些代码生成或 DSL 生成场景&lt;/li&gt;
+&lt;li&gt;不方便提前穷举 schema 的复杂输入&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以可以把 OpenAI 的工具能力理解为两层：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;function tool&lt;/strong&gt;：强调参数结构化&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;custom tool&lt;/strong&gt;：强调自由表达能力&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;JSON Schema 为什么是核心&lt;a href=&quot;#json-schema-为什么是核心&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在 OpenAI 的实现里，函数工具是由 JSON Schema 定义的。也就是说，模型不是凭空“猜”这个函数要什么参数，而是基于你提供的 schema 来填表。&lt;/p&gt;&lt;p&gt;一个好 schema 至少要满足三件事：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;函数名清楚&lt;/li&gt;
+&lt;li&gt;描述清楚函数职责&lt;/li&gt;
+&lt;li&gt;参数约束足够明确&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;如果 schema 写得含糊，模型就会在两个地方出问题：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;不知道什么时候该调这个工具&lt;/li&gt;
+&lt;li&gt;知道该调，也容易把参数拼错&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以 schema 不是文档装饰，而是模型理解工具的主入口。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Strict Mode 是 OpenAI 这篇文档最关键的工程点&lt;a href=&quot;#strict-mode-是-openai-这篇文档最关键的工程点&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;官方建议尽量总是开启 &lt;code&gt;strict: true&lt;/code&gt;。原因很直接：不开 strict 时，模型是“尽力按 schema 来”；开了 strict，才是“必须按 schema 来”。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;&lt;code&gt;strict: true&lt;/code&gt; 带来的价值&lt;a href=&quot;#strict-true-带来的价值&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;工具参数更稳定&lt;/li&gt;
+&lt;li&gt;解析失败率更低&lt;/li&gt;
+&lt;li&gt;后端校验和重试逻辑更简单&lt;/li&gt;
+&lt;li&gt;多工具系统更可维护&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;但 strict mode 不是随便一开就行&lt;a href=&quot;#但-strict-mode-不是随便一开就行&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;文档明确提出了两个要求：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;每个 object 都要设置 &lt;code&gt;additionalProperties: false&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;properties&lt;/code&gt; 里的字段都要出现在 &lt;code&gt;required&lt;/code&gt; 中&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;如果你需要“可选字段”，OpenAI 推荐的做法不是省略 &lt;code&gt;required&lt;/code&gt;，而是把类型写成类似：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;{&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;  &lt;/span&gt;&lt;span&gt;&quot;type&quot;&lt;/span&gt;&lt;span&gt;: [&lt;/span&gt;&lt;span&gt;&quot;string&quot;&lt;/span&gt;&lt;span&gt;, &lt;/span&gt;&lt;span&gt;&quot;null&quot;&lt;/span&gt;&lt;span&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;}&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;也就是说，字段仍然存在，但值可以是 &lt;code&gt;null&lt;/code&gt;。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;一个非常容易忽略的默认差异&lt;a href=&quot;#一个非常容易忽略的默认差异&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;OpenAI 文档还专门强调了 Responses API 和 Chat Completions 的默认行为不同：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Responses API&lt;/code&gt;：会尽量把 schema 规范化到 strict 模式；不兼容时退回非 strict，并在工具上显示 &lt;code&gt;strict: false&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Chat Completions API&lt;/code&gt;：默认仍然是非 strict&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这个差异非常重要。很多人以为“我没写 &lt;code&gt;strict: true&lt;/code&gt;，反正也差不多”，但不同 API 的默认行为并不完全一样。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;并行工具调用要怎么理解&lt;a href=&quot;#并行工具调用要怎么理解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 允许模型在单轮里发起多个函数调用，也就是 parallel function calling。&lt;/p&gt;&lt;p&gt;但有两个边界要记住：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;built-in tools 不支持并行函数调用&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;如果你不想让模型一口气调多个工具，可以设置 &lt;code&gt;parallel_tool_calls: false&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;这会把行为限制成：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;一轮里最多一个工具调用&lt;/li&gt;
+&lt;li&gt;或者完全不调用工具&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这个开关很适合早期原型或高风险操作场景。因为当模型同时调多个工具时，系统复杂度会明显上升：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;要并发执行&lt;/li&gt;
+&lt;li&gt;要处理部分失败&lt;/li&gt;
+&lt;li&gt;要决定返回顺序和聚合逻辑&lt;/li&gt;
+&lt;li&gt;还要考虑 strict mode 与并行调用之间的约束&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Tool Search 的意义&lt;a href=&quot;#tool-search-的意义&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 在文档里提到，如果你有大量函数或者大 schema，可以配合 &lt;code&gt;tool_search&lt;/code&gt; 使用。&lt;/p&gt;&lt;p&gt;这个设计非常像“延迟加载工具目录”：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;平时不把所有工具都塞进上下文&lt;/li&gt;
+&lt;li&gt;先让模型搜索有哪些工具相关&lt;/li&gt;
+&lt;li&gt;再把命中的工具加载进上下文继续调用&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;它解决的是大工具集场景下的两个问题：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;上下文过大&lt;/li&gt;
+&lt;li&gt;工具太多时模型更容易选错&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;所以当系统规模变大时，问题不只是“还能不能用 function calling”，而是“要不要给 function calling 再加一层工具检索”。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;OpenAI 版 function calling 的典型工程结构&lt;a href=&quot;#openai-版-function-calling-的典型工程结构&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果把文档落到后端设计里，比较像这样：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[定义 tools schema] --&amp;gt; B[发送用户输入与 tools]
+    B --&amp;gt; C[模型返回 tool call]
+    C --&amp;gt; D[后端参数校验]
+    D --&amp;gt; E[调用内部服务或外部 API]
+    E --&amp;gt; F[封装 tool output]
+    F --&amp;gt; G[回送模型]
+    G --&amp;gt; H[生成最终用户响应]
+    D --&amp;gt; I[校验失败时记录日志/重试/拒绝执行]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这里真正的可靠性，不在模型本身，而在你有没有把下面几层做好：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;schema 约束&lt;/li&gt;
+&lt;li&gt;应用侧校验&lt;/li&gt;
+&lt;li&gt;工具权限边界&lt;/li&gt;
+&lt;li&gt;执行日志&lt;/li&gt;
+&lt;li&gt;错误恢复&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;写 OpenAI 工具定义时最值得注意的点&lt;a href=&quot;#写-openai-工具定义时最值得注意的点&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 名称要像动作，不要像内部缩写&lt;a href=&quot;#1-名称要像动作不要像内部缩写&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;模型理解的是语义，不是你团队内部约定。&lt;code&gt;query_customer_invoice_status&lt;/code&gt; 通常比 &lt;code&gt;fn_17&lt;/code&gt; 好得多。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 描述要写“何时用”，不只写“它是什么”&lt;a href=&quot;#2-描述要写何时用不只写它是什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;很多失败不是参数错，而是模型根本选错工具。所以 description 最好说明：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具做什么&lt;/li&gt;
+&lt;li&gt;什么场景该调用&lt;/li&gt;
+&lt;li&gt;输入格式是什么&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 参数描述要给格式线索&lt;a href=&quot;#3-参数描述要给格式线索&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;例如 location 是写：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;城市名&lt;/li&gt;
+&lt;li&gt;城市+国家&lt;/li&gt;
+&lt;li&gt;邮编&lt;/li&gt;
+&lt;li&gt;经纬度&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些差异都会直接影响调用成功率。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 高风险操作不要只靠模型判断&lt;a href=&quot;#4-高风险操作不要只靠模型判断&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;比如退款、删数据、发消息、扣费，最好在应用侧再加一层：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;权限检查&lt;/li&gt;
+&lt;li&gt;风险分级&lt;/li&gt;
+&lt;li&gt;人工确认&lt;/li&gt;
+&lt;li&gt;审计日志&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;一个很实用的认知：OpenAI 的 function calling 不是“自动化”，而是“受控自动化”&lt;a href=&quot;#一个很实用的认知openai-的-function-calling-不是自动化而是受控自动化&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;文档整体传达的态度其实很清楚：模型负责判断和组织参数，但真正掌权的是应用。&lt;/p&gt;&lt;p&gt;所以它特别适合下面这类系统：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;智能客服&lt;/li&gt;
+&lt;li&gt;内部运营助手&lt;/li&gt;
+&lt;li&gt;BI 查询助手&lt;/li&gt;
+&lt;li&gt;研发辅助工具&lt;/li&gt;
+&lt;li&gt;多接口编排层&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;而不适合无保护地直接放进高风险生产动作里。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;如果把这篇文档读成博客作者自己的结论&lt;a href=&quot;#如果把这篇文档读成博客作者自己的结论&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我会把它总结成四句话：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;OpenAI 的 function calling 核心不是“调函数”，而是“建立模型与真实系统之间的协议”&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;strict: true&lt;/code&gt; 是把 demo 变成工程能力的关键开关&lt;/li&gt;
+&lt;li&gt;schema 写法决定了模型是否能稳定选对工具、填对参数&lt;/li&gt;
+&lt;li&gt;真正的可靠性来自应用侧执行、校验、权限和回流闭环，而不是模型本身&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;最后做一个实战导读&lt;a href=&quot;#最后做一个实战导读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你准备自己实现一套 OpenAI 工具调用系统，比较稳的落地顺序可以是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;先做单工具 -&amp;gt; 开 strict mode -&amp;gt; 做参数校验 -&amp;gt; 做工具结果回流 -&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;再考虑多工具 -&amp;gt; 再考虑并行 -&amp;gt; 工具很多时再上 tool_search&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这个顺序的好处是，你会先把“调用能跑通”变成“调用能稳定跑通”，再去追求复杂能力。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;OpenAI 官方文档：&lt;a href=&quot;https://developers.openai.com/api/docs/guides/function-calling&quot; target=&quot;_blank&quot;&gt;Function calling&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>OpenAI《A Practical Guide to Building Agents》解读：从场景选择到安全落地</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/a-practical-guide-to-building-ai-agents/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/a-practical-guide-to-building-ai-agents/</guid><description>OpenAI《A Practical Guide to Building Agents》文章解读，梳理什么任务适合构建 Agent、Agent 系统的模型、工具、指令与编排结构，以及如何通过多 Agent、护栏和人工交接把 Agent 安全部署到真实业务中。</description><pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;OpenAI《A Practical Guide to Building Agents》详细总结&lt;a href=&quot;#openaia-practical-guide-to-building-agents详细总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/&quot; target=&quot;_blank&quot;&gt;https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;PDF：&lt;a href=&quot;https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf&quot; target=&quot;_blank&quot;&gt;https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 这篇文章是一份面向产品和工程团队的 Agent 落地指南。它重点不是讨论 Agent 的概念有多新，而是回答三个实践问题：&lt;/p&gt;&lt;ul&gt;
 &lt;li&gt;什么样的任务值得做成 Agent？&lt;/li&gt;
 &lt;li&gt;一个 Agent 系统应该由哪些基础组件组成？&lt;/li&gt;
 &lt;li&gt;如何通过编排、多 Agent 和护栏，把 Agent 安全地部署到真实业务里？&lt;/li&gt;
