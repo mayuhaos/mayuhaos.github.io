@@ -1,4 +1,278 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月22日 09:47:28</lastBuildDate><item><title>Claude Tool Use 官方文档中文解读：客户端工具、服务端工具与 Agentic Loop</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</guid><description>基于 Anthropic Claude 官方 Tool Use 文档的中文深度解读，重点拆解 client tools 与 server tools 的执行边界、tool_use/tool_result 循环、tool_choice、strict tool use 以及生产环境成本与风险控制。</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Claude Tool Use 官方文档中文解读&lt;a href=&quot;#claude-tool-use-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&quot; target=&quot;_blank&quot;&gt;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Claude 这篇文档最有价值的地方，不只是解释“工具怎么调”，而是把&lt;strong&gt;工具到底在哪里执行&lt;/strong&gt;这件事说得非常清楚。Anthropic 基本是在告诉开发者：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;工具调用不是一个抽象概念，真正重要的是执行边界、回传协议和 agentic loop。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Claude 的 tool use 是什么&lt;a href=&quot;#claude-的-tool-use-是什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 对 tool use 的定义很直接：Claude 可以调用你定义的工具，也可以调用 Anthropic 提供的工具。然后根据工具类型不同，执行位置也不同。&lt;/p&gt;&lt;p&gt;这里立刻就引出这篇文档最核心的区别：&lt;/p&gt;&lt;ul&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月22日 09:54:54</lastBuildDate><item><title>Ian Xiaohei Illustrations：专为中文内容创作者打造的怪诞手绘配图 Skill</title><link>https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/ian-xiaohei-illustrations%E4%B8%93%E4%B8%BA%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9%E5%88%9B%E4%BD%9C%E8%80%85%E6%89%93%E9%80%A0%E7%9A%84%E6%80%AA%E8%AF%9E%E6%89%8B%E7%BB%98%E9%85%8D%E5%9B%BE-skill/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/ian-xiaohei-illustrations%E4%B8%93%E4%B8%BA%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9%E5%88%9B%E4%BD%9C%E8%80%85%E6%89%93%E9%80%A0%E7%9A%84%E6%80%AA%E8%AF%9E%E6%89%8B%E7%BB%98%E9%85%8D%E5%9B%BE-skill/</guid><description>Ian Xiaohei Illustrations 是一个面向 Codex 的中文正文配图 Skill，能把文章里的判断、流程、状态和隐喻，转化为 16:9 白底手绘风格的小黑怪诞配图。本文从项目定位、视觉风格、安装方法、使用工作流和内容创作价值完整拆解。</description><pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;中文内容创作者最头疼的事情之一，不是写不出文章，而是文章写完以后不知道配什么图。&lt;/p&gt;
+&lt;p&gt;如果只是随便找一张 Unsplash 风景图，画面看起来干净，但和正文观点没有关系；如果让 AI 直接画“科技感插图”，很容易得到一张泛泛的蓝紫色背景图；如果做 PPT 信息图，又容易太规整，像汇报材料，不像正文里的自然插图。&lt;/p&gt;
+&lt;p&gt;最近看到一个很有意思的 Codex Skill：&lt;a href=&quot;https://github.com/helloianneo/ian-xiaohei-illustrations&quot; target=&quot;_blank&quot;&gt;Ian Xiaohei Illustrations&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;它不是通用插画 prompt，也不是 PPT 模板，而是一个专门面向中文文章、博客、Notion 文档和方法论内容的正文配图 Skill。它会把中文内容里的判断、流程、状态、结构和隐喻，转化成 &lt;strong&gt;16:9 白底手绘风格配图&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;主角是一个可爱又略带怪诞的“小黑”IP：黑色实心身体、白点眼睛、细腿、空表情。画面整体清爽，留白很足，主要用黑色手绘线稿，再用少量红、橙、蓝中文批注点睛。&lt;/p&gt;
+&lt;p&gt;作者是设计师，这一点很关键。这个项目好看的地方不只是“会画一个角色”，而是它把内容理解、视觉隐喻、画面留白和中文批注控制得比较克制。再叠加 Codex 的分析与执行能力，确实很适合给中文长文做一组有记忆点的正文配图。&lt;/p&gt;
+&lt;section&gt;&lt;h2&gt;项目信息&lt;a href=&quot;#项目信息&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;仓库地址：&lt;a href=&quot;https://github.com/helloianneo/ian-xiaohei-illustrations&quot; target=&quot;_blank&quot;&gt;https://github.com/helloianneo/ian-xiaohei-illustrations&lt;/a&gt;&lt;/p&gt;&lt;p&gt;截至 2026-06-22，我查询到的公开仓库信息如下：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;项目&lt;/th&gt;&lt;th&gt;信息&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;仓库&lt;/td&gt;&lt;td&gt;&lt;code&gt;helloianneo/ian-xiaohei-illustrations&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;定位&lt;/td&gt;&lt;td&gt;中文小黑怪诞正文配图生成 Skill&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;适配&lt;/td&gt;&lt;td&gt;Codex Skill&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;输出风格&lt;/td&gt;&lt;td&gt;16:9 白底手绘，少量红橙蓝中文批注&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;License&lt;/td&gt;&lt;td&gt;MIT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Stars&lt;/td&gt;&lt;td&gt;约 5.5k&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;默认分支&lt;/td&gt;&lt;td&gt;&lt;code&gt;main&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;最近活跃&lt;/td&gt;&lt;td&gt;2026-06-03&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这类 Stars 和活跃时间会变化，具体以 GitHub 仓库页面为准。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;它解决的不是“画图”，而是“把观点画出来”&lt;a href=&quot;#它解决的不是画图而是把观点画出来&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;很多 AI 绘图工具的问题在于：它们可以画得很漂亮，但不一定理解文章真正想表达什么。&lt;/p&gt;&lt;p&gt;一篇中文文章里，真正值得配图的位置通常不是名词，而是认知动作，比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;一个判断：为什么这件事不能只看表面指标&lt;/li&gt;
+&lt;li&gt;一个流程：从输入到输出中间发生了哪些转换&lt;/li&gt;
+&lt;li&gt;一个状态：一个人或系统卡在某个位置&lt;/li&gt;
+&lt;li&gt;一个隐喻：信任、注意力、内容复用、知识沉淀这些抽象概念如何被具象化&lt;/li&gt;
+&lt;li&gt;一个对比：旧方法和新方法之间的差别&lt;/li&gt;
+&lt;li&gt;一个分层：底层机制、中间路径、表层结果之间的关系&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;&lt;code&gt;Ian Xiaohei Illustrations&lt;/code&gt; 的价值就在这里。它不是让 AI 随便“配一张图”，而是要求 AI 先读懂文章里的认知锚点，再把其中一个动作、结构或隐喻画出来。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+  A[&quot;中文文章&quot;] --&amp;gt; B[&quot;提炼认知锚点&quot;]
+  B --&amp;gt; C[&quot;选择适合配图的段落&quot;]
+  C --&amp;gt; D[&quot;设计小黑动作和视觉隐喻&quot;]
+  D --&amp;gt; E[&quot;生成 16:9 白底手绘配图&quot;]
+  E --&amp;gt; F[&quot;用于博客 / Notion / 公众号正文&quot;]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这也是它和普通 AI 插画 prompt 最大的区别：它更像一个“内容理解到正文配图”的工作流，而不是一段单独的画图提示词。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;视觉风格：清爽、怪诞、克制&lt;a href=&quot;#视觉风格清爽怪诞克制&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这个 Skill 默认使用“小黑怪诞正文配图”风格。&lt;/p&gt;&lt;p&gt;它的视觉规则很明确：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;16:9 横版&lt;/li&gt;
+&lt;li&gt;纯白背景&lt;/li&gt;
+&lt;li&gt;黑色手绘线稿&lt;/li&gt;
+&lt;li&gt;线条轻微抖动&lt;/li&gt;
+&lt;li&gt;主体占画面约 40%-60%&lt;/li&gt;
+&lt;li&gt;保留大量留白&lt;/li&gt;
+&lt;li&gt;少量中文手写批注&lt;/li&gt;
+&lt;li&gt;批注颜色主要是红、橙、蓝&lt;/li&gt;
+&lt;li&gt;每张图只表达一个核心动作、状态、结构或隐喻&lt;/li&gt;
+&lt;li&gt;小黑必须参与核心动作，不能只是装饰&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这种风格的好处是，它不会抢正文的戏。&lt;/p&gt;&lt;p&gt;很多配图一旦太复杂，读者反而会被画面带走，忘了文章观点。小黑这套风格很适合正文插图，因为它有三个优点：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;识别度强&lt;/strong&gt;&lt;br /&gt;
+小黑这个角色很简单，但一眼能记住。它不是华丽角色，而是一个正在参与某种荒诞系统运转的小人。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;信息负担低&lt;/strong&gt;&lt;br /&gt;
+白底、黑线、大留白，让读者扫一眼就能理解画面关系，不会像复杂信息图那样需要停下来研究。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;中文语境友好&lt;/strong&gt;&lt;br /&gt;
+少量中文批注非常重要。很多 AI 插图只适合英文语境，而这个 Skill 直接服务中文文章，批注词可以成为正文观点的“视觉钉子”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;它适合谁&lt;a href=&quot;#它适合谁&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我觉得这个 Skill 特别适合几类人：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;写中文博客的人&lt;/li&gt;
+&lt;li&gt;写公众号、Newsletter、Notion 文档的人&lt;/li&gt;
+&lt;li&gt;做知识型内容、方法论内容的人&lt;/li&gt;
+&lt;li&gt;写 AI 工作流、产品思考、个人成长、组织协作文章的人&lt;/li&gt;
+&lt;li&gt;需要把抽象观点画成具体隐喻的人&lt;/li&gt;
+&lt;li&gt;想给自己的内容建立统一视觉风格的人&lt;/li&gt;
+&lt;li&gt;已经在用 Codex 做内容整理、写作和发布的人&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;尤其是写长文的人，很容易遇到一个问题：文章结构是有的，但页面看起来太素，读者往下读会疲劳。&lt;/p&gt;&lt;p&gt;这时正文中插入 3-6 张小黑图，效果会很好。它们不需要承担完整说明书功能，只需要在关键段落后面轻轻“钉”一下，让读者记住一个观点、一个转折或一个隐喻。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;它不适合什么&lt;a href=&quot;#它不适合什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;边界也要讲清楚。&lt;/p&gt;&lt;p&gt;它不适合这些需求：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;商业海报&lt;/li&gt;
+&lt;li&gt;品牌主视觉 KV&lt;/li&gt;
+&lt;li&gt;精致扁平插画&lt;/li&gt;
+&lt;li&gt;儿童绘本风格&lt;/li&gt;
+&lt;li&gt;可爱表情包&lt;/li&gt;
+&lt;li&gt;复杂技术架构图&lt;/li&gt;
+&lt;li&gt;数据密集型信息图&lt;/li&gt;
+&lt;li&gt;需要严格可编辑 SVG 源文件的正式设计交付&lt;/li&gt;
+&lt;li&gt;需要塞入大量正文说明的一页图&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果你要做的是 PPT 架构图、系统链路图、活动海报、产品发布主视觉，那它不是最优解。小黑图更像文章正文里的“认知插画”，不是设计大屏，也不是商业广告。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;安装方式&lt;a href=&quot;#安装方式&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;仓库里真正需要安装到 Codex 的，是子目录：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;ian-xiaohei-illustrations/&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;根目录里的 README、LICENSE、NOTICE、examples 等，更多是 GitHub 展示和说明材料。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;macOS / Linux&lt;a href=&quot;#macos--linux&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;可以先克隆仓库：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;git&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;clone&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;https://github.com/helloianneo/ian-xiaohei-illustrations.git&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;cd&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;ian-xiaohei-illustrations&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;然后复制 Skill 子目录到 Codex skills 目录：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;mkdir&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;-p&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;&quot;&lt;/span&gt;&lt;span&gt;&lt;span&gt;${&lt;/span&gt;&lt;span&gt;CODEX_HOME&lt;/span&gt;&lt;/span&gt;&lt;span&gt;:-&lt;/span&gt;&lt;span&gt;$HOME&lt;/span&gt;&lt;span&gt;/&lt;/span&gt;&lt;span&gt;.&lt;/span&gt;&lt;span&gt;&lt;span&gt;codex&lt;/span&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span&gt;/skills&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;cp&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;-R&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;./ian-xiaohei-illustrations&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;&quot;&lt;/span&gt;&lt;span&gt;&lt;span&gt;${&lt;/span&gt;&lt;span&gt;CODEX_HOME&lt;/span&gt;&lt;/span&gt;&lt;span&gt;:-&lt;/span&gt;&lt;span&gt;$HOME&lt;/span&gt;&lt;span&gt;/&lt;/span&gt;&lt;span&gt;.&lt;/span&gt;&lt;span&gt;&lt;span&gt;codex&lt;/span&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span&gt;/skills/&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;安装完成后，在 Codex 里可以这样调用：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Use $ian-xiaohei-illustrations 为这篇中文文章设计并生成 5 张小黑怪诞正文配图。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;Windows PowerShell&lt;a href=&quot;#windows-powershell&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Windows 下可以用 PowerShell 手动复制：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;Terminal window&lt;/span&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;&lt;span&gt;git clone https:&lt;/span&gt;&lt;span&gt;//&lt;/span&gt;&lt;/span&gt;&lt;span&gt;github.com&lt;/span&gt;&lt;span&gt;&lt;span&gt;/&lt;/span&gt;&lt;span&gt;helloianneo&lt;/span&gt;&lt;span&gt;/&lt;/span&gt;&lt;span&gt;ian&lt;/span&gt;&lt;span&gt;-&lt;/span&gt;&lt;span&gt;xiaohei&lt;/span&gt;&lt;span&gt;-&lt;/span&gt;&lt;span&gt;illustrations.git&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;&lt;span&gt;cd .\ian&lt;/span&gt;&lt;span&gt;-&lt;/span&gt;&lt;span&gt;xiaohei&lt;/span&gt;&lt;span&gt;-&lt;/span&gt;&lt;span&gt;illustrations&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;New-Item&lt;/span&gt;&lt;span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;-&lt;/span&gt;&lt;span&gt;ItemType Directory &lt;/span&gt;&lt;span&gt;-&lt;/span&gt;&lt;span&gt;Force &lt;/span&gt;&lt;/span&gt;&lt;span&gt;&quot;$&lt;/span&gt;&lt;span&gt;HOME&lt;/span&gt;&lt;span&gt;\.codex\skills&quot;&lt;/span&gt;&lt;span&gt; | &lt;/span&gt;&lt;span&gt;Out-Null&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Copy-Item&lt;/span&gt;&lt;span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;-&lt;/span&gt;&lt;span&gt;Recurse &lt;/span&gt;&lt;span&gt;-&lt;/span&gt;&lt;span&gt;Force &lt;/span&gt;&lt;/span&gt;&lt;span&gt;&quot;.\ian-xiaohei-illustrations&quot;&lt;/span&gt;&lt;span&gt; &lt;/span&gt;&lt;span&gt;&quot;$&lt;/span&gt;&lt;span&gt;HOME&lt;/span&gt;&lt;span&gt;\.codex\skills\&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;复制后确认目录类似这样：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;C:\Users\你的用户名\.codex\skills\ian-xiaohei-illustrations\SKILL.md&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;如果你的 Codex 使用了自定义 &lt;code&gt;CODEX_HOME&lt;/code&gt;，就把路径换成对应目录。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;推荐使用方式一：先做 shot list，不急着生图&lt;a href=&quot;#推荐使用方式一先做-shot-list不急着生图&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我最推荐的方式不是一上来就让它生成图片，而是先让它读文章，输出配图规划。&lt;/p&gt;&lt;p&gt;示例 Prompt：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Use $ian-xiaohei-illustrations 先不要生图。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请分析下面这篇中文文章，找出最值得配图的位置，输出 5 张左右的 shot list。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;每张图请写清楚：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 放在哪个段落后面&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 图的主题&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;8&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 核心意思&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;9&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 结构类型&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;10&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;5. 小黑在做什么&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;11&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;6. 建议中文标注词&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;12&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;13&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;&amp;lt;粘贴文章&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;为什么要先做 shot list？&lt;/p&gt;&lt;p&gt;因为正文配图的关键不是“每段都配一张图”，而是挑出真正值得视觉化的段落。如果文章里有 10 个观点，可能只有 4 个值得画。先规划，能避免生成一堆重复、无意义、只是装饰的图。&lt;/p&gt;&lt;p&gt;一个好的 shot list 大概会长这样：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;放置位置&lt;/th&gt;&lt;th&gt;主题&lt;/th&gt;&lt;th&gt;小黑动作&lt;/th&gt;&lt;th&gt;画面隐喻&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;方法论第一节后&lt;/td&gt;&lt;td&gt;从混乱到分拣&lt;/td&gt;&lt;td&gt;小黑把纸团按用途放进不同盒子&lt;/td&gt;&lt;td&gt;内容资产分类&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;转折段后&lt;/td&gt;&lt;td&gt;被指标困住&lt;/td&gt;&lt;td&gt;小黑站在巨大仪表盘下面抬头&lt;/td&gt;&lt;td&gt;数据压迫感&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;总结前&lt;/td&gt;&lt;td&gt;信任桥&lt;/td&gt;&lt;td&gt;小黑一块一块铺石板过河&lt;/td&gt;&lt;td&gt;证据累积成信任&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这种规划本身就很有价值。即使你暂时不生图，也能帮你重新审视文章结构。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;推荐使用方式二：直接生成一组正文配图&lt;a href=&quot;#推荐使用方式二直接生成一组正文配图&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果文章已经比较成熟，可以直接让它生成 4-8 张配图。&lt;/p&gt;&lt;p&gt;示例 Prompt：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Use $ian-xiaohei-illustrations&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请把下面这篇中文文章生成 5 张小黑怪诞正文配图。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;要求：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 16:9 横版&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 纯白背景&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;8&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 黑色手绘线稿&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;9&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 留白充足&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;10&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;5. 少量红橙蓝中文手写批注&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;11&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;6. 每张图只表达一个核心动作或隐喻&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;12&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;7. 小黑必须参与核心动作&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;13&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;8. 不要做成 PPT 信息图&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;14&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;15&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;&amp;lt;粘贴文章&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;span&gt;展开&lt;/span&gt;&lt;span&gt;收起&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;这里最重要的是最后一句：不要做成 PPT 信息图。&lt;/p&gt;&lt;p&gt;因为很多模型一看到“流程、结构、方法论”，就会倾向于画箭头、方块、图标、标题和分栏。这些不是不能用，但会削弱小黑怪诞手绘风的灵魂。小黑图最好像正文里的轻量插画，而不是一个缩小版 PPT 页面。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;推荐使用方式三：为单个概念生成一张图&lt;a href=&quot;#推荐使用方式三为单个概念生成一张图&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你只想给某个金句、观点或段落做一张图，也可以直接给概念。&lt;/p&gt;&lt;p&gt;示例：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Use $ian-xiaohei-illustrations&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请为这个观点生成一张小黑怪诞正文配图：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;“信任不是喊出来的，而是一块证据一块证据铺过去。”&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;要求：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 小黑必须承担核心动作&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;8&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 画面怪诞但清爽&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;9&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 只保留 2-4 个中文标注词&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;10&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 不要出现大标题&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;11&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;5. 输出 16:9 PNG&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这类用法很适合给文章里的关键句配图。比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;“内容复用不是复制粘贴，而是把一个想法拆成不同容器”&lt;/li&gt;
+&lt;li&gt;“真正的工作流不是工具越多越好，而是交接点越少越好”&lt;/li&gt;
+&lt;li&gt;“个人知识库不是仓库，而是一口会回声的井”&lt;/li&gt;
+&lt;li&gt;“AI 不是替你思考，而是把你的思考压成更清晰的形状”&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些句子本身就带有隐喻，小黑图很容易发挥。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;推荐使用方式四：生成后再修图&lt;a href=&quot;#推荐使用方式四生成后再修图&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;AI 图像模型很容易出现两个问题：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;中文标注写错字&lt;/li&gt;
+&lt;li&gt;画面里多出不需要的标题或说明&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以这个 Skill 也适合做“生成后编辑”。&lt;/p&gt;&lt;p&gt;示例：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Use $ian-xiaohei-illustrations&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;请编辑这张图：&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;1. 去掉左上角多余标题&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;2. 保留小黑和主要构图&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;3. 把错误文字改成“证据”&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;4. 其他风格保持不变&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;如果中文错字特别多，我更建议减少图中文字，而不是强行让模型写一堆中文。对 AI 图片来说，两个字、三个字的短标注会稳定很多。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;一套适合中文博客的配图工作流&lt;a href=&quot;#一套适合中文博客的配图工作流&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果把它放到真实内容生产里，我会这样用：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TB
+  A[&quot;写完中文文章&quot;] --&amp;gt; B[&quot;用 Codex 做结构审阅&quot;]
+  B --&amp;gt; C[&quot;调用小黑 Skill 输出 shot list&quot;]
+  C --&amp;gt; D[&quot;人工删掉弱配图点&quot;]
+  D --&amp;gt; E[&quot;生成 3-6 张正文配图&quot;]
+  E --&amp;gt; F[&quot;检查中文文字和风格漂移&quot;]
+  F --&amp;gt; G[&quot;必要时编辑或重生成&quot;]
+  G --&amp;gt; H[&quot;插入博客 / 公众号 / Notion&quot;]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;更具体一点：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;文章先定稿&lt;/strong&gt;&lt;br /&gt;
+不要在观点还没稳定时急着配图。正文结构越清楚，配图越准。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;先让 Skill 找配图点&lt;/strong&gt;&lt;br /&gt;
+它会帮你发现哪些段落最适合视觉化。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;人工筛掉重复点&lt;/strong&gt;&lt;br /&gt;
+如果 5 张图都在讲“流程”，读者会腻。最好有流程、有状态、有隐喻、有对比。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;每张图只讲一个动作&lt;/strong&gt;&lt;br /&gt;
+例如“分拣”“压缩”“铺桥”“打捞”“承接”“发酵”，动作越具体，画面越有力。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;控制中文标注数量&lt;/strong&gt;&lt;br /&gt;
+标注越少越好。两三个词比一句长句更稳定。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;最后做风格 QA&lt;/strong&gt;&lt;br /&gt;
+看看是不是白底、留白是否足、小黑是否真的参与核心动作、画面有没有变成 PPT 图表。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;小黑风格为什么适合中文内容&lt;a href=&quot;#小黑风格为什么适合中文内容&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;中文内容有一个特点：很多表达不是纯信息，而是判断、转折、比喻和经验总结。&lt;/p&gt;&lt;p&gt;比如下面这些句子：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;“工具不是越多越好，关键是链路有没有断点。”&lt;/li&gt;
+&lt;li&gt;“一个内容能不能复用，取决于它有没有被拆成资产。”&lt;/li&gt;
+&lt;li&gt;“信任不是品牌自己说出来的，是读者一路验证出来的。”&lt;/li&gt;
+&lt;li&gt;“AI 工作流的难点不是生成，而是承接。”&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些句子直接做成信息图会很硬，但用小黑去演，就会自然很多。&lt;/p&gt;&lt;p&gt;小黑可以搬东西、修管道、搭桥、捞信息、压缩想法、给系统打补丁。它像一个荒诞但认真的工人，能把抽象概念变成一个具体动作。&lt;/p&gt;&lt;p&gt;这也是设计师视角的优势：不是把所有东西都画得漂亮，而是找到一个能被读者记住的视觉动作。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;和普通 AI 绘图 Prompt 的区别&lt;a href=&quot;#和普通-ai-绘图-prompt-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;维度&lt;/th&gt;&lt;th&gt;普通 AI 绘图 Prompt&lt;/th&gt;&lt;th&gt;Ian Xiaohei Illustrations&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;输入&lt;/td&gt;&lt;td&gt;一句话描述或主题&lt;/td&gt;&lt;td&gt;中文文章、段落、观点、方法论&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;重点&lt;/td&gt;&lt;td&gt;生成漂亮图片&lt;/td&gt;&lt;td&gt;把认知动作视觉化&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;风格&lt;/td&gt;&lt;td&gt;容易漂移&lt;/td&gt;&lt;td&gt;固定白底手绘小黑风格&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;输出&lt;/td&gt;&lt;td&gt;单图为主&lt;/td&gt;&lt;td&gt;shot list + 多张正文配图&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;中文适配&lt;/td&gt;&lt;td&gt;经常不稳定&lt;/td&gt;&lt;td&gt;强调少量中文批注&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;内容关系&lt;/td&gt;&lt;td&gt;可能只是装饰&lt;/td&gt;&lt;td&gt;要服务文章关键段落&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;使用场景&lt;/td&gt;&lt;td&gt;封面、海报、概念图&lt;/td&gt;&lt;td&gt;博客正文、公众号正文、Notion 插图&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这个区别非常重要。&lt;/p&gt;&lt;p&gt;如果你只是要一张封面图，普通图像模型就够了。但如果你要给一篇文章做一组统一风格的正文插图，小黑 Skill 这种“先理解内容，再设计配图点”的方式更靠谱。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;和 PPT 信息图的区别&lt;a href=&quot;#和-ppt-信息图的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;小黑图不是 PPT 信息图。&lt;/p&gt;&lt;p&gt;PPT 信息图通常追求结构清晰、逻辑完整、标题明确、元素可编辑。小黑正文配图追求的是轻、怪、克制、有记忆点。&lt;/p&gt;&lt;p&gt;它不需要解释完整系统，只需要抓住一个瞬间。&lt;/p&gt;&lt;p&gt;比如写“内容生产流程”，PPT 信息图可能会画：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;选题 -&amp;gt; 写作 -&amp;gt; 编辑 -&amp;gt; 发布 -&amp;gt; 分发 -&amp;gt; 复盘&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;小黑图可能会画：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;小黑站在一条传送带旁，把一堆混乱纸团分拣到不同盒子里。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;盒子上只有三个短标注：观点、案例、金句。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;前者适合汇报，后者适合正文阅读。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;使用时最容易踩的坑&lt;a href=&quot;#使用时最容易踩的坑&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 想让一张图讲太多东西&lt;a href=&quot;#1-想让一张图讲太多东西&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;正文配图不是课程页。不要把一整套理论塞进一张图。&lt;/p&gt;&lt;p&gt;更好的方式是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;一张图讲一个判断&lt;/li&gt;
+&lt;li&gt;一张图讲一个流程断点&lt;/li&gt;
+&lt;li&gt;一张图讲一个心理状态&lt;/li&gt;
+&lt;li&gt;一张图讲一个隐喻&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 标注文字太长&lt;a href=&quot;#2-标注文字太长&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;AI 图像模型对中文长句不稳定。建议每张图只保留 2-5 个短词，比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;断点&lt;/li&gt;
+&lt;li&gt;证据&lt;/li&gt;
+&lt;li&gt;承接&lt;/li&gt;
+&lt;li&gt;分拣&lt;/li&gt;
+&lt;li&gt;复用&lt;/li&gt;
+&lt;li&gt;卡住&lt;/li&gt;
+&lt;li&gt;发酵&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;不要让图片承担正文的解释功能。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 小黑只是站在旁边&lt;a href=&quot;#3-小黑只是站在旁边&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果去掉小黑，画面仍然完全成立，那小黑就只是贴纸。&lt;/p&gt;&lt;p&gt;更好的做法是让小黑参与核心动作：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;小黑在搭桥&lt;/li&gt;
+&lt;li&gt;小黑在拉动杠杆&lt;/li&gt;
+&lt;li&gt;小黑在修补断掉的管道&lt;/li&gt;
+&lt;li&gt;小黑在把想法压进机器&lt;/li&gt;
+&lt;li&gt;小黑在井里打捞信息&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;小黑不是装饰物，而是认知动作的执行者。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 复刻示例图&lt;a href=&quot;#4-复刻示例图&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;仓库里的示例图是风格校准，不应该照抄构图。真正好的正文配图，应该从当前文章重新发明隐喻。&lt;/p&gt;&lt;p&gt;如果每篇文章都画同样的桥、同样的井、同样的传送带，很快就会失去新鲜感。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;我会怎么评价这个项目&lt;a href=&quot;#我会怎么评价这个项目&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这个项目最打动我的地方，是它没有把“AI 配图”理解成单纯的图片生成。&lt;/p&gt;&lt;p&gt;它真正做的是三件事：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;把中文文章里的抽象认知动作挑出来&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;用统一的小黑 IP 和手绘风格承载这些动作&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;把配图控制在正文阅读可以接受的轻量程度&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;很多 AI 设计工具追求“震撼”“大片感”“高级感”，结果做出来很像海报素材站。小黑这个方向反而更难得，因为它克制、留白、有一点怪，但不吵。&lt;/p&gt;&lt;p&gt;对中文内容创作者来说，这种风格非常适合长期使用。只要你持续写博客、公众号、知识库或方法论文章，小黑就可以成为你的内容视觉资产，而不是一次性的装饰图。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;结语&lt;a href=&quot;#结语&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Ian Xiaohei Illustrations&lt;/code&gt; 是一个很适合中文内容创作者收藏的 Codex Skill。&lt;/p&gt;&lt;p&gt;它的核心不是“生成一张好看的图”，而是让 AI 帮你读懂文章，找出其中适合视觉化的判断、流程、状态和隐喻，再用 16:9 白底手绘、小黑 IP、少量中文批注，把它变成正文里的记忆点。&lt;/p&gt;&lt;p&gt;如果你写的是中文长文、方法论、AI 工作流、产品思考或知识型内容，这个项目很值得试。它不会替你完成所有设计判断，但它提供了一套非常稳定的审美方向和工作流程。作者本身是设计师，审美在线，再加上 Codex 的内容理解和执行能力，确实能做出一种“不是 PPT 信息图，也不是 AI 套路插画”的新鲜效果。&lt;/p&gt;&lt;/section&gt;
+&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/helloianneo/ian-xiaohei-illustrations&quot; target=&quot;_blank&quot;&gt;Ian Xiaohei Illustrations GitHub 仓库&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/helloianneo/ian-xiaohei-illustrations/blob/main/README.md&quot; target=&quot;_blank&quot;&gt;ian-xiaohei-illustrations README&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/helloianneo&quot; target=&quot;_blank&quot;&gt;helloianneo GitHub 主页&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.ianneo.xyz&quot; target=&quot;_blank&quot;&gt;Ian 个人网站&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;</content:encoded></item><item><title>Claude Tool Use 官方文档中文解读：客户端工具、服务端工具与 Agentic Loop</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</guid><description>基于 Anthropic Claude 官方 Tool Use 文档的中文深度解读，重点拆解 client tools 与 server tools 的执行边界、tool_use/tool_result 循环、tool_choice、strict tool use 以及生产环境成本与风险控制。</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Claude Tool Use 官方文档中文解读&lt;a href=&quot;#claude-tool-use-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&quot; target=&quot;_blank&quot;&gt;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Claude 这篇文档最有价值的地方，不只是解释“工具怎么调”，而是把&lt;strong&gt;工具到底在哪里执行&lt;/strong&gt;这件事说得非常清楚。Anthropic 基本是在告诉开发者：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;工具调用不是一个抽象概念，真正重要的是执行边界、回传协议和 agentic loop。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Claude 的 tool use 是什么&lt;a href=&quot;#claude-的-tool-use-是什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 对 tool use 的定义很直接：Claude 可以调用你定义的工具，也可以调用 Anthropic 提供的工具。然后根据工具类型不同，执行位置也不同。&lt;/p&gt;&lt;p&gt;这里立刻就引出这篇文档最核心的区别：&lt;/p&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;client tools&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;server tools&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;p&gt;这也是 Claude 文档和很多“只讲 function schema”的文档相比，最值得读的一点。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Client tools 与 server tools 的区别&lt;a href=&quot;#client-tools-与-server-tools-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. Client tools&lt;a href=&quot;#1-client-tools&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这类工具运行在&lt;strong&gt;你的应用侧&lt;/strong&gt;。Claude 只负责返回一个结构化调用请求，真正执行的是你的代码。&lt;/p&gt;&lt;p&gt;典型流程是：&lt;/p&gt;&lt;ul&gt;
