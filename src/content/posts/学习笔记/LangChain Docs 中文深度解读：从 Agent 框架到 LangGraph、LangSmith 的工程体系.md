@@ -1,6 +1,6 @@
 ---
 title: LangChain Docs 中文深度解读：从 Agent 框架到 LangGraph、LangSmith 的工程体系
-published: 2026-06-20
+published: 2026-06-21
 description: 基于 LangChain 官方文档的中文深度解读，系统梳理 LangChain、LangGraph、LangSmith 的三层分工，以及 Build、Test、Deploy、Monitor、Govern 的 Agent 工程生命周期。
 tags:
   - LangChain

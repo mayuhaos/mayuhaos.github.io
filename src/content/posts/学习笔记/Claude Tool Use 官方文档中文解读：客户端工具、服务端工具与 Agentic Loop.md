@@ -1,6 +1,6 @@
 ---
 title: Claude Tool Use 官方文档中文解读：客户端工具、服务端工具与 Agentic Loop
-published: 2026-06-20
+published: 2026-06-19
 description: 基于 Anthropic Claude 官方 Tool Use 文档的中文深度解读，重点拆解 client tools 与 server tools 的执行边界、tool_use/tool_result 循环、tool_choice、strict tool use 以及生产环境成本与风险控制。
 tags:
   - Claude

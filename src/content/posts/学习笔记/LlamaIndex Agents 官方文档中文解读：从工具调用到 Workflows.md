@@ -1,6 +1,6 @@
 ---
 title: LlamaIndex Agents 官方文档中文解读：从工具调用到 Workflows
-published: 2026-06-19
+published: 2026-06-21
 description: 基于 LlamaIndex Agents 官方文档的中文解读，梳理 Agent 作为自动推理与决策引擎的核心能力，以及工具、记忆、计划、预置 Agent 与 Workflows 的工程边界。
 tags:
   - LlamaIndex
