@@ -1,4 +1,144 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月22日 09:54:54</lastBuildDate><item><title>Ian Xiaohei Illustrations：专为中文内容创作者打造的怪诞手绘配图 Skill</title><link>https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/ian-xiaohei-illustrations%E4%B8%93%E4%B8%BA%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9%E5%88%9B%E4%BD%9C%E8%80%85%E6%89%93%E9%80%A0%E7%9A%84%E6%80%AA%E8%AF%9E%E6%89%8B%E7%BB%98%E9%85%8D%E5%9B%BE-skill/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/ian-xiaohei-illustrations%E4%B8%93%E4%B8%BA%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9%E5%88%9B%E4%BD%9C%E8%80%85%E6%89%93%E9%80%A0%E7%9A%84%E6%80%AA%E8%AF%9E%E6%89%8B%E7%BB%98%E9%85%8D%E5%9B%BE-skill/</guid><description>Ian Xiaohei Illustrations 是一个面向 Codex 的中文正文配图 Skill，能把文章里的判断、流程、状态和隐喻，转化为 16:9 白底手绘风格的小黑怪诞配图。本文从项目定位、视觉风格、安装方法、使用工作流和内容创作价值完整拆解。</description><pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;中文内容创作者最头疼的事情之一，不是写不出文章，而是文章写完以后不知道配什么图。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mars</title><description>Site</description><link>https://yuhao.bbroot.com/</link><templateTheme>Firefly</templateTheme><templateThemeVersion>6.10.3</templateThemeVersion><templateThemeUrl>https://github.com/CuteLeaf/Firefly</templateThemeUrl><lastBuildDate>2026年6月22日 10:40:05</lastBuildDate><item><title>Model Context Protocol 官方文档中文解读：AI 应用的 USB-C 接口</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/model-context-protocol-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BBai-%E5%BA%94%E7%94%A8%E7%9A%84-usb-c-%E6%8E%A5%E5%8F%A3/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/model-context-protocol-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BBai-%E5%BA%94%E7%94%A8%E7%9A%84-usb-c-%E6%8E%A5%E5%8F%A3/</guid><description>基于 Model Context Protocol 官方介绍的中文解读，梳理 MCP 如何作为开放协议连接 AI 应用与外部数据、工具和工作流，以及 server、client、application 三类角色的工程意义。</description><pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Model Context Protocol 官方文档中文解读&lt;a href=&quot;#model-context-protocol-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://modelcontextprotocol.io/docs/getting-started/intro&quot; target=&quot;_blank&quot;&gt;https://modelcontextprotocol.io/docs/getting-started/intro&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;MCP，也就是 Model Context Protocol，想解决的是一个非常现实的问题：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;AI 应用需要连接各种外部数据、工具和工作流，但每个平台都各接各的会非常混乱，所以需要一个统一开放协议。&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;官方常用的类比是：MCP 像 AI 应用的 USB-C 接口。&lt;/p&gt;&lt;p&gt;USB-C 让电脑、显示器、硬盘、充电器可以用统一接口连接；MCP 则希望让 AI 应用、模型客户端、数据库、文件系统、业务工具、开发工具用统一协议连接。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;这篇文档到底在讲什么&lt;a href=&quot;#这篇文档到底在讲什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;MCP Intro 文档主要是在讲三件事：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;MCP 是什么&lt;/li&gt;
+&lt;li&gt;为什么需要 MCP&lt;/li&gt;
+&lt;li&gt;开发者可以从哪种角色开始建设 MCP&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;它不是在讲某一个具体工具，而是在讲一个生态协议。&lt;/p&gt;&lt;p&gt;可以把 MCP 理解成：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;AI 应用 &amp;lt;-&amp;gt; MCP Client &amp;lt;-&amp;gt; MCP Server &amp;lt;-&amp;gt; 外部数据/工具/服务&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+    A[AI 应用] --&amp;gt; B[MCP Client]
+    B --&amp;gt; C[MCP Server]
+    C --&amp;gt; D[文件 数据库 API 工具 工作流]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;MCP 的目标是让 AI 应用不用为每一种外部系统单独写一套接入逻辑，而是通过协议发现和调用外部能力。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;核心概念拆解&lt;a href=&quot;#核心概念拆解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. MCP 是协议，不是单个产品&lt;a href=&quot;#1-mcp-是协议不是单个产品&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这一点很关键。MCP 不是某家公司的一款应用，也不是单独一个 SDK。它是一套开放协议。&lt;/p&gt;&lt;p&gt;协议的价值在于大家可以围绕它形成生态：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具提供方可以写 MCP Server&lt;/li&gt;
+&lt;li&gt;AI 应用可以内置 MCP Client&lt;/li&gt;
+&lt;li&gt;开发者可以把自己的系统暴露成 MCP 能力&lt;/li&gt;
+&lt;li&gt;用户可以在不同客户端里复用同一批工具&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这和浏览器、HTTP、USB-C 的逻辑类似：协议本身的价值，来自多方都愿意按同一种方式连接。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. MCP Server：把外部能力暴露出来&lt;a href=&quot;#2-mcp-server把外部能力暴露出来&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;MCP Server 的作用是连接真实资源，并把它们以协议形式提供给 AI 应用。&lt;/p&gt;&lt;p&gt;它可以包装：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;文件系统&lt;/li&gt;
+&lt;li&gt;数据库&lt;/li&gt;
+&lt;li&gt;Git 仓库&lt;/li&gt;
+&lt;li&gt;SaaS API&lt;/li&gt;
+&lt;li&gt;内部业务系统&lt;/li&gt;
+&lt;li&gt;搜索服务&lt;/li&gt;
+&lt;li&gt;CI/CD 平台&lt;/li&gt;
+&lt;li&gt;知识库&lt;/li&gt;
+&lt;li&gt;日历、邮件、工单、IM 等工具&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Server 更像一个“适配器”。它把原本复杂的外部系统，转换成 AI 应用可以理解和调用的上下文、工具或资源。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. MCP Client：AI 应用里的连接器&lt;a href=&quot;#3-mcp-clientai-应用里的连接器&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;MCP Client 通常存在于 AI 应用内部。它负责和 MCP Server 通信。&lt;/p&gt;&lt;p&gt;比如一个桌面 AI 助手、IDE 编程助手或聊天应用，如果内置 MCP Client，就可以连接多个 MCP Server，从而获得不同能力。&lt;/p&gt;&lt;p&gt;Client 关心的是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;连接哪个 server&lt;/li&gt;
+&lt;li&gt;server 提供哪些工具和资源&lt;/li&gt;
+&lt;li&gt;如何把这些能力展示给模型&lt;/li&gt;
+&lt;li&gt;如何把调用结果返回给模型&lt;/li&gt;
+&lt;li&gt;如何处理权限和用户确认&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. MCP Application：把 Client 做进用户体验&lt;a href=&quot;#4-mcp-application把-client-做进用户体验&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你在做一个 AI 产品，那么你可能要构建 MCP application。&lt;/p&gt;&lt;p&gt;它不只是协议通信，还包括：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;用户怎样添加 server&lt;/li&gt;
+&lt;li&gt;权限怎样展示&lt;/li&gt;
+&lt;li&gt;工具调用怎样确认&lt;/li&gt;
+&lt;li&gt;结果怎样呈现&lt;/li&gt;
+&lt;li&gt;出错怎样反馈&lt;/li&gt;
+&lt;li&gt;多个 server 怎样管理&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以 MCP application 更关注产品体验和安全边界。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;为什么 MCP 很重要&lt;a href=&quot;#为什么-mcp-很重要&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 它降低工具接入的重复劳动&lt;a href=&quot;#1-它降低工具接入的重复劳动&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在没有统一协议时，每个 AI 应用都要单独接：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;GitHub&lt;/li&gt;
+&lt;li&gt;Slack&lt;/li&gt;
+&lt;li&gt;Google Drive&lt;/li&gt;
+&lt;li&gt;Postgres&lt;/li&gt;
+&lt;li&gt;Notion&lt;/li&gt;
+&lt;li&gt;Jira&lt;/li&gt;
+&lt;li&gt;本地文件&lt;/li&gt;
+&lt;li&gt;内部 API&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;每接一个系统，都要重新设计认证、工具定义、返回格式、错误处理。&lt;/p&gt;&lt;p&gt;MCP 的思路是：如果这些系统都有 MCP Server，而 AI 应用都支持 MCP Client，那么接入成本就会下降。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 它让工具生态可以复用&lt;a href=&quot;#2-它让工具生态可以复用&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;一个 MCP Server 理论上可以被多个支持 MCP 的客户端使用。&lt;/p&gt;&lt;p&gt;这对生态很重要：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具开发者写一次 server&lt;/li&gt;
+&lt;li&gt;不同 AI 应用都能接&lt;/li&gt;
+&lt;li&gt;用户不用被某个单一平台锁死&lt;/li&gt;
+&lt;li&gt;企业内部工具可以标准化暴露给多个 AI 助手&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这也是协议最大的价值：复用。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 它把上下文和工具连接标准化&lt;a href=&quot;#3-它把上下文和工具连接标准化&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;AI 应用真正需要的不只是“调用函数”，还需要上下文。&lt;/p&gt;&lt;p&gt;比如让 AI 帮你改代码，它可能需要：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;读取文件&lt;/li&gt;
+&lt;li&gt;搜索项目&lt;/li&gt;
+&lt;li&gt;查看 Git diff&lt;/li&gt;
+&lt;li&gt;执行测试&lt;/li&gt;
+&lt;li&gt;理解错误日志&lt;/li&gt;
+&lt;li&gt;调用 issue 系统&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;MCP 试图把这些“模型需要的外部世界”统一表达出来。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;MCP 和 Tool Calling 的区别&lt;a href=&quot;#mcp-和-tool-calling-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;MCP 经常和 tool calling 一起出现，但它们不是同一层东西。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;概念&lt;/th&gt;&lt;th&gt;关注点&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Tool calling&lt;/td&gt;&lt;td&gt;模型如何决定调用某个工具，以及参数是什么&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;MCP&lt;/td&gt;&lt;td&gt;AI 应用如何发现、连接和使用外部工具与上下文&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Tool calling 更靠近模型调用接口；MCP 更靠近应用和工具生态。&lt;/p&gt;&lt;p&gt;可以这样理解：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Tool calling 解决“模型怎么调工具”&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;MCP 解决“工具从哪里来、怎么接入、怎么标准化”&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;MCP 和 Agent 的关系&lt;a href=&quot;#mcp-和-agent-的关系&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Agent 需要工具，MCP 可以提供工具。&lt;/p&gt;&lt;p&gt;Agent 需要上下文，MCP 可以提供资源和上下文。&lt;/p&gt;&lt;p&gt;Agent 需要连接真实系统，MCP 可以把真实系统包装成可接入能力。&lt;/p&gt;&lt;p&gt;所以 MCP 很适合作为 Agent 的基础设施层。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[Agent] --&amp;gt; B[需要工具和上下文]
+    B --&amp;gt; C[MCP Client]
+    C --&amp;gt; D[MCP Server]
+    D --&amp;gt; E[真实系统]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;但也要注意：MCP 本身不等于 Agent。它不会替你决定任务怎么拆、下一步做什么、什么时候停止。它只是让 Agent 更容易连接外部世界。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;三类开发者应该怎么入手&lt;a href=&quot;#三类开发者应该怎么入手&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;官方介绍里隐含了三类建设方向。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. 构建 MCP Server&lt;a href=&quot;#1-构建-mcp-server&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你有一个数据源或工具，希望 AI 应用可以使用它，就适合写 MCP Server。&lt;/p&gt;&lt;p&gt;比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;把公司内部知识库暴露出来&lt;/li&gt;
+&lt;li&gt;把数据库查询包装成工具&lt;/li&gt;
+&lt;li&gt;把某个 SaaS API 接入 AI 助手&lt;/li&gt;
+&lt;li&gt;把本地开发环境能力开放给 IDE Agent&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Server 的关键是把能力边界定义清楚。哪些只读，哪些可写，哪些需要确认，都要认真设计。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 构建 MCP Client&lt;a href=&quot;#2-构建-mcp-client&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你在做 AI 客户端，比如聊天应用、IDE 插件、桌面助手，就需要 MCP Client。&lt;/p&gt;&lt;p&gt;Client 的关键是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;如何安全连接 server&lt;/li&gt;
+&lt;li&gt;如何管理权限&lt;/li&gt;
+&lt;li&gt;如何展示工具能力&lt;/li&gt;
+&lt;li&gt;如何把工具结果交给模型&lt;/li&gt;
+&lt;li&gt;如何处理用户确认&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Client 做得好不好，会直接影响用户是否信任这些工具调用。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 构建 MCP Application&lt;a href=&quot;#3-构建-mcp-application&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你要做完整 AI 产品，就要考虑应用层体验。&lt;/p&gt;&lt;p&gt;比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;server 列表怎么管理&lt;/li&gt;
+&lt;li&gt;用户怎么开启或关闭某个工具&lt;/li&gt;
+&lt;li&gt;敏感操作怎么提醒&lt;/li&gt;
+&lt;li&gt;调用历史怎么展示&lt;/li&gt;
+&lt;li&gt;出错时怎么恢复&lt;/li&gt;
+&lt;li&gt;企业管理员怎么配置策略&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;MCP 提供连接标准，但产品体验仍然要自己设计。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;工程视角怎么理解&lt;a href=&quot;#工程视角怎么理解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. MCP 是 AI 工具生态的基础设施&lt;a href=&quot;#1-mcp-是-ai-工具生态的基础设施&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果每个模型平台、每个 AI 客户端、每个工具服务都用自己的方式连接，生态会非常碎片化。&lt;/p&gt;&lt;p&gt;MCP 的意义在于把“工具接入”这件事抽象成协议，让工具和应用可以解耦。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 协议标准化不代表安全问题消失&lt;a href=&quot;#2-协议标准化不代表安全问题消失&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;统一协议只是让连接更方便，不代表调用更安全。&lt;/p&gt;&lt;p&gt;真正的安全仍然要考虑：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;权限范围&lt;/li&gt;
+&lt;li&gt;用户确认&lt;/li&gt;
+&lt;li&gt;只读与写入区分&lt;/li&gt;
+&lt;li&gt;敏感数据脱敏&lt;/li&gt;
+&lt;li&gt;审计日志&lt;/li&gt;
+&lt;li&gt;Server 是否可信&lt;/li&gt;
+&lt;li&gt;工具调用是否可回滚&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;尤其是当 MCP Server 暴露写操作时，比如发邮件、改数据库、删除文件，就必须谨慎。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Server 设计要像 API 设计一样认真&lt;a href=&quot;#3-server-设计要像-api-设计一样认真&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;一个好的 MCP Server 不只是“能跑”，还要：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具命名清楚&lt;/li&gt;
+&lt;li&gt;描述说明何时使用&lt;/li&gt;
+&lt;li&gt;参数结构明确&lt;/li&gt;
+&lt;li&gt;返回结果可读&lt;/li&gt;
+&lt;li&gt;错误信息可理解&lt;/li&gt;
+&lt;li&gt;权限边界清晰&lt;/li&gt;
+&lt;li&gt;有版本管理意识&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;否则模型虽然能看到工具，却不一定会用对。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. MCP 会让企业内部 Agent 更容易落地&lt;a href=&quot;#4-mcp-会让企业内部-agent-更容易落地&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;企业里有大量内部系统：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;CRM&lt;/li&gt;
+&lt;li&gt;ERP&lt;/li&gt;
+&lt;li&gt;工单&lt;/li&gt;
+&lt;li&gt;文档&lt;/li&gt;
+&lt;li&gt;BI&lt;/li&gt;
+&lt;li&gt;代码仓库&lt;/li&gt;
+&lt;li&gt;日历&lt;/li&gt;
+&lt;li&gt;审批系统&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果每个 Agent 项目都单独接一遍，成本很高。MCP 的潜力在于让这些系统被统一包装，多个 AI 应用都能复用。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;适合什么场景&lt;a href=&quot;#适合什么场景&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;MCP 特别适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;AI 编程助手接入本地项目&lt;/li&gt;
+&lt;li&gt;企业内部知识库接入多个 AI 助手&lt;/li&gt;
+&lt;li&gt;把数据库、文档、工单系统统一暴露给 Agent&lt;/li&gt;
+&lt;li&gt;为 SaaS 产品提供标准 AI 接入方式&lt;/li&gt;
+&lt;li&gt;构建可插拔的工具生态&lt;/li&gt;
+&lt;li&gt;让不同 AI 客户端共享同一批工具能力&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;简单说，只要你发现自己在重复写“让 AI 接这个系统”的胶水代码，就应该考虑 MCP。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;容易忽略的限制或边界&lt;a href=&quot;#容易忽略的限制或边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. MCP 不是魔法互通&lt;a href=&quot;#1-mcp-不是魔法互通&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;有了协议，也不代表所有工具都能完美接入。每个系统仍然有自己的认证、权限、速率限制、数据模型和错误情况。&lt;/p&gt;&lt;p&gt;MCP 统一的是接口方式，不是消除所有业务复杂度。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 工具暴露越多，治理越重要&lt;a href=&quot;#2-工具暴露越多治理越重要&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;当 AI 应用能连接越来越多工具时，风险也会上升。&lt;/p&gt;&lt;p&gt;需要回答：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;哪些 server 可以被连接&lt;/li&gt;
+&lt;li&gt;哪些工具可以自动调用&lt;/li&gt;
+&lt;li&gt;哪些动作必须用户确认&lt;/li&gt;
+&lt;li&gt;哪些数据不能返回给模型&lt;/li&gt;
+&lt;li&gt;调用记录保存在哪里&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些都是治理问题。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Server 质量决定模型体验&lt;a href=&quot;#3-server-质量决定模型体验&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;一个 MCP Server 如果返回结果混乱、描述不清、错误信息难懂，模型也很难稳定使用它。&lt;/p&gt;&lt;p&gt;所以 MCP 生态不只比谁接得多，还要比谁接得清楚、可靠、安全。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 标准仍然需要生态成熟&lt;a href=&quot;#4-标准仍然需要生态成熟&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;协议的价值取决于生态采用度。MCP 越多客户端支持，越多 server 可用，价值越大。&lt;/p&gt;&lt;p&gt;在生态早期，开发者需要接受一定变化和兼容成本。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;如果把这篇文档读成自己的总结&lt;a href=&quot;#如果把这篇文档读成自己的总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我会把 MCP 总结成四句话：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;MCP 是 AI 应用连接外部数据、工具和工作流的开放协议。&lt;/li&gt;
+&lt;li&gt;它解决的是工具接入碎片化问题，不是模型推理问题。&lt;/li&gt;
+&lt;li&gt;MCP Server 暴露能力，MCP Client 连接能力，MCP Application 把能力变成用户体验。&lt;/li&gt;
+&lt;li&gt;MCP 很适合做 Agent 基础设施，但安全、权限、审计和工具设计仍然要认真做。&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;最后做一个实战导读&lt;a href=&quot;#最后做一个实战导读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你准备在自己的系统里使用 MCP，可以按这个顺序思考：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;先列出 AI 需要访问哪些系统&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 区分只读能力和写入能力&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 为核心系统设计 MCP Server&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 在客户端管理权限和用户确认&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 记录工具调用日志&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 再逐步开放更多高风险动作&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;比较稳的定位是：把 MCP 当成 AI 应用的连接协议，而不是当成万能 Agent 框架。它解决的是“怎么接外部世界”，而不是“怎么决定下一步做什么”。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Model Context Protocol 官方文档：&lt;a href=&quot;https://modelcontextprotocol.io/docs/getting-started/intro&quot; target=&quot;_blank&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>Ian Xiaohei Illustrations：专为中文内容创作者打造的怪诞手绘配图 Skill</title><link>https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/ian-xiaohei-illustrations%E4%B8%93%E4%B8%BA%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9%E5%88%9B%E4%BD%9C%E8%80%85%E6%89%93%E9%80%A0%E7%9A%84%E6%80%AA%E8%AF%9E%E6%89%8B%E7%BB%98%E9%85%8D%E5%9B%BE-skill/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%B7%A5%E5%85%B7%E8%B5%84%E6%BA%90/ian-xiaohei-illustrations%E4%B8%93%E4%B8%BA%E4%B8%AD%E6%96%87%E5%86%85%E5%AE%B9%E5%88%9B%E4%BD%9C%E8%80%85%E6%89%93%E9%80%A0%E7%9A%84%E6%80%AA%E8%AF%9E%E6%89%8B%E7%BB%98%E9%85%8D%E5%9B%BE-skill/</guid><description>Ian Xiaohei Illustrations 是一个面向 Codex 的中文正文配图 Skill，能把文章里的判断、流程、状态和隐喻，转化为 16:9 白底手绘风格的小黑怪诞配图。本文从项目定位、视觉风格、安装方法、使用工作流和内容创作价值完整拆解。</description><pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;中文内容创作者最头疼的事情之一，不是写不出文章，而是文章写完以后不知道配什么图。&lt;/p&gt;
 &lt;p&gt;如果只是随便找一张 Unsplash 风景图，画面看起来干净，但和正文观点没有关系；如果让 AI 直接画“科技感插图”，很容易得到一张泛泛的蓝紫色背景图；如果做 PPT 信息图，又容易太规整，像汇报材料，不像正文里的自然插图。&lt;/p&gt;
 &lt;p&gt;最近看到一个很有意思的 Codex Skill：&lt;a href=&quot;https://github.com/helloianneo/ian-xiaohei-illustrations&quot; target=&quot;_blank&quot;&gt;Ian Xiaohei Illustrations&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;它不是通用插画 prompt，也不是 PPT 模板，而是一个专门面向中文文章、博客、Notion 文档和方法论内容的正文配图 Skill。它会把中文内容里的判断、流程、状态、结构和隐喻，转化成 &lt;strong&gt;16:9 白底手绘风格配图&lt;/strong&gt;。&lt;/p&gt;
@@ -272,7 +412,144 @@
 &lt;li&gt;&lt;a href=&quot;https://github.com/helloianneo/ian-xiaohei-illustrations/blob/main/README.md&quot; target=&quot;_blank&quot;&gt;ian-xiaohei-illustrations README&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/helloianneo&quot; target=&quot;_blank&quot;&gt;helloianneo GitHub 主页&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.ianneo.xyz&quot; target=&quot;_blank&quot;&gt;Ian 个人网站&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/section&gt;</content:encoded></item><item><title>Claude Tool Use 官方文档中文解读：客户端工具、服务端工具与 Agentic Loop</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</guid><description>基于 Anthropic Claude 官方 Tool Use 文档的中文深度解读，重点拆解 client tools 与 server tools 的执行边界、tool_use/tool_result 循环、tool_choice、strict tool use 以及生产环境成本与风险控制。</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Claude Tool Use 官方文档中文解读&lt;a href=&quot;#claude-tool-use-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&quot; target=&quot;_blank&quot;&gt;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Claude 这篇文档最有价值的地方，不只是解释“工具怎么调”，而是把&lt;strong&gt;工具到底在哪里执行&lt;/strong&gt;这件事说得非常清楚。Anthropic 基本是在告诉开发者：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;工具调用不是一个抽象概念，真正重要的是执行边界、回传协议和 agentic loop。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Claude 的 tool use 是什么&lt;a href=&quot;#claude-的-tool-use-是什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 对 tool use 的定义很直接：Claude 可以调用你定义的工具，也可以调用 Anthropic 提供的工具。然后根据工具类型不同，执行位置也不同。&lt;/p&gt;&lt;p&gt;这里立刻就引出这篇文档最核心的区别：&lt;/p&gt;&lt;ul&gt;
+&lt;/ul&gt;&lt;/section&gt;</content:encoded></item><item><title>Gemini Code Execution 官方文档中文解读：让模型边写代码边验证答案</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/gemini-code-execution-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E8%AE%A9%E6%A8%A1%E5%9E%8B%E8%BE%B9%E5%86%99%E4%BB%A3%E7%A0%81%E8%BE%B9%E9%AA%8C%E8%AF%81%E7%AD%94%E6%A1%88/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/gemini-code-execution-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E8%AE%A9%E6%A8%A1%E5%9E%8B%E8%BE%B9%E5%86%99%E4%BB%A3%E7%A0%81%E8%BE%B9%E9%AA%8C%E8%AF%81%E7%AD%94%E6%A1%88/</guid><description>基于 Gemini API Code Execution 官方文档的中文解读，梳理 Gemini 如何生成并执行 Python 代码、利用执行结果迭代回答，以及输入输出、计费、限制和工具组合的工程边界。</description><pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Gemini Code Execution 官方文档中文解读&lt;a href=&quot;#gemini-code-execution-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://ai.google.dev/gemini-api/docs/code-execution?hl=zh-cn&quot; target=&quot;_blank&quot;&gt;https://ai.google.dev/gemini-api/docs/code-execution?hl=zh-cn&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini Code Execution 的核心价值是：&lt;strong&gt;让模型在回答问题时不只“凭感觉推理”，而是可以生成 Python 代码、运行代码、读取执行结果，再基于结果继续组织答案&lt;/strong&gt;。&lt;/p&gt;&lt;p&gt;它特别适合这类任务：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;数学计算&lt;/li&gt;
+&lt;li&gt;数据分析&lt;/li&gt;
+&lt;li&gt;表格处理&lt;/li&gt;
+&lt;li&gt;需要验证中间结果的问题&lt;/li&gt;
+&lt;li&gt;画图或生成简单可视化&lt;/li&gt;
+&lt;li&gt;需要用代码检查推理是否正确的场景&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果说普通模型回答像“口算”，Code Execution 更像“允许模型拿出草稿纸和计算器”。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;这篇文档到底在讲什么&lt;a href=&quot;#这篇文档到底在讲什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini API 的 Code Execution 是一种工具能力。启用后，模型可以在需要时生成并执行 Python 代码，然后把代码执行结果纳入最终回答。&lt;/p&gt;&lt;p&gt;它不是让开发者自己在外部运行代码再喂给模型，而是让 Gemini 在模型调用过程中使用托管的代码执行环境。&lt;/p&gt;&lt;p&gt;典型过程是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;用户问题 -&amp;gt; Gemini 判断需要代码 -&amp;gt; 生成 Python -&amp;gt; 执行代码 -&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;获得结果 -&amp;gt; 继续推理 -&amp;gt; 输出最终回答&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[用户问题] --&amp;gt; B[Gemini 推理]
+    B --&amp;gt; C{是否需要代码执行}
+    C -- 否 --&amp;gt; D[直接回答]
+    C -- 是 --&amp;gt; E[生成 Python 代码]
+    E --&amp;gt; F[托管环境执行代码]
+    F --&amp;gt; G[返回执行结果]
+    G --&amp;gt; H[结合结果生成最终答案]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;核心概念拆解&lt;a href=&quot;#核心概念拆解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. Code execution 是模型可用工具&lt;a href=&quot;#1-code-execution-是模型可用工具&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Code execution 本质上是一种工具。模型不是每次都必须调用它，而是在判断需要计算、分析或验证时调用。&lt;/p&gt;&lt;p&gt;这点很重要。它不是“把所有问题都变成代码”，而是让模型在适合的时候多一个可靠手段。&lt;/p&gt;&lt;p&gt;比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;“解释什么是递归”不一定需要执行代码&lt;/li&gt;
+&lt;li&gt;“计算这组数据的平均值和标准差”就很适合执行代码&lt;/li&gt;
+&lt;li&gt;“根据这些数字画趋势图”也适合执行代码&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 执行语言是 Python&lt;a href=&quot;#2-执行语言是-python&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;文档里的 code execution 主要围绕 Python。Python 的优势很明显：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;适合计算&lt;/li&gt;
+&lt;li&gt;适合数据处理&lt;/li&gt;
+&lt;li&gt;生态成熟&lt;/li&gt;
+&lt;li&gt;语法对模型友好&lt;/li&gt;
+&lt;li&gt;很多分析任务可以快速表达&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;对 AI 应用来说，Python 执行环境就像一个通用分析工具。模型可以把自然语言问题临时转成可运行程序。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 代码执行结果会回到模型上下文&lt;a href=&quot;#3-代码执行结果会回到模型上下文&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;真正有价值的不是“代码跑了”，而是“结果能回流给模型”。&lt;/p&gt;&lt;p&gt;模型可以根据执行结果：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;修正原来的推理&lt;/li&gt;
+&lt;li&gt;解释计算过程&lt;/li&gt;
+&lt;li&gt;生成最终结论&lt;/li&gt;
+&lt;li&gt;如果结果不符合预期，继续调整代码&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这比单纯让模型写一段代码给用户看更进一步。它不是只输出代码，而是用代码帮助回答问题。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 模型可以迭代&lt;a href=&quot;#4-模型可以迭代&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果第一次代码执行不理想，模型可以根据错误或结果继续调整。这很像人类写脚本分析数据的过程：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;写代码 -&amp;gt; 运行 -&amp;gt; 看报错或结果 -&amp;gt; 修改代码 -&amp;gt; 再运行&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这让 Gemini 在处理复杂计算和数据问题时更可靠，因为它有机会用实际执行反馈纠正自己。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;工程视角怎么理解&lt;a href=&quot;#工程视角怎么理解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. Code execution 是降低幻觉的一种方式&lt;a href=&quot;#1-code-execution-是降低幻觉的一种方式&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;大模型很擅长解释概念，但在精确计算上容易出错。比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;长数字运算&lt;/li&gt;
+&lt;li&gt;多步骤代数&lt;/li&gt;
+&lt;li&gt;统计指标&lt;/li&gt;
+&lt;li&gt;日期差值&lt;/li&gt;
+&lt;li&gt;表格汇总&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;有了代码执行，模型可以把这类问题交给 Python 计算，而不是凭 token 预测答案。&lt;/p&gt;&lt;p&gt;这并不代表完全不会错，因为模型生成代码本身也可能错；但至少多了一个可验证环节。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 它适合“可计算问题”，不适合所有问题&lt;a href=&quot;#2-它适合可计算问题不适合所有问题&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Code execution 最适合结果可以通过代码验证的问题。&lt;/p&gt;&lt;p&gt;适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;数据统计&lt;/li&gt;
+&lt;li&gt;数学题&lt;/li&gt;
+&lt;li&gt;单元换算&lt;/li&gt;
+&lt;li&gt;排序筛选&lt;/li&gt;
+&lt;li&gt;简单模拟&lt;/li&gt;
+&lt;li&gt;图表生成&lt;/li&gt;
+&lt;li&gt;文件或表格分析&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;不适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;价值判断&lt;/li&gt;
+&lt;li&gt;情绪陪伴&lt;/li&gt;
+&lt;li&gt;政策解释&lt;/li&gt;
+&lt;li&gt;需要访问私有系统但没有数据输入的问题&lt;/li&gt;
+&lt;li&gt;需要执行真实外部动作的问题&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;也就是说，它增强的是“计算与分析能力”，不是万能自动化能力。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 托管执行环境带来便利，也带来边界&lt;a href=&quot;#3-托管执行环境带来便利也带来边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Code execution 的好处是你不用自己搭沙箱、调度 Python、处理运行环境。Gemini 可以直接在托管环境中执行。&lt;/p&gt;&lt;p&gt;但托管环境也意味着：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;可用库有限&lt;/li&gt;
+&lt;li&gt;运行时间有限&lt;/li&gt;
+&lt;li&gt;文件大小或输入输出有限&lt;/li&gt;
+&lt;li&gt;不能随便访问你的内网系统&lt;/li&gt;
+&lt;li&gt;不应该把它当成通用服务器&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以它更像一个“临时分析沙箱”，不是你的后端任务队列。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 输入输出要设计清楚&lt;a href=&quot;#4-输入输出要设计清楚&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你希望模型用代码分析数据，最好给它结构化输入，比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;CSV&lt;/li&gt;
+&lt;li&gt;JSON&lt;/li&gt;
+&lt;li&gt;Markdown 表格&lt;/li&gt;
+&lt;li&gt;明确字段说明&lt;/li&gt;
+&lt;li&gt;清楚的问题目标&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;输入越清楚，生成代码越稳定。&lt;/p&gt;&lt;p&gt;如果只是丢一段含糊文本让它“分析一下”，模型可能先要猜数据结构，错误概率会提高。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;与普通 tool calling 的区别&lt;a href=&quot;#与普通-tool-calling-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Code execution 和传统函数工具有相似之处，都是让模型使用外部能力。但它们的边界不一样。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;能力&lt;/th&gt;&lt;th&gt;Code execution&lt;/th&gt;&lt;th&gt;Function/tool calling&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;执行内容&lt;/td&gt;&lt;td&gt;模型生成 Python 并运行&lt;/td&gt;&lt;td&gt;调用开发者定义好的函数&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;适合场景&lt;/td&gt;&lt;td&gt;计算、分析、验证&lt;/td&gt;&lt;td&gt;查询数据库、调用 API、业务动作&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;控制权&lt;/td&gt;&lt;td&gt;代码由模型临时生成&lt;/td&gt;&lt;td&gt;函数由开发者预先定义&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;风险点&lt;/td&gt;&lt;td&gt;代码生成错误、环境限制&lt;/td&gt;&lt;td&gt;参数错误、权限和副作用&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;输出&lt;/td&gt;&lt;td&gt;执行结果回流给模型&lt;/td&gt;&lt;td&gt;工具结果回流给模型&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Code execution 更灵活，因为模型可以临时写代码；function calling 更可控，因为工具边界由开发者定义。&lt;/p&gt;&lt;p&gt;生产系统里两者可以组合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;用 function calling 查询业务数据&lt;/li&gt;
+&lt;li&gt;用 code execution 做统计分析&lt;/li&gt;
+&lt;li&gt;再让模型生成解释和建议&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;适合什么场景&lt;a href=&quot;#适合什么场景&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 数据分析助手&lt;a href=&quot;#1-数据分析助手&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;用户上传一段数据，让 Gemini 计算：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;平均值&lt;/li&gt;
+&lt;li&gt;中位数&lt;/li&gt;
+&lt;li&gt;最大最小值&lt;/li&gt;
+&lt;li&gt;分布情况&lt;/li&gt;
+&lt;li&gt;异常点&lt;/li&gt;
+&lt;li&gt;趋势变化&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这类任务非常适合代码执行。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 数学与科学计算&lt;a href=&quot;#2-数学与科学计算&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;解方程&lt;/li&gt;
+&lt;li&gt;做矩阵计算&lt;/li&gt;
+&lt;li&gt;计算概率&lt;/li&gt;
+&lt;li&gt;简单数值模拟&lt;/li&gt;
+&lt;li&gt;验证某个公式结果&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;模型可以用 Python 来减少纯语言推理里的算错风险。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 图表和可视化&lt;a href=&quot;#3-图表和可视化&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果执行环境支持相关库，就可以生成简单图表或可视化结果。&lt;/p&gt;&lt;p&gt;这类场景的关键是：模型不只是告诉你“趋势上升”，而是可以用代码算出趋势，并生成更直观的结果。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 教学解释&lt;a href=&quot;#4-教学解释&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Code execution 很适合教学。比如解释排序算法、递归、概率模拟时，模型可以一边写代码一边展示输出结果。&lt;/p&gt;&lt;p&gt;对学习者来说，这比纯文字更容易理解。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;容易忽略的限制或边界&lt;a href=&quot;#容易忽略的限制或边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 代码执行不等于代码一定正确&lt;a href=&quot;#1-代码执行不等于代码一定正确&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;模型生成的 Python 可能：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;误解题意&lt;/li&gt;
+&lt;li&gt;选错公式&lt;/li&gt;
+&lt;li&gt;漏掉边界条件&lt;/li&gt;
+&lt;li&gt;把字段理解错&lt;/li&gt;
+&lt;li&gt;对数据做了错误假设&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以执行成功只代表代码跑完了，不代表业务结论一定正确。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 不要把它当生产后端&lt;a href=&quot;#2-不要把它当生产后端&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Code execution 是分析工具，不是长期任务系统。&lt;/p&gt;&lt;p&gt;不适合用它做：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;持久化任务&lt;/li&gt;
+&lt;li&gt;定时任务&lt;/li&gt;
+&lt;li&gt;访问内部数据库&lt;/li&gt;
+&lt;li&gt;操作用户账户&lt;/li&gt;
+&lt;li&gt;执行高风险业务动作&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些应该由自己的后端服务或受控工具完成。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 成本和延迟要考虑&lt;a href=&quot;#3-成本和延迟要考虑&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;代码执行会增加模型调用过程中的步骤，也可能带来额外计费或延迟。对于简单问题，如果普通回答已经足够，就没必要强行启用。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 输入数据要注意隐私&lt;a href=&quot;#4-输入数据要注意隐私&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你把用户数据、业务数据、敏感数据交给代码执行环境，要先确认：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;是否允许上传&lt;/li&gt;
+&lt;li&gt;是否符合隐私政策&lt;/li&gt;
+&lt;li&gt;是否需要脱敏&lt;/li&gt;
+&lt;li&gt;是否涉及个人信息或商业机密&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;工具能力越强，数据治理越重要。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;如果把这篇文档读成自己的总结&lt;a href=&quot;#如果把这篇文档读成自己的总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我会把 Gemini Code Execution 总结成四句话：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;它让模型从“只会说”升级到“可以用 Python 验证后再说”。&lt;/li&gt;
+&lt;li&gt;它特别适合计算、数据分析、图表、模拟和需要中间验证的任务。&lt;/li&gt;
+&lt;li&gt;托管代码环境降低了接入成本，但也有运行环境、库、时长、输入输出和成本边界。&lt;/li&gt;
+&lt;li&gt;执行成功不等于结论正确，生产系统仍然需要数据校验、权限控制和业务审查。&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;最后做一个实战导读&lt;a href=&quot;#最后做一个实战导读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你准备用 Gemini Code Execution 做应用，可以按这个顺序来：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;先选可计算场景 -&amp;gt; 设计清晰输入格式 -&amp;gt; 启用 code execution -&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;观察生成代码和执行结果 -&amp;gt; 增加结果校验 -&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;对敏感数据做脱敏 -&amp;gt; 再考虑和业务工具组合&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;比较稳的定位是：把它当成“模型自带的数据分析沙箱”，而不是当成一个万能执行平台。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Gemini API 官方文档：&lt;a href=&quot;https://ai.google.dev/gemini-api/docs/code-execution?hl=zh-cn&quot; target=&quot;_blank&quot;&gt;代码执行&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>Claude Tool Use 官方文档中文解读：客户端工具、服务端工具与 Agentic Loop</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/claude-tool-use-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B7%A5%E5%85%B7%E4%B8%8E-agentic-loop/</guid><description>基于 Anthropic Claude 官方 Tool Use 文档的中文深度解读，重点拆解 client tools 与 server tools 的执行边界、tool_use/tool_result 循环、tool_choice、strict tool use 以及生产环境成本与风险控制。</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Claude Tool Use 官方文档中文解读&lt;a href=&quot;#claude-tool-use-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&quot; target=&quot;_blank&quot;&gt;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Claude 这篇文档最有价值的地方，不只是解释“工具怎么调”，而是把&lt;strong&gt;工具到底在哪里执行&lt;/strong&gt;这件事说得非常清楚。Anthropic 基本是在告诉开发者：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;工具调用不是一个抽象概念，真正重要的是执行边界、回传协议和 agentic loop。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Claude 的 tool use 是什么&lt;a href=&quot;#claude-的-tool-use-是什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Anthropic 对 tool use 的定义很直接：Claude 可以调用你定义的工具，也可以调用 Anthropic 提供的工具。然后根据工具类型不同，执行位置也不同。&lt;/p&gt;&lt;p&gt;这里立刻就引出这篇文档最核心的区别：&lt;/p&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;client tools&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;server tools&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;p&gt;这也是 Claude 文档和很多“只讲 function schema”的文档相比，最值得读的一点。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Client tools 与 server tools 的区别&lt;a href=&quot;#client-tools-与-server-tools-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. Client tools&lt;a href=&quot;#1-client-tools&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这类工具运行在&lt;strong&gt;你的应用侧&lt;/strong&gt;。Claude 只负责返回一个结构化调用请求，真正执行的是你的代码。&lt;/p&gt;&lt;p&gt;典型流程是：&lt;/p&gt;&lt;ul&gt;
@@ -360,6 +637,239 @@
 &lt;li&gt;client tools 和 server tools 的选择，本质上是在做控制权、成本和开发效率之间的权衡&lt;/li&gt;
 &lt;/ol&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Claude 官方文档：&lt;a href=&quot;https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview&quot; target=&quot;_blank&quot;&gt;Tool use with Claude&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>LangChain Docs 中文深度解读：从 Agent 框架到 LangGraph、LangSmith 的工程体系</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/langchain-docs-%E4%B8%AD%E6%96%87%E6%B7%B1%E5%BA%A6%E8%A7%A3%E8%AF%BB%E4%BB%8E-agent-%E6%A1%86%E6%9E%B6%E5%88%B0-langgraphlangsmith-%E7%9A%84%E5%B7%A5%E7%A8%8B%E4%BD%93%E7%B3%BB/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/langchain-docs-%E4%B8%AD%E6%96%87%E6%B7%B1%E5%BA%A6%E8%A7%A3%E8%AF%BB%E4%BB%8E-agent-%E6%A1%86%E6%9E%B6%E5%88%B0-langgraphlangsmith-%E7%9A%84%E5%B7%A5%E7%A8%8B%E4%BD%93%E7%B3%BB/</guid><description>基于 LangChain 官方文档的中文深度解读，系统梳理 LangChain、LangGraph、LangSmith 的三层分工，以及 Build、Test、Deploy、Monitor、Govern 的 Agent 工程生命周期。</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;LangChain Docs 中文深度解读&lt;a href=&quot;#langchain-docs-中文深度解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://docs.langchain.com/&quot; target=&quot;_blank&quot;&gt;https://docs.langchain.com/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;相关文档：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;LangChain Python Overview：&lt;a href=&quot;https://docs.langchain.com/oss/python/langchain/overview&quot; target=&quot;_blank&quot;&gt;https://docs.langchain.com/oss/python/langchain/overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;LangGraph Overview：&lt;a href=&quot;https://docs.langchain.com/oss/python/langgraph/overview&quot; target=&quot;_blank&quot;&gt;https://docs.langchain.com/oss/python/langgraph/overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;LangSmith Docs：&lt;a href=&quot;https://docs.langchain.com/langsmith/&quot; target=&quot;_blank&quot;&gt;https://docs.langchain.com/langsmith/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;现在再把 LangChain 理解成“一个调用 LLM 的链式工具库”，已经有点过时了。更准确的理解是：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;LangChain 正在把自己定位成一套 agent engineering 体系：用 LangChain 快速构建 Agent，用 LangGraph 承载复杂状态和持久化执行，用 LangSmith 做评估、追踪、部署和生产监控。&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;也就是说，它关注的不是某个 API 怎么调，而是一个更大的问题：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;怎样把 Agent 从 demo 推到可测试、可部署、可观察、可治理的生产系统？&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;这篇文档到底在讲什么&lt;a href=&quot;#这篇文档到底在讲什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LangChain 文档首页现在的叙事非常清楚：它不是只提供一个开源库，而是围绕 Agent 生命周期提供一整套工具。&lt;/p&gt;&lt;p&gt;可以概括成五个阶段：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;阶段&lt;/th&gt;&lt;th&gt;目标&lt;/th&gt;&lt;th&gt;对应能力&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Build&lt;/td&gt;&lt;td&gt;构建 Agent 和工作流&lt;/td&gt;&lt;td&gt;LangChain、LangGraph、Deep Agents&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Test&lt;/td&gt;&lt;td&gt;测试质量和回归&lt;/td&gt;&lt;td&gt;datasets、evaluations、prompt experiments&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Deploy&lt;/td&gt;&lt;td&gt;部署 Agent 服务&lt;/td&gt;&lt;td&gt;LangSmith Deployment&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Monitor&lt;/td&gt;&lt;td&gt;观察线上行为&lt;/td&gt;&lt;td&gt;tracing、observability、online evaluation&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Govern&lt;/td&gt;&lt;td&gt;管理质量和风险&lt;/td&gt;&lt;td&gt;调试、回归、问题复现、质量门禁&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这套视角很重要。因为 Agent 系统的难点从来不只是“本地跑通一个例子”，而是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;为什么这次调用失败了？&lt;/li&gt;
+&lt;li&gt;改了 prompt 之后质量有没有退化？&lt;/li&gt;
+&lt;li&gt;工具调用链路哪里慢？&lt;/li&gt;
+&lt;li&gt;用户线上问题能不能复现？&lt;/li&gt;
+&lt;li&gt;新版本能不能灰度？&lt;/li&gt;
+&lt;li&gt;模型输出不稳定时怎么评估？&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些问题，才是 Agent 进入生产环境后真正会遇到的东西。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;三层分工：LangChain、LangGraph、LangSmith&lt;a href=&quot;#三层分工langchainlanggraphlangsmith&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果只记住一个框架图，可以记这个：&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[LangChain&amp;lt;br/&amp;gt;快速构建 Agent] --&amp;gt; B[LangGraph&amp;lt;br/&amp;gt;复杂状态与持久化运行]
+    B --&amp;gt; C[LangSmith&amp;lt;br/&amp;gt;评估 追踪 部署 监控]
+    A --&amp;gt; C&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;三者不是互相替代，而是不同层级。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. LangChain：Agent 框架层&lt;a href=&quot;#1-langchainagent-框架层&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;LangChain 负责让你快速组合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;模型&lt;/li&gt;
+&lt;li&gt;prompt&lt;/li&gt;
+&lt;li&gt;tools&lt;/li&gt;
+&lt;li&gt;middleware&lt;/li&gt;
+&lt;li&gt;structured output&lt;/li&gt;
+&lt;li&gt;short-term memory&lt;/li&gt;
+&lt;li&gt;runtime context&lt;/li&gt;
+&lt;li&gt;agent loop&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;它最典型的入口是 &lt;code&gt;create_agent&lt;/code&gt;。你给它模型、工具和系统提示，它就能帮你组织一个基础 Agent。&lt;/p&gt;&lt;p&gt;可以把 LangChain 看成“从零到一搭 Agent”的框架。它适合快速把这些东西接起来：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;用户输入 -&amp;gt; 模型推理 -&amp;gt; 工具调用 -&amp;gt; 工具结果 -&amp;gt; 最终回答&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. LangGraph：编排运行时层&lt;a href=&quot;#2-langgraph编排运行时层&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;当 Agent 变复杂之后，单纯的链式调用就不够了。你会需要：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;状态管理&lt;/li&gt;
+&lt;li&gt;多节点流程&lt;/li&gt;
+&lt;li&gt;持久化执行&lt;/li&gt;
+&lt;li&gt;checkpoint&lt;/li&gt;
+&lt;li&gt;human-in-the-loop&lt;/li&gt;
+&lt;li&gt;streaming&lt;/li&gt;
+&lt;li&gt;time travel&lt;/li&gt;
+&lt;li&gt;fault tolerance&lt;/li&gt;
+&lt;li&gt;子图和多 Agent 编排&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些就是 LangGraph 的位置。&lt;/p&gt;&lt;p&gt;LangGraph 更像一个“有状态工作流运行时”。它不只是把步骤串起来，而是让你清楚地表达：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;当前状态是什么&lt;/li&gt;
+&lt;li&gt;下一步走哪个节点&lt;/li&gt;
+&lt;li&gt;节点之间怎么跳转&lt;/li&gt;
+&lt;li&gt;哪些状态要保存&lt;/li&gt;
+&lt;li&gt;失败后怎么恢复&lt;/li&gt;
+&lt;li&gt;人类什么时候介入&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果说 LangChain 适合快速搭一个 Agent，那么 LangGraph 更适合构建需要长期运行、可恢复、可观测、可控制的复杂 Agent 系统。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. LangSmith：生产工程平台层&lt;a href=&quot;#3-langsmith生产工程平台层&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;LangSmith 解决的是生产环境的另一组问题：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;tracing：每次调用发生了什么&lt;/li&gt;
+&lt;li&gt;evaluation：输出质量怎么评估&lt;/li&gt;
+&lt;li&gt;datasets：用什么样本做回归&lt;/li&gt;
+&lt;li&gt;prompt engineering：prompt 版本如何实验&lt;/li&gt;
+&lt;li&gt;deployment：Agent 工作负载怎么承载&lt;/li&gt;
+&lt;li&gt;monitoring：线上表现怎么观察&lt;/li&gt;
+&lt;li&gt;failure diagnosis：失败案例怎么定位和复现&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Agent 系统的输出不是确定性的。你今天改了一个 prompt、换了一个模型、调整了一个工具描述，都可能影响结果。LangSmith 的价值就在于把这些变化放进可追踪、可评估、可回归的工程流程里。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;LangChain 里的核心工程概念&lt;a href=&quot;#langchain-里的核心工程概念&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. Agent 和 workflow 的区别&lt;a href=&quot;#1-agent-和-workflow-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这是理解 LangChain 体系的第一步。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;类型&lt;/th&gt;&lt;th&gt;特点&lt;/th&gt;&lt;th&gt;适合场景&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Workflow&lt;/td&gt;&lt;td&gt;路径更固定，由开发者预先定义步骤&lt;/td&gt;&lt;td&gt;审批流、固定数据处理、稳定业务流程&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Agent&lt;/td&gt;&lt;td&gt;路径更动态，由模型决定下一步&lt;/td&gt;&lt;td&gt;研究、客服、数据分析、复杂任务处理&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Workflow 的优点是稳定、可预测、容易测试；Agent 的优点是灵活、能应对开放式问题。&lt;/p&gt;&lt;p&gt;真正的生产系统经常是混合形态：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;关键流程用 workflow 固定&lt;/li&gt;
+&lt;li&gt;不确定步骤交给 agent 判断&lt;/li&gt;
+&lt;li&gt;高风险动作加 human-in-the-loop&lt;/li&gt;
+&lt;li&gt;所有调用用 LangSmith 追踪&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Tools：让 Agent 连接真实世界&lt;a href=&quot;#2-tools让-agent-连接真实世界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;没有工具的 Agent，只能在已有上下文里说话。有了工具，Agent 才能：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;获取实时数据&lt;/li&gt;
+&lt;li&gt;查询数据库&lt;/li&gt;
+&lt;li&gt;搜索文档&lt;/li&gt;
+&lt;li&gt;调用 API&lt;/li&gt;
+&lt;li&gt;执行代码&lt;/li&gt;
+&lt;li&gt;触发业务动作&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;但工具不是越多越好。工具描述本质上也是 prompt engineering。模型能不能选对工具，很大程度取决于：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具名是否语义清楚&lt;/li&gt;
+&lt;li&gt;描述是否说明“什么时候用”&lt;/li&gt;
+&lt;li&gt;参数是否明确&lt;/li&gt;
+&lt;li&gt;返回结果是否便于模型继续推理&lt;/li&gt;
+&lt;li&gt;工具之间是否功能重叠&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;一个差的工具定义，会让 Agent 像拿到一堆标签模糊的遥控器，不知道该按哪个。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Middleware：控制 Agent 每一步&lt;a href=&quot;#3-middleware控制-agent-每一步&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Middleware 是 LangChain 里非常值得重视的概念。它让你可以在 Agent 运行过程中插入控制逻辑。&lt;/p&gt;&lt;p&gt;可以用 middleware 做：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;日志记录&lt;/li&gt;
+&lt;li&gt;重试&lt;/li&gt;
+&lt;li&gt;fallback&lt;/li&gt;
+&lt;li&gt;rate limit&lt;/li&gt;
+&lt;li&gt;guardrails&lt;/li&gt;
+&lt;li&gt;PII 检测&lt;/li&gt;
+&lt;li&gt;模型切换&lt;/li&gt;
+&lt;li&gt;工具调用前检查&lt;/li&gt;
+&lt;li&gt;工具结果后处理&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;如果把 Agent loop 看成一条流水线，middleware 就是流水线上的检查点和调节阀。&lt;/p&gt;&lt;p&gt;这对生产环境很关键。因为你不可能只靠一句系统提示来保证 Agent 永远安全、稳定、低成本。真正的控制应该落在运行时逻辑里。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. Structured output：别只靠自然语言解析&lt;a href=&quot;#4-structured-output别只靠自然语言解析&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;很多 Agent 应用最后不只是要一段文字，而是要结构化结果，比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;JSON&lt;/li&gt;
+&lt;li&gt;Pydantic model&lt;/li&gt;
+&lt;li&gt;dataclass&lt;/li&gt;
+&lt;li&gt;固定字段的业务对象&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Structured output 的价值是让模型输出变成程序可消费的数据。&lt;/p&gt;&lt;p&gt;比如让 Agent 分析客户反馈，如果只输出一段自然语言，后续系统很难稳定处理；如果输出：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;{&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;  &lt;/span&gt;&lt;span&gt;&quot;sentiment&quot;&lt;/span&gt;&lt;span&gt;: &lt;/span&gt;&lt;span&gt;&quot;negative&quot;&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;  &lt;/span&gt;&lt;span&gt;&quot;topic&quot;&lt;/span&gt;&lt;span&gt;: &lt;/span&gt;&lt;span&gt;&quot;delivery&quot;&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;  &lt;/span&gt;&lt;span&gt;&quot;priority&quot;&lt;/span&gt;&lt;span&gt;: &lt;/span&gt;&lt;span&gt;&quot;high&quot;&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;  &lt;/span&gt;&lt;span&gt;&quot;summary&quot;&lt;/span&gt;&lt;span&gt;: &lt;/span&gt;&lt;span&gt;&quot;用户投诉配送延迟&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;}&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;后端就可以直接路由、统计、告警或进入工单系统。&lt;/p&gt;&lt;p&gt;这也是从 demo 到生产的关键一步：不要让后端依赖“解析一段看起来差不多的中文”。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;5. Memory：短期记忆和长期记忆&lt;a href=&quot;#5-memory短期记忆和长期记忆&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;LangChain 文档里把记忆分得很实用：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;short-term memory：围绕当前对话或当前线程，依赖 checkpointer 保存状态&lt;/li&gt;
+&lt;li&gt;long-term memory：跨会话、跨线程的持久信息，依赖 store 保存&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;短期记忆回答的是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;这个任务当前进行到哪一步？&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;长期记忆回答的是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;这个用户、组织或业务对象长期有什么偏好和历史？&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这两者不能混在一起。把所有东西都塞进上下文，成本高、噪声大；完全没有长期记忆，Agent 又很难形成稳定体验。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;6. Runtime context：运行时信息不是 prompt 的装饰&lt;a href=&quot;#6-runtime-context运行时信息不是-prompt-的装饰&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;很多 Agent 需要知道当前运行环境，比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;当前用户是谁&lt;/li&gt;
+&lt;li&gt;当前租户是什么&lt;/li&gt;
+&lt;li&gt;当前权限级别&lt;/li&gt;
+&lt;li&gt;当前请求 ID&lt;/li&gt;
+&lt;li&gt;当前环境是测试还是生产&lt;/li&gt;
+&lt;li&gt;可以使用哪些工具&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些不是普通聊天内容，而是运行时上下文。把它管理好，可以让 Agent 更容易接入真实业务系统，也更容易做审计和排查。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;LangGraph 为什么重要&lt;a href=&quot;#langgraph-为什么重要&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LangGraph 的重要性在于：它承认 Agent 不是一次函数调用，而是一个有状态、可中断、可恢复、可观察的过程。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. Durable execution：持久化执行&lt;a href=&quot;#1-durable-execution持久化执行&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;长任务可能会中断，服务可能会重启，工具可能会失败。生产系统不能因为一次请求断开就丢掉整个任务。&lt;/p&gt;&lt;p&gt;持久化执行让流程状态可以保存下来，后续继续跑。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Human-in-the-loop：人类不是失败兜底，而是流程节点&lt;a href=&quot;#2-human-in-the-loop人类不是失败兜底而是流程节点&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;很多场景不能全自动，比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;退款审批&lt;/li&gt;
+&lt;li&gt;法务结论&lt;/li&gt;
+&lt;li&gt;删除数据&lt;/li&gt;
+&lt;li&gt;发生产通知&lt;/li&gt;
+&lt;li&gt;修改高风险配置&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Human-in-the-loop 的价值是把人类确认纳入流程，而不是等系统出错后才人工补救。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Time travel：调试 Agent 的时间机器&lt;a href=&quot;#3-time-travel调试-agent-的时间机器&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 错了以后，最怕的是不知道它为什么错。&lt;/p&gt;&lt;p&gt;Time travel 这种能力可以让你回到某个中间状态，检查当时的输入、输出、工具结果和状态变化。这对调试多步骤 Agent 特别有价值。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. Fault tolerance：失败是正常路径&lt;a href=&quot;#4-fault-tolerance失败是正常路径&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;工具超时、API 报错、模型输出不合规、用户输入缺信息，这些都不是异常边缘情况，而是 Agent 系统的日常。&lt;/p&gt;&lt;p&gt;LangGraph 的工程价值在于让失败有地方去，而不是让整个流程直接崩掉。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;LangSmith 为什么不只是“日志平台”&lt;a href=&quot;#langsmith-为什么不只是日志平台&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;很多人第一次看 LangSmith，容易把它理解成 trace 查看器。其实它更像 Agent 生产工程平台。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;1. Tracing：知道每一步发生了什么&lt;a href=&quot;#1-tracing知道每一步发生了什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 一次回答背后可能有很多步骤：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;prompt 是什么&lt;/li&gt;
+&lt;li&gt;调用了哪个模型&lt;/li&gt;
+&lt;li&gt;调了哪些工具&lt;/li&gt;
+&lt;li&gt;工具参数是什么&lt;/li&gt;
+&lt;li&gt;工具返回了什么&lt;/li&gt;
+&lt;li&gt;token 花在哪里&lt;/li&gt;
+&lt;li&gt;哪一步最慢&lt;/li&gt;
+&lt;li&gt;哪一步失败&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;没有 tracing，Agent 就像一个黑盒。出了问题只能猜。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Evaluation：不能只靠肉眼感觉变好了&lt;a href=&quot;#2-evaluation不能只靠肉眼感觉变好了&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 输出有随机性，所以必须有 eval。&lt;/p&gt;&lt;p&gt;Evaluation 可以帮助你回答：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;新 prompt 是否比旧 prompt 好&lt;/li&gt;
+&lt;li&gt;换模型后准确率有没有下降&lt;/li&gt;
+&lt;li&gt;新工具描述是否减少误调用&lt;/li&gt;
+&lt;li&gt;某类问题是否退化&lt;/li&gt;
+&lt;li&gt;线上失败案例是否已经修复&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这就是为什么 LangChain 文档强调 datasets 和 evaluations。没有固定样本集，就很难做回归测试。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Prompt experiments：prompt 也需要版本管理&lt;a href=&quot;#3-prompt-experimentsprompt-也需要版本管理&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Prompt 不是临时字符串，而是产品逻辑的一部分。&lt;/p&gt;&lt;p&gt;当团队多人协作时，需要知道：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;谁改了 prompt&lt;/li&gt;
+&lt;li&gt;改了什么&lt;/li&gt;
+&lt;li&gt;为什么改&lt;/li&gt;
+&lt;li&gt;哪些样本变好了&lt;/li&gt;
+&lt;li&gt;哪些样本变差了&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这和传统软件里的代码版本、测试用例、CI 其实是同一类问题。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. Deployment 与 Monitor：上线后才是真考验&lt;a href=&quot;#4-deployment-与-monitor上线后才是真考验&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 在本地 demo 里表现好，不代表线上表现好。&lt;/p&gt;&lt;p&gt;线上会有：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;更奇怪的用户输入&lt;/li&gt;
+&lt;li&gt;更长的上下文&lt;/li&gt;
+&lt;li&gt;更复杂的权限&lt;/li&gt;
+&lt;li&gt;更高并发&lt;/li&gt;
+&lt;li&gt;更真实的失败成本&lt;/li&gt;
+&lt;li&gt;更严格的延迟和成本约束&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Deployment 和 Monitor 的价值，就是让 Agent 不是“跑在某个人电脑上的脚本”，而是可以作为服务持续运行、观察和迭代。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;完整生命周期怎么串起来&lt;a href=&quot;#完整生命周期怎么串起来&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LangChain 当前的文档最值得学习的地方，是它把 Agent 工程拆成了完整生命周期。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart LR
+    A[Build&amp;lt;br/&amp;gt;构建] --&amp;gt; B[Test&amp;lt;br/&amp;gt;评估]
+    B --&amp;gt; C[Deploy&amp;lt;br/&amp;gt;部署]
+    C --&amp;gt; D[Monitor&amp;lt;br/&amp;gt;监控]
+    D --&amp;gt; E[Govern&amp;lt;br/&amp;gt;治理]
+    E --&amp;gt; A&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;section&gt;&lt;h3&gt;Build：先把能力跑通&lt;a href=&quot;#build先把能力跑通&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;用 LangChain 快速组合模型、工具、prompt、middleware、structured output 和 memory。&lt;/p&gt;&lt;p&gt;如果任务只是简单工具调用，LangChain 足够；如果任务状态复杂，就引入 LangGraph。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;Test：建立质量基线&lt;a href=&quot;#test建立质量基线&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;不要靠“我试了几个问题感觉还行”。应该建立 datasets 和 evaluations，把典型问题、边界问题、失败案例都纳入测试。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;Deploy：让 Agent 成为服务&lt;a href=&quot;#deploy让-agent-成为服务&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;部署阶段要考虑：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;并发&lt;/li&gt;
+&lt;li&gt;超时&lt;/li&gt;
+&lt;li&gt;成本&lt;/li&gt;
+&lt;li&gt;版本&lt;/li&gt;
+&lt;li&gt;权限&lt;/li&gt;
+&lt;li&gt;回滚&lt;/li&gt;
+&lt;li&gt;环境变量&lt;/li&gt;
+&lt;li&gt;工具依赖&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这一步开始，Agent 就不再只是 notebook 里的实验。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;Monitor：持续观察线上行为&lt;a href=&quot;#monitor持续观察线上行为&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;监控不只是看服务有没有挂，还要看：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;回答质量&lt;/li&gt;
+&lt;li&gt;工具调用成功率&lt;/li&gt;
+&lt;li&gt;token 成本&lt;/li&gt;
+&lt;li&gt;延迟&lt;/li&gt;
+&lt;li&gt;用户反馈&lt;/li&gt;
+&lt;li&gt;失败模式&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Agent 的问题经常不是“系统不可用”，而是“系统看起来可用，但回答质量在悄悄变差”。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;Govern：让变化可控&lt;a href=&quot;#govern让变化可控&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Govern 的核心是把 Agent 变化纳入工程流程：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;改 prompt 要评估&lt;/li&gt;
+&lt;li&gt;换模型要回归&lt;/li&gt;
+&lt;li&gt;加工具要观察误调用&lt;/li&gt;
+&lt;li&gt;线上失败要进入数据集&lt;/li&gt;
+&lt;li&gt;高风险动作要有人类检查点&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这就是 Agent 从玩具到生产系统的分水岭。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;适合什么场景&lt;a href=&quot;#适合什么场景&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LangChain 体系适合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;客服 Agent&lt;/li&gt;
+&lt;li&gt;内部运营助手&lt;/li&gt;
+&lt;li&gt;数据分析 Agent&lt;/li&gt;
+&lt;li&gt;文档研究 Agent&lt;/li&gt;
+&lt;li&gt;编程助手&lt;/li&gt;
+&lt;li&gt;多工具业务编排&lt;/li&gt;
+&lt;li&gt;需要可观测和可评估的企业 Agent&lt;/li&gt;
+&lt;li&gt;需要人类审批节点的高风险流程&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;尤其当你已经不满足于“能调用工具”，而是开始关心“怎么稳定上线、怎么调试、怎么评估、怎么持续迭代”，LangChain 的整套体系就会更有价值。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;容易忽略的限制或边界&lt;a href=&quot;#容易忽略的限制或边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 框架不能替你定义产品边界&lt;a href=&quot;#1-框架不能替你定义产品边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;LangChain 可以帮你组合 Agent，但不能替你决定：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;哪些动作允许自动执行&lt;/li&gt;
+&lt;li&gt;哪些工具需要审批&lt;/li&gt;
+&lt;li&gt;什么答案算正确&lt;/li&gt;
+&lt;li&gt;失败时怎么处理&lt;/li&gt;
+&lt;li&gt;用户体验如何设计&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些仍然是产品和工程团队自己的责任。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. LangGraph 增强控制，也增加建模成本&lt;a href=&quot;#2-langgraph-增强控制也增加建模成本&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;状态图、checkpoint、人类节点、恢复机制很强，但也意味着你要更认真地建模流程。&lt;/p&gt;&lt;p&gt;如果任务很简单，不要为了“看起来工程化”强行上复杂图。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. LangSmith 有价值的前提是你愿意做 eval&lt;a href=&quot;#3-langsmith-有价值的前提是你愿意做-eval&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果没有数据集、没有评价标准、没有回归意识，LangSmith 只能变成“看 trace 的地方”。&lt;/p&gt;&lt;p&gt;它真正的价值是把 trace、dataset、evaluation、prompt 实验和部署监控连起来。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. Agent 工程不是一次性搭建&lt;a href=&quot;#4-agent-工程不是一次性搭建&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 的失败模式会随着真实用户输入不断出现。你需要把线上失败沉淀为测试集，再反过来改 prompt、工具、middleware 和流程。&lt;/p&gt;&lt;p&gt;这是一条持续迭代链路。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;如果把这套文档读成自己的总结&lt;a href=&quot;#如果把这套文档读成自己的总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我会把 LangChain 当前的方向总结成五句话：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;LangChain 现在不只是链式调用库，而是 Agent 构建框架。&lt;/li&gt;
+&lt;li&gt;LangGraph 解决的是复杂 Agent 的状态、持久化、人类介入和容错问题。&lt;/li&gt;
+&lt;li&gt;LangSmith 解决的是 Agent 生产环境里的追踪、评估、部署和监控问题。&lt;/li&gt;
+&lt;li&gt;Agent 和 workflow 不是二选一，真实系统往往需要混合使用。&lt;/li&gt;
+&lt;li&gt;LangChain 最值得学习的不是某个 API，而是它把 Agent 从 demo 到生产所需的工程层拆开了。&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;最后做一个实战导读&lt;a href=&quot;#最后做一个实战导读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你要用 LangChain 做一个生产级 Agent，我建议的路线是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;先用 LangChain create_agent 跑通最小能力&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 设计清楚 tools 和 structured output&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 加 middleware 做日志、重试、guardrails&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;4&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 用 LangSmith tracing 观察每一步&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;5&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 建 datasets 和 evaluations 做回归&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;6&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 复杂流程迁移到 LangGraph&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 加 human-in-the-loop 和 checkpoint&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;8&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;-&amp;gt; 部署后持续 monitor，把失败案例反哺测试集&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这个顺序的重点是：先让 Agent 能工作，再让它可观察，然后让它可评估，最后让它可持续治理。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;LangChain 官方文档：&lt;a href=&quot;https://docs.langchain.com/&quot; target=&quot;_blank&quot;&gt;Docs Home&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;LangChain Python 文档：&lt;a href=&quot;https://docs.langchain.com/oss/python/langchain/overview&quot; target=&quot;_blank&quot;&gt;Overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;LangGraph 文档：&lt;a href=&quot;https://docs.langchain.com/oss/python/langgraph/overview&quot; target=&quot;_blank&quot;&gt;Overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;LangSmith 文档：&lt;a href=&quot;https://docs.langchain.com/langsmith/&quot; target=&quot;_blank&quot;&gt;LangSmith&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>Gemini Function Calling 官方文档中文解读：并行调用、组合调用与模式控制</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/gemini-function-calling-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%B9%B6%E8%A1%8C%E8%B0%83%E7%94%A8%E7%BB%84%E5%90%88%E8%B0%83%E7%94%A8%E4%B8%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/gemini-function-calling-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E5%B9%B6%E8%A1%8C%E8%B0%83%E7%94%A8%E7%BB%84%E5%90%88%E8%B0%83%E7%94%A8%E4%B8%8E%E6%A8%A1%E5%BC%8F%E6%8E%A7%E5%88%B6/</guid><description>基于 Google Gemini API 官方 function calling 文档的中文详细解读，重点说明函数声明、唯一 id 回传、thinking 模型中的 thought signature、并行调用、组合调用和 VALIDATED/AUTO/ANY/NONE 模式。</description><pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;Gemini Function Calling 官方文档中文解读&lt;a href=&quot;#gemini-function-calling-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://ai.google.dev/gemini-api/docs/function-calling?hl=zh-cn&quot; target=&quot;_blank&quot;&gt;https://ai.google.dev/gemini-api/docs/function-calling?hl=zh-cn&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 这篇文档最值得记住的不是“怎么声明函数”，而是它把工具调用扩展成了一个更完整的执行体系：&lt;strong&gt;支持并行调用、支持顺序组合调用、支持模式强控，还特别强调每次函数调用的 &lt;code&gt;id&lt;/code&gt; 映射&lt;/strong&gt;。&lt;/p&gt;&lt;p&gt;如果说 OpenAI 那篇更像是在讲“受控工具闭环”，Gemini 这篇则更像是在讲“如何把工具系统跑成编排引擎”。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;Gemini 对 function calling 的定义&lt;a href=&quot;#gemini-对-function-calling-的定义&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Google 的原文很直接：function calling 是把模型和外部工具、API 连接起来，让模型不只是输出文本，而是能判断什么时候该调用函数，并给出执行所需参数。&lt;/p&gt;&lt;p&gt;它明确列出三个主要用途：&lt;/p&gt;&lt;ol&gt;
 &lt;li&gt;&lt;code&gt;Take Actions&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Augment Knowledge&lt;/code&gt;&lt;/li&gt;
@@ -467,6 +977,118 @@
 &lt;li&gt;可并行&lt;/li&gt;
 &lt;/ul&gt;&lt;p&gt;而不是把所有逻辑揉成一个超级函数。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 模式控制很适合生产环境&lt;a href=&quot;#3-模式控制很适合生产环境&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;很多团队的问题不是“模型不会调用工具”，而是“模型有时调、有时不调，行为太飘”。&lt;/p&gt;&lt;p&gt;Gemini 给了一个很实用的答案：用 mode 去管。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 如果你手动拼历史，一定要尊重 thought signature&lt;a href=&quot;#4-如果你手动拼历史一定要尊重-thought-signature&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;这是最容易踩坑、又最不像普通 prompt 工程的问题。thinking 模型的多轮 function calling，并不是只存一份聊天记录那么简单。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;如果把这篇文档总结成一句工程判断&lt;a href=&quot;#如果把这篇文档总结成一句工程判断&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Gemini 的 function calling 已经不是“给模型一个函数列表看看它会不会用”，而是更接近：&lt;/p&gt;&lt;p&gt;&lt;strong&gt;给模型一个可编排的工具系统，再通过 id、mode、thought signature 和 SDK 机制把多轮工具执行变成稳定工作流。&lt;/strong&gt;&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Gemini 官方文档：&lt;a href=&quot;https://ai.google.dev/gemini-api/docs/function-calling?hl=zh-cn&quot; target=&quot;_blank&quot;&gt;Function calling with the Gemini API&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>LlamaIndex Agents 官方文档中文解读：从工具调用到 Workflows</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/llamaindex-agents-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E4%BB%8E%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E5%88%B0-workflows/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/llamaindex-agents-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E4%BB%8E%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E5%88%B0-workflows/</guid><description>基于 LlamaIndex Agents 官方文档的中文解读，梳理 Agent 作为自动推理与决策引擎的核心能力，以及工具、记忆、计划、预置 Agent 与 Workflows 的工程边界。</description><pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;LlamaIndex Agents 官方文档中文解读&lt;a href=&quot;#llamaindex-agents-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://developers.llamaindex.ai/python/framework/use_cases/agents/&quot; target=&quot;_blank&quot;&gt;https://developers.llamaindex.ai/python/framework/use_cases/agents/&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LlamaIndex 这篇文档讲的不是“怎样让大模型调用一个函数”这么窄，而是在讲：&lt;strong&gt;如何把 LLM、工具、记忆、计划与业务流程组织成一个可以自动推理和行动的 Agent 系统&lt;/strong&gt;。&lt;/p&gt;&lt;p&gt;如果用一句工程化的话来理解：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Agent = 能看懂任务 + 能选择工具 + 能观察结果 + 能继续决策的运行循环&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这也是 LlamaIndex 和普通 RAG 应用最大的差异。RAG 更像“帮模型查资料再回答”，而 Agent 更像“让模型根据任务自己决定下一步要查什么、调什么、什么时候停”。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;这篇文档到底在讲什么&lt;a href=&quot;#这篇文档到底在讲什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LlamaIndex 把 Agent 定义成一种自动推理和决策引擎。它可以：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;把复杂问题拆成多个步骤&lt;/li&gt;
+&lt;li&gt;选择外部工具完成某一步&lt;/li&gt;
+&lt;li&gt;在多轮执行中保留上下文和记忆&lt;/li&gt;
+&lt;li&gt;依据工具返回结果调整下一步计划&lt;/li&gt;
+&lt;li&gt;最后把过程结果整理成用户可读的答案&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这意味着 Agent 不只是模型本身，而是一套运行机制。模型负责推理和决策，工具负责连接外部世界，记忆负责保留过程状态，框架负责把它们串成循环。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;核心概念拆解&lt;a href=&quot;#核心概念拆解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. Agent 是决策循环，不是单次回答&lt;a href=&quot;#1-agent-是决策循环不是单次回答&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;普通 LLM 调用通常是：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;输入问题 -&amp;gt; 模型生成回答&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;Agent 的流程更像：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;输入任务 -&amp;gt; 模型判断下一步 -&amp;gt; 调用工具 -&amp;gt; 观察结果 -&amp;gt; 再判断 -&amp;gt; 直到完成&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这中间最关键的是“观察结果再继续”。Agent 的价值不在于第一次就答对，而在于它可以根据外部反馈不断修正路径。&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;flowchart TD
+    A[用户任务] --&amp;gt; B[Agent 理解目标]
+    B --&amp;gt; C{是否需要工具}
+    C -- 否 --&amp;gt; D[直接生成答案]
+    C -- 是 --&amp;gt; E[选择工具并生成参数]
+    E --&amp;gt; F[工具执行]
+    F --&amp;gt; G[返回观察结果]
+    G --&amp;gt; H{任务是否完成}
+    H -- 否 --&amp;gt; B
+    H -- 是 --&amp;gt; I[汇总最终答案]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Tools 是 Agent 的行动边界&lt;a href=&quot;#2-tools-是-agent-的行动边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 本身不会凭空访问数据库、网页、文件系统或业务系统。它必须通过工具行动。&lt;/p&gt;&lt;p&gt;工具可以是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;查询知识库&lt;/li&gt;
+&lt;li&gt;搜索文档&lt;/li&gt;
+&lt;li&gt;调用 API&lt;/li&gt;
+&lt;li&gt;查询数据库&lt;/li&gt;
+&lt;li&gt;执行计算&lt;/li&gt;
+&lt;li&gt;写入业务系统&lt;/li&gt;
+&lt;li&gt;触发外部工作流&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;所以工具定义不是一个“小配件”，而是 Agent 的能力边界。你给它什么工具，它才能做什么事；工具描述写得是否清楚，会直接影响它会不会选对工具。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Memory 让 Agent 不丢上下文&lt;a href=&quot;#3-memory-让-agent-不丢上下文&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 经常不是一步完成任务。它可能已经问过用户一个澄清问题，查过某个系统，或者尝试过某个工具。记忆的作用就是让它在多轮执行里知道：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;之前问过什么&lt;/li&gt;
+&lt;li&gt;已经查到了什么&lt;/li&gt;
+&lt;li&gt;哪些路径失败了&lt;/li&gt;
+&lt;li&gt;用户偏好是什么&lt;/li&gt;
+&lt;li&gt;当前任务进行到哪里&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;没有记忆，Agent 很容易像“每一步都失忆”的模型；有了记忆，才可能稳定地跑一个多轮任务。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. Planning 让复杂任务可以被拆开&lt;a href=&quot;#4-planning-让复杂任务可以被拆开&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;复杂任务很少能一步完成。比如“帮我研究一个开源项目，并总结它适不适合接入我们系统”，可能要经历：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;读取项目 README&lt;/li&gt;
+&lt;li&gt;查看安装方式&lt;/li&gt;
+&lt;li&gt;理解核心 API&lt;/li&gt;
+&lt;li&gt;搜索 issue 和限制&lt;/li&gt;
+&lt;li&gt;对比现有系统需求&lt;/li&gt;
+&lt;li&gt;生成结论&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;Agent 的计划能力就是把这种大目标拆成小步骤，并在执行过程中根据结果动态调整。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;LlamaIndex 的 Agent 体系怎么理解&lt;a href=&quot;#llamaindex-的-agent-体系怎么理解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LlamaIndex 原本给很多人的印象是 RAG 框架：接数据、建索引、查文档、增强回答。但 Agents 文档说明，它并不只想停留在“检索增强生成”，而是要把检索、工具和工作流一起接入 Agent。&lt;/p&gt;&lt;p&gt;可以把它理解成三层：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;层级&lt;/th&gt;&lt;th&gt;作用&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;数据与索引&lt;/td&gt;&lt;td&gt;连接文档、数据库、知识库等信息来源&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;工具层&lt;/td&gt;&lt;td&gt;把查询、计算、API 调用包装成 Agent 可用能力&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Agent / Workflow 层&lt;/td&gt;&lt;td&gt;让模型决定如何使用工具并推进任务&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;这也是 LlamaIndex 的优势所在：当你的 Agent 主要围绕“数据理解、文档查询、知识库问答、信息综合”时，LlamaIndex 的数据连接和索引能力会非常自然地变成 Agent 的工具基础。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;预置 Agent 和自定义 Workflows 的区别&lt;a href=&quot;#预置-agent-和自定义-workflows-的区别&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;文档里一个很重要的工程边界是：你既可以使用框架提供的 Agent，也可以用 Workflows 自己编排。&lt;/p&gt;&lt;section&gt;&lt;h3&gt;预置 Agent 适合什么&lt;a href=&quot;#预置-agent-适合什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;预置 Agent 更适合快速上手，尤其是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具数量不多&lt;/li&gt;
+&lt;li&gt;任务模式比较常见&lt;/li&gt;
+&lt;li&gt;希望先验证效果&lt;/li&gt;
+&lt;li&gt;不想一开始写太多流程控制代码&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;它的好处是快。你只要定义工具和模型，框架就能帮你完成一套基础运行循环。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;Workflows 适合什么&lt;a href=&quot;#workflows-适合什么&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Workflows 更适合需要强控制的生产场景，比如：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;哪些步骤必须按固定顺序执行&lt;/li&gt;
+&lt;li&gt;某些节点失败后要进入兜底逻辑&lt;/li&gt;
+&lt;li&gt;某些操作必须人工确认&lt;/li&gt;
+&lt;li&gt;不同分支有不同权限&lt;/li&gt;
+&lt;li&gt;需要清晰记录每一步状态&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;也就是说，预置 Agent 更像“开箱即用的自动驾驶”，Workflows 更像“自己定义道路、信号灯和检查点”。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;工程视角怎么理解&lt;a href=&quot;#工程视角怎么理解&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 不要把 Agent 当成魔法&lt;a href=&quot;#1-不要把-agent-当成魔法&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Agent 的本质仍然是一个循环：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;思考 -&amp;gt; 行动 -&amp;gt; 观察 -&amp;gt; 再思考&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;真正要做好的不是“让它看起来会思考”，而是：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;工具描述是否清楚&lt;/li&gt;
+&lt;li&gt;工具结果是否可解析&lt;/li&gt;
+&lt;li&gt;失败时是否能重试或停止&lt;/li&gt;
+&lt;li&gt;任务完成条件是否明确&lt;/li&gt;
+&lt;li&gt;是否有日志记录每一步&lt;/li&gt;
+&lt;li&gt;高风险工具是否有限制&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. 数据型 Agent 是 LlamaIndex 的强项&lt;a href=&quot;#2-数据型-agent-是-llamaindex-的强项&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果你的场景大量依赖文档、知识库、数据库、网页内容和非结构化信息，LlamaIndex 很适合做 Agent 的底座。&lt;/p&gt;&lt;p&gt;典型场景包括：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;企业知识库助手&lt;/li&gt;
+&lt;li&gt;文档研究 Agent&lt;/li&gt;
+&lt;li&gt;报告生成 Agent&lt;/li&gt;
+&lt;li&gt;数据查询助手&lt;/li&gt;
+&lt;li&gt;多文档问答与总结&lt;/li&gt;
+&lt;li&gt;内部制度、合同、产品资料检索&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这些任务都不只是“问一句答一句”，而是需要 Agent 自己判断要查哪里、查几次、怎样汇总。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. Agent 和 Workflow 不应该对立&lt;a href=&quot;#3-agent-和-workflow-不应该对立&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;很多人会把 Agent 和 Workflow 看成两种路线：要么全自主，要么全固定。&lt;/p&gt;&lt;p&gt;更现实的做法是混合：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;固定流程用 Workflow 控制&lt;/li&gt;
+&lt;li&gt;不确定步骤交给 Agent 判断&lt;/li&gt;
+&lt;li&gt;高风险节点加人工确认&lt;/li&gt;
+&lt;li&gt;工具结果统一记录和校验&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;这样既保留 Agent 的灵活性，也不会把系统完全交给模型自由发挥。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;适合什么场景&lt;a href=&quot;#适合什么场景&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LlamaIndex Agents 比较适合下面几类任务：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;需要跨多个数据源查资料&lt;/li&gt;
+&lt;li&gt;需要多轮检索和综合&lt;/li&gt;
+&lt;li&gt;需要把文档、数据库、API 包装成工具&lt;/li&gt;
+&lt;li&gt;任务步骤不是完全固定&lt;/li&gt;
+&lt;li&gt;输出需要解释推理过程或引用来源&lt;/li&gt;
+&lt;li&gt;希望从 RAG 逐步升级到 Agent&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;比如“帮我分析某个产品的用户反馈，并给出前三个改进方向”，Agent 可能需要先查反馈文档，再聚类问题，再查产品说明，最后生成建议。这就不是简单的一次检索能完成的。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;容易忽略的限制或边界&lt;a href=&quot;#容易忽略的限制或边界&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;section&gt;&lt;h3&gt;1. 工具越多，越需要治理&lt;a href=&quot;#1-工具越多越需要治理&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;工具不是越多越好。工具越多，模型选错工具的概率也越高。尤其是多个工具功能相似时，比如 &lt;code&gt;search_docs&lt;/code&gt;、&lt;code&gt;query_docs&lt;/code&gt;、&lt;code&gt;retrieve_chunks&lt;/code&gt;，如果描述不清，Agent 很容易混淆。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;2. Agent 需要停止条件&lt;a href=&quot;#2-agent-需要停止条件&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;一个没有停止条件的 Agent 很容易反复调用工具，成本和延迟都会失控。&lt;/p&gt;&lt;p&gt;应该明确：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;最多执行多少轮&lt;/li&gt;
+&lt;li&gt;什么时候认为任务完成&lt;/li&gt;
+&lt;li&gt;什么时候向用户澄清&lt;/li&gt;
+&lt;li&gt;什么时候失败退出&lt;/li&gt;
+&lt;li&gt;什么时候转人工或返回部分结果&lt;/li&gt;
+&lt;/ul&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;3. 工具结果要适合模型阅读&lt;a href=&quot;#3-工具结果要适合模型阅读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;工具返回一大坨原始 JSON，不一定适合模型继续推理。更好的做法是让工具输出：&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;结构清晰&lt;/li&gt;
+&lt;li&gt;字段命名明确&lt;/li&gt;
+&lt;li&gt;不夹杂无关噪声&lt;/li&gt;
+&lt;li&gt;必要时附带来源和置信度&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Agent 的质量经常不是模型能力不够，而是工具输入输出设计得太难读。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h3&gt;4. 生产环境不能只靠 prompt 约束&lt;a href=&quot;#4-生产环境不能只靠-prompt-约束&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;如果 Agent 可以写数据库、发消息、调支付、改订单，就必须在应用侧加权限检查和审计日志。&lt;/p&gt;&lt;p&gt;prompt 可以引导行为，但不能替代系统权限。&lt;/p&gt;&lt;/section&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;如果把这篇文档读成自己的总结&lt;a href=&quot;#如果把这篇文档读成自己的总结&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;我会把 LlamaIndex Agents 总结成四句话：&lt;/p&gt;&lt;ol&gt;
+&lt;li&gt;Agent 不是一次模型调用，而是围绕工具和观察结果持续决策的运行循环。&lt;/li&gt;
+&lt;li&gt;LlamaIndex 的优势在于把数据连接、索引、检索能力自然包装成 Agent 工具。&lt;/li&gt;
+&lt;li&gt;预置 Agent 适合快速验证，Workflows 适合需要强控制和可追踪的生产流程。&lt;/li&gt;
+&lt;li&gt;真正可靠的 Agent 不只靠模型聪明，而要靠工具设计、状态管理、停止条件和安全边界。&lt;/li&gt;
+&lt;/ol&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;最后做一个实战导读&lt;a href=&quot;#最后做一个实战导读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你准备从 LlamaIndex RAG 升级到 Agent，可以按这个顺序来：&lt;/p&gt;&lt;div&gt;&lt;figure&gt;&lt;figcaption&gt;&lt;/figcaption&gt;&lt;pre&gt;&lt;code&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;1&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;先做稳定检索 -&amp;gt; 把检索封装成工具 -&amp;gt; 增加少量外部工具 -&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;2&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;使用预置 Agent 验证效果 -&amp;gt; 记录每一步调用 -&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;任务复杂后再用 Workflows 固化关键流程&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;&lt;p&gt;这个路径比较稳，因为它不是一开始就追求“全自动 Agent”，而是先把数据查询能力打牢，再逐步增加决策和行动能力。&lt;/p&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;参考链接&lt;a href=&quot;#参考链接&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;LlamaIndex 官方文档：&lt;a href=&quot;https://developers.llamaindex.ai/python/framework/use_cases/agents/&quot; target=&quot;_blank&quot;&gt;Agents&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/section&gt;&lt;/section&gt;</content:encoded></item><item><title>OpenAI Function Calling 官方文档中文解读：从 JSON Schema 到 Strict Mode</title><link>https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/openai-function-calling-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E4%BB%8E-json-schema-%E5%88%B0-strict-mode/</link><guid isPermaLink="true">https://yuhao.bbroot.com/posts/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/openai-function-calling-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E8%A7%A3%E8%AF%BB%E4%BB%8E-json-schema-%E5%88%B0-strict-mode/</guid><description>基于 OpenAI 官方 Function Calling 指南的中文深度解读，系统梳理工具定义、五步调用流程、parallel_tool_calls、strict mode、custom tools 与 tool search 的关键差异与实战要点。</description><pubDate>Thu, 18 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;section&gt;&lt;h1&gt;OpenAI Function Calling 官方文档中文解读&lt;a href=&quot;#openai-function-calling-官方文档中文解读&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文：&lt;a href=&quot;https://developers.openai.com/api/docs/guides/function-calling&quot; target=&quot;_blank&quot;&gt;https://developers.openai.com/api/docs/guides/function-calling&lt;/a&gt;&lt;/p&gt;&lt;section&gt;&lt;h2&gt;一句话概括&lt;a href=&quot;#一句话概括&quot;&gt;&lt;span&gt;#&lt;/span&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OpenAI 这篇文档讲的不是“模型会不会调函数”这么简单，而是：&lt;strong&gt;如何把模型、工具定义、应用侧执行逻辑和结构化返回结果接成一个可靠闭环&lt;/strong&gt;。其中最关键的三个词是：&lt;/p&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;tools&lt;/code&gt;：你交给模型的能力边界&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;strict: true&lt;/code&gt;：你要求模型严格遵守 schema&lt;/li&gt;
